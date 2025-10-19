@@ -1,0 +1,7 @@
+.custom-dots li {
+  background: gray !important;
+}
+
+.custom-dots li.slick-active::after {
+  background: red !important;
+}

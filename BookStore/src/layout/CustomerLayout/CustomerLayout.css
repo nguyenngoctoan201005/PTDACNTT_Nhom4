@@ -1,0 +1,4 @@
+.home-menu .ant-menu-light .ant-menu-item,
+.home-menu .ant-menu-light .ant-menu-item:not(.ant-menu-item-selected):not(.ant-menu-submenu-selected):hover {
+    color: white;
+}

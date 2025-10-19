@@ -1,4 +1,4 @@
-import CustomerLayout from "../layout/CustomerLayout";
+import CustomerLayout from "../layout/CustomerLayout/CustomerLayout";
 import { customerRoutes } from "./modules/customers";
 import { Navigate } from "react-router-dom";
 
