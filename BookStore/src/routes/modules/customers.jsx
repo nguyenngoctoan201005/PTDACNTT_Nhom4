@@ -13,18 +13,6 @@ const Checkout = lazy(() => import("../../views/Customers/Checkout/Checkout"));
 
 export const customerRoutes = [
   {
-    path: "home",
-    element: <Home />,
-  },
-  {
-    path: "books/:bookId",
-    element: <BookDetail />,
-  },
-  {
-    path: "books",
-    element: <Books />,
-  },
-  {
     path: "cart",
     element: <Cart />,
   },
@@ -35,10 +23,6 @@ export const customerRoutes = [
   {
     path: "order-list",
     element: <Order />,
-  },
-  {
-    path: "about",
-    element: <About />,
   },
   {
     path: "checkout",
