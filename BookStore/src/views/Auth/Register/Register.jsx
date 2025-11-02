@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
   Form,
   Input,
@@ -10,6 +10,7 @@ import {
   Space,
   App,
   Checkbox,
+  Select,
 } from "antd";
 import {
   EyeInvisibleOutlined,
@@ -17,11 +18,16 @@ import {
   ReadOutlined,
   GiftOutlined,
   ThunderboltOutlined,
+  UserAddOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router";
 import { HorizontalLogo } from "../../../assets";
 import { useGlobalContext } from "../../../GlobalContext";
 import { Link } from "react-router";
+import {
+  getListProvinces,
+  getProvinceDetail,
+} from "../../../api/provinceService";
 
 const { Title, Text } = Typography;
 
@@ -29,6 +35,7 @@ const Register = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { message } = App.useApp();
+  const [form] = Form.useForm();
 
   const [agree, setAgree] = useState(false);
 
@@ -37,11 +44,50 @@ const Register = () => {
       setLoading(true);
       console.log(values);
     } catch (err) {
-      console.log(">>>>>>>>>>>>", err.message);
       message.error(err.message);
     } finally {
       setLoading(false);
     }
+  };
+
+  const [provinces, setProvinces] = useState([]);
+  const [wards, setWards] = useState([]);
+  const [selectedCity, setSelectedCity] = useState(null);
+
+  useEffect(() => {
+    getListProvinces()
+      .then((data) => {
+        setProvinces(data);
+      })
+      .catch((error) => {
+        console.error("Lỗi khi lấy danh sách tỉnh:", error);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (!selectedCity) return;
+    getProvinceDetail(selectedCity, 2)
+      .then((data) => {
+        setWards(data.wards);
+      })
+      .catch((error) => {
+        console.error("Lỗi khi lấy danh sách xã:", error);
+      });
+  }, [selectedCity]);
+
+  const provinceOptions = useMemo(
+    () => provinces.map((p) => ({ label: p.name, value: p.code })),
+    [provinces]
+  );
+
+  const wardOptions = useMemo(
+    () => wards.map((p) => ({ label: p.name, value: p.code })),
+    [wards]
+  );
+
+  const handleChangeCity = (value) => {
+    setSelectedCity(value);
+    form.setFieldValue("ward", null);
   };
 
   return (
@@ -72,11 +118,11 @@ const Register = () => {
                 </div>
               </Space>
               <h2 className="text-5xl font-bold leading-tight">
-                Welcome to Your Literary Journey
+                Chào mừng bạn đến với trang web
               </h2>
               <p className="text-lg text-white/90">
-                Discover thousands of books, connect with fellow readers, and
-                explore new worlds through literature.
+                Khám phá hàng nghìn cuốn sách, kết nối với những người yêu sách
+                khác và khám phá những thế giới mới qua văn học.
               </p>
             </div>
 
@@ -84,25 +130,31 @@ const Register = () => {
               <div className="flex items-start gap-4">
                 <ReadOutlined className="text-xl mt-1" />
                 <div>
-                  <h3 className="font-semibold text-lg">Curated Collections</h3>
+                  <h3 className="font-semibold text-lg">
+                    Bộ sưu tập được chọn lọc
+                  </h3>
                   <p className="text-white/80">
-                    Handpicked books across all genres
+                    Những cuốn sách được tuyển chọn kỹ lưỡng từ mọi thể loại
                   </p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
                 <GiftOutlined className="text-xl mt-1" />
                 <div>
-                  <h3 className="font-semibold text-lg">Exclusive Deals</h3>
-                  <p className="text-white/80">Special discounts for members</p>
+                  <h3 className="font-semibold text-lg">Ưu đãi độc quyền</h3>
+                  <p className="text-white/80">
+                    Giảm giá đặc biệt dành cho thành viên
+                  </p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
                 <ThunderboltOutlined className="text-xl mt-1" />
                 <div>
-                  <h3 className="font-semibold text-lg">Fast Delivery</h3>
+                  <h3 className="font-semibold text-lg">
+                    Giao hàng nhanh chóng
+                  </h3>
                   <p className="text-white/80">
-                    Get your books delivered quickly
+                    Nhận sách của bạn một cách nhanh nhất
                   </p>
                 </div>
               </div>
@@ -111,8 +163,8 @@ const Register = () => {
 
           <div className="relative z-10 border-t border-white/20 pt-6">
             <p className="text-white/80 italic">
-              "A reader lives a thousand lives before he dies. The man who never
-              reads lives only one." — George R.R. Martin
+              “Người đọc sách sống được cả ngàn cuộc đời trước khi chết. Kẻ
+              không bao giờ đọc chỉ sống một lần.” — George R.R. Martin
             </p>
           </div>
         </div>
@@ -120,37 +172,34 @@ const Register = () => {
         <div className="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-8 bg-white">
           <div className="w-full max-w-md">
             <div className="space-y-8 max-w-md mx-auto">
-              {/* Header */}
               <div className="text-center space-y-1">
                 <Title level={2} className="!mb-0">
-                  Create Account
+                  Tạo tài khoản
                 </Title>
                 <Text type="secondary">
-                  Join BookHaven to start your reading journey
+                  Tham gia BookHaven để bắt đầu hành trình đọc sách của bạn
                 </Text>
               </div>
 
-              {/* Form */}
               <Form
                 layout="vertical"
                 onFinish={onFinish}
                 className="space-y-4"
                 requiredMark={false}
                 autoComplete="off"
+                form={form}
               >
                 <Row gutter={8}>
                   <Col span={12}>
                     <Form.Item
                       label={
-                        <span className="font-medium text-gray-700">
-                          First Name
-                        </span>
+                        <span className="font-medium text-gray-700">Tên</span>
                       }
-                      name="first_name"
+                      name="name"
                       rules={[
                         {
                           required: true,
-                          message: "Please enter your first name!",
+                          message: "Vui lòng nhập tên của bạn!",
                         },
                       ]}
                     >
@@ -165,41 +214,19 @@ const Register = () => {
                     <Form.Item
                       label={
                         <span className="font-medium text-gray-700">
-                          Last Name
-                        </span>
-                      }
-                      name="last_name"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please enter your last name!",
-                        },
-                      ]}
-                    >
-                      <Input
-                        placeholder="Doe"
-                        className="rounded-md border-gray-300 hover:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                        autoComplete="off"
-                      />
-                    </Form.Item>
-                  </Col>
-                  <Col span={24}>
-                    <Form.Item
-                      label={
-                        <span className="font-medium text-gray-700">
-                          Username
+                          Tên đăng nhập
                         </span>
                       }
                       name="username"
                       rules={[
                         {
                           required: true,
-                          message: "Please enter your username!",
+                          message: "Vui lòng nhập tên đăng nhập!",
                         },
                       ]}
                     >
                       <Input
-                        placeholder="Enter your username"
+                        placeholder="Nhập tên đăng nhập của bạn"
                         className="rounded-md border-gray-300 hover:border-blue-500 focus:ring-1 focus:ring-blue-500"
                         autoComplete="off"
                       />
@@ -209,18 +236,18 @@ const Register = () => {
                     <Form.Item
                       label={
                         <span className="font-medium text-gray-700">
-                          Email Address
+                          Địa chỉ Email
                         </span>
                       }
                       name="email"
                       rules={[
                         {
                           required: true,
-                          message: "Please enter your email address!",
+                          message: "Vui lòng nhập địa chỉ email của bạn!",
                         },
                         {
                           type: "email",
-                          message: "Please enter a valid email!",
+                          message: "Email của bạn không hợp lệ",
                         },
                       ]}
                     >
@@ -235,19 +262,19 @@ const Register = () => {
                     <Form.Item
                       label={
                         <span className="font-medium text-gray-700">
-                          Password
+                          Mật khẩu
                         </span>
                       }
                       name="password"
                       rules={[
                         {
                           required: true,
-                          message: "Please enter your password!",
+                          message: "Vui lòng nhập mật khẩu!",
                         },
                       ]}
                     >
                       <Input.Password
-                        placeholder="Create a strong password"
+                        placeholder="Nhập mật khẩu của bạn"
                         iconRender={(visible) =>
                           visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
                         }
@@ -260,7 +287,7 @@ const Register = () => {
                     <Form.Item
                       label={
                         <span className="font-medium text-gray-700">
-                          Confirm Password
+                          Xác nhận mật khẩu
                         </span>
                       }
                       name="confirmPassword"
@@ -268,7 +295,7 @@ const Register = () => {
                       rules={[
                         {
                           required: true,
-                          message: "Please confirm your password!",
+                          message: "Vui lòng xác nhận mật khẩu của bạn!",
                         },
                         ({ getFieldValue }) => ({
                           validator(_, value) {
@@ -276,19 +303,70 @@ const Register = () => {
                               return Promise.resolve();
                             }
                             return Promise.reject(
-                              new Error("Passwords do not match!")
+                              new Error("Mật khẩu không khớp!")
                             );
                           },
                         }),
                       ]}
                     >
                       <Input.Password
-                        placeholder="Confirm your password"
+                        placeholder="Xác nhận mật khẩu của bạn"
                         iconRender={(visible) =>
                           visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
                         }
                         className="rounded-md border-gray-300 hover:border-blue-500 focus:ring-1 focus:ring-blue-500"
                         autoComplete="new-password"
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col span={24}>
+                    <Form.Item
+                      name="city"
+                      label={
+                        <span className="font-medium text-gray-700">
+                          Thành phố
+                        </span>
+                      }
+                      rules={[
+                        {
+                          required: true,
+                          message: "Vui lòng chọn thành phố của bạn!",
+                        },
+                      ]}
+                    >
+                      <Select
+                        showSearch
+                        placeholder="Chọn thành phố"
+                        optionFilterProp="label"
+                        onChange={handleChangeCity}
+                        // onSearch={onSearch}
+                        options={provinceOptions}
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col span={24}>
+                    <Form.Item
+                      name="ward"
+                      label={
+                        <span className="font-medium text-gray-700">
+                          Phường/Xã
+                        </span>
+                      }
+                      rules={[
+                        {
+                          required: true,
+                          message: "Vui lòng chọn phường/xã của bạn",
+                        },
+                      ]}
+                    >
+                      <Select
+                        showSearch
+                        virtual
+                        placeholder="Chọn phường xã"
+                        optionFilterProp="label"
+                        // onChange={(value) => setSelectedCity(value)}
+                        // onSearch={onSearch}
+                        options={wardOptions}
                       />
                     </Form.Item>
                   </Col>
@@ -301,13 +379,13 @@ const Register = () => {
                       checked={agree}
                       onChange={(e) => setAgree(e.target.checked)}
                     >
-                      I agree to the{" "}
+                      Tôi đồng ý với{" "}
                       <Link href="#" className="text-blue-600">
-                        Terms of Service
+                        Điều khoản dịch vụ
                       </Link>{" "}
-                      and{" "}
+                      và{" "}
                       <Link href="#" className="text-blue-600">
-                        Privacy Policy
+                        Chính sách bảo mật
                       </Link>
                     </Checkbox>
                   </Form.Item>
@@ -318,26 +396,26 @@ const Register = () => {
                     initialValue={true}
                   >
                     <Checkbox>
-                      Subscribe to our newsletter for book recommendations and
-                      deals
+                      Đăng ký nhận bản tin của chúng tôi để nhận gợi ý sách và
+                      ưu đãi
                     </Checkbox>
                   </Form.Item>
 
-                  {/* Submit Button */}
                   <Button
                     type="primary"
                     htmlType="submit"
                     loading={loading}
                     className="w-full h-11 font-semibold text-base bg-blue-600 hover:bg-blue-500"
                   >
-                    Create Account
+                    <UserAddOutlined />
+                    Tạo tài khoản
                   </Button>
                 </Row>
               </Form>
 
               {/* Footer */}
               <Divider plain className="text-gray-400">
-                ALREADY HAVE AN ACCOUNT?
+                ĐÃ CÓ TÀI KHOẢN?
               </Divider>
 
               <Button
@@ -345,14 +423,15 @@ const Register = () => {
                 className="w-full h-11 border-2 border-blue-600 text-blue-600 font-semibold hover:bg-blue-50"
                 onClick={() => navigate("/login")}
               >
-                Sign In
+                Đăng nhập
               </Button>
 
               <p className="text-center text-sm text-gray-500">
-                By creating an account, you agree to our{" "}
+                Bằng việc tạo tài khoản, bạn đồng ý với{" "}
                 <Link href="#" className="text-blue-600">
-                  Terms of Service
-                </Link>
+                  Điều khoản dịch vụ
+                </Link>{" "}
+                của chúng tôi.
               </p>
             </div>
           </div>
