@@ -1,0 +1,8 @@
+.home-menu .ant-menu-light .ant-menu-item,
+.home-menu .ant-menu-light .ant-menu-item:not(.ant-menu-item-selected):not(.ant-menu-submenu-selected):hover {
+    color: white;
+}
+
+.menu-profile.ant-menu-light.ant-menu-root.ant-menu-inline {
+    border-inline-end: none;
+}

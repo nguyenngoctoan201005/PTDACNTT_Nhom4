@@ -12,6 +12,7 @@ import {
   Typography,
   Dropdown,
   Avatar,
+  Card,
 } from "antd";
 import { HorizontalLogo } from "../../assets";
 import {
@@ -25,20 +26,26 @@ import {
   UserOutlined,
   KeyOutlined,
   LogoutOutlined,
+  SettingOutlined,
 } from "@ant-design/icons";
-import "./CustomerLayout.css";
+import "./ProfileLayout.css";
 import { useGlobalContext } from "../../GlobalContext";
 import ProtectedRoute from "../../routes/guard/ProtectedRoutes";
+import { useEffect, useState } from "react";
 
 const { Header, Content, Footer } = Layout;
 const { Title, Text, Link } = Typography;
 
-const CustomerLayout = ({ type }) => {
+const ProfileLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, handleLogout } = useGlobalContext();
-  const isLoginOrRegister =
-    location.pathname === "/login" || location.pathname === "register";
+
+  const [selectedKey, setSelectedKey] = useState("info");
+
+  useEffect(() => {
+    setSelectedKey(location.pathname.replace("/profile/", ""));
+  }, [location.pathname]);
 
   const genres = [
     {
@@ -110,7 +117,8 @@ const CustomerLayout = ({ type }) => {
   ];
 
   const handleMenuClick = (e) => {
-    navigate(`${e.key}`);
+    setSelectedKey(e.key);
+    navigate(`/profile/${e.key}`);
   };
 
   return (
@@ -211,7 +219,50 @@ const CustomerLayout = ({ type }) => {
         </div>
       </Header>
       <Content style={{ marginTop: 20 }}>
-        {type === 1 ? <Outlet /> : <ProtectedRoute />}
+        <div className="bg-blue-50 py-4 mt-20 px-[80px]">
+          <div className="flex gap-6 p-6">
+            {!!user && (
+              <Card className="w-72 p-4 text-center">
+                <Avatar
+                  size={96}
+                  icon={<UserOutlined />}
+                  className="mx-auto mb-3"
+                />
+                <h3 className="text-lg font-semibold">{user.name}</h3>
+                <p className="text-gray-500 mb-4 text-sm">{user.email}</p>
+
+                <Menu
+                  onClick={handleMenuClick}
+                  defaultSelectedKeys={["info"]}
+                  selectedKeys={[selectedKey]}
+                  mode="inline"
+                  className="text-left mt-4 border-none menu-profile"
+                  items={[
+                    {
+                      key: "info",
+                      icon: <UserOutlined />,
+                      label: "Thông tin tài khoản",
+                    },
+                    {
+                      key: "update",
+                      icon: <SettingOutlined />,
+                      label: "Cập nhật thông tin",
+                    },
+                    {
+                      key: "change-password",
+                      icon: <KeyOutlined />,
+                      label: "Đổi mật khẩu",
+                    },
+                  ]}
+                />
+              </Card>
+            )}
+
+            <div className="flex-1">
+              <ProtectedRoute />
+            </div>
+          </div>
+        </div>
       </Content>
       <Footer style={{ backgroundColor: "white", padding: "60px 80px 20px" }}>
         <Row gutter={[32, 32]}>
@@ -300,4 +351,4 @@ const CustomerLayout = ({ type }) => {
   );
 };
 
-export default CustomerLayout;
+export default ProfileLayout;

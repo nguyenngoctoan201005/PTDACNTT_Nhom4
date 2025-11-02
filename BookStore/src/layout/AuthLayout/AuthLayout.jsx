@@ -63,90 +63,97 @@ const AuthLayout = () => {
   };
   return (
     <Layout>
-      {/* <Header
-        style={{
-          backgroundColor: "rgb(137, 209, 245)",
-          height: 100,
-          padding: "0 80px",
-          position: "fixed",
-          top: 0,
-          left: 0,
-          right: 0,
-          zIndex: 1000,
-          width: "100%",
-        }}
-      >
-        <div className="flex items-center gap-8 h-[64px]">
-          <Space
-            align="start"
-            onClick={() => navigate("/home")}
-            className="cursor-pointer"
-          >
-            <div className="my-1">
-              <img
-                src={HorizontalLogo}
-                alt="Logo"
-                style={{
-                  height: "60px",
-                  width: "auto",
-                  minWidth: "125px",
-                  backgroundColor: "transparent",
-                }}
-              />
-            </div>
-          </Space>
-          <Input
-            prefix={<SearchOutlined />}
-            placeholder="Search books, authors, ..."
-            style={{ flex: 1, marginTop: 10 }}
-          />
-          <Space align="end" style={{ marginTop: 10 }}>
-            <Flex gap={16}>
-              <Button
-                type="link"
-                icon={
-                  <HeartOutlined style={{ color: "white", fontSize: 20 }} />
-                }
-                onClick={() => navigate("/favorite")}
-              />
-              <Badge count={3}>
+      {!isLoginOrRegister && (
+        <Header
+          style={{
+            backgroundColor: "rgb(137, 209, 245)",
+            height: 100,
+            padding: "0 80px",
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            zIndex: 1000,
+            width: "100%",
+          }}
+        >
+          <div className="flex items-center gap-8 h-[64px]">
+            <Space
+              align="start"
+              onClick={() => navigate("/home")}
+              className="cursor-pointer"
+            >
+              <div className="my-1">
+                <img
+                  src={HorizontalLogo}
+                  alt="Logo"
+                  style={{
+                    height: "60px",
+                    width: "auto",
+                    minWidth: "125px",
+                    backgroundColor: "transparent",
+                  }}
+                />
+              </div>
+            </Space>
+            <Input
+              prefix={<SearchOutlined />}
+              placeholder="Search books, authors, ..."
+              style={{ flex: 1, marginTop: 10 }}
+            />
+            <Space align="end" style={{ marginTop: 10 }}>
+              <Flex gap={16}>
                 <Button
                   type="link"
                   icon={
-                    <ShoppingCartOutlined
-                      style={{ color: "white", fontSize: 20 }}
-                    />
+                    <HeartOutlined style={{ color: "white", fontSize: 20 }} />
                   }
-                  onClick={() => navigate("/cart")}
+                  onClick={() => navigate("/favorite")}
                 />
-              </Badge>
-              {!isLoginOrRegister && (
-                <>
-                  <Button type="primary" onClick={() => navigate("/login")}>
-                    Sign in
-                  </Button>
-                  <Button>Sign up</Button>
-                </>
-              )}
-            </Flex>
-          </Space>
-        </div>
-        <div className="-mt-1 home-menu">
-          <Menu
-            mode="horizontal"
-            onClick={handleMenuClick}
-            items={genres}
-            style={{
-              flex: 1,
-              minWidth: 0,
-              justifyContent: "center",
-              lineHeight: "36px",
-              borderBottom: "none",
-              backgroundColor: "transparent",
-            }}
-          />
-        </div>
-      </Header> */}
+                <Badge count={3}>
+                  <Button
+                    type="link"
+                    icon={
+                      <ShoppingCartOutlined
+                        style={{ color: "white", fontSize: 20 }}
+                      />
+                    }
+                    onClick={() => navigate("/cart")}
+                  />
+                </Badge>
+                {!isLoginOrRegister && (
+                  <>
+                    <Button type="primary" onClick={() => navigate("/login")}>
+                      Đăng nhập
+                    </Button>
+                    <Button
+                      type="default"
+                      onClick={() => navigate("/register")}
+                    >
+                      Đăng kí
+                    </Button>
+                  </>
+                )}
+              </Flex>
+            </Space>
+          </div>
+          <div className="-mt-1 home-menu">
+            <Menu
+              mode="horizontal"
+              onClick={handleMenuClick}
+              items={genres}
+              style={{
+                flex: 1,
+                minWidth: 0,
+                justifyContent: "center",
+                lineHeight: "36px",
+                borderBottom: "none",
+                backgroundColor: "transparent",
+              }}
+            />
+          </div>
+        </Header>
+      )}
       <Content>
         <Outlet />
       </Content>
@@ -159,9 +166,9 @@ const AuthLayout = () => {
               </Title>
               <Text type="secondary">Premium Bookstore</Text>
               <Text style={{ display: "block", maxWidth: 400 }}>
-                Your trusted partner in literary discovery. We curate the finest
-                collection of books from around the world, bringing you closer
-                to the stories that matter.
+                Đối tác đáng tin cậy của bạn trong hành trình khám phá văn học.
+                Chúng tôi sở hữu những bộ sách hay nhất từ khắp nơi trên thế
+                giới, giúp bạn tiếp cận gần hơn với những câu chuyện ý nghĩa.
               </Text>
             </Space>
 
@@ -186,9 +193,8 @@ const AuthLayout = () => {
                 Support
               </Title>
               <Space direction="vertical">
-                <Link>Contact Us</Link>
-                <Link>Shipping Info</Link>
-                <Link>Returns</Link>
+                <Link>Liên hệ với chúng tôi</Link>
+                <Link>Thông tin giao hàng</Link>
                 <Link>FAQ</Link>
               </Space>
             </div>
@@ -197,15 +203,15 @@ const AuthLayout = () => {
           <Col xs={12} sm={8} md={6} lg={6}>
             <Title level={5}>Quick Links</Title>
             <Space direction="vertical">
-              <Link>All Books</Link>
-              <Link>Bestsellers</Link>
-              <Link>New Releases</Link>
-              <Link>Special Deals</Link>
+              <Link to="/books">Tất cả sách</Link>
+              <Link>Sách bán chạy</Link>
+              <Link>Mới xuất bản</Link>
+              <Link>Đặc biệt</Link>
             </Space>
           </Col>
 
           <Col xs={12} sm={8} md={6} lg={4}>
-            <Title level={5}>Genres</Title>
+            <Title level={5}>Thể loại</Title>
             <Space direction="vertical">
               <Link>Fiction</Link>
               <Link>Mystery</Link>
