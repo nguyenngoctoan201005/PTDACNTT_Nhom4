@@ -3,13 +3,14 @@ import { Routes, Route } from "react-router-dom";
 import { routes } from "./routes";
 import { Suspense } from "react";
 import { GlobalProvider } from "./GlobalContext";
-import { Spin, App as AntdApp } from "antd";
+import { App as AntdApp } from "antd";
+import LoadingSpinner from "./components/LoadingSpinner";
 
 function App() {
   return (
     <AntdApp>
       <GlobalProvider>
-        <Suspense fallback={<Spin />}>
+        <Suspense fallback={<LoadingSpinner />}>
           <Routes>
             {routes.map((route, index) => (
               <Route key={index} path={route.path} element={route.element}>
@@ -20,7 +21,17 @@ function App() {
                       index={child.index}
                       path={child.path}
                       element={child.element}
-                    />
+                    >
+                      {child.children &&
+                        child.children.map((childI, childIndexI) => (
+                          <Route
+                            key={childIndexI}
+                            index={childI.index}
+                            path={childI.path}
+                            element={childI.element}
+                          />
+                        ))}
+                    </Route>
                   ))}
               </Route>
             ))}
