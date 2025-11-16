@@ -36,11 +36,13 @@ const UpdateProfile = () => {
     setSelectedCity(user.city_code);
 
     form.setFieldsValue({
-      name: user.name,
-      username: user.username,
+      hoTen: user.hoTen,
+      userName: user.userName,
       email: user.email,
+      phoneNumber: user.soDT,
       city_code: user.city_code,
       ward_code: user.ward_code,
+      address: user.diaChi,
     });
   }, [user, form]);
 
@@ -81,13 +83,13 @@ const UpdateProfile = () => {
   };
 
   return (
-    <Card title="Account Information" className="flex-1">
+    <Card title="Cập nhật thông tin" className="flex-1">
       <Form form={form} layout="vertical" onFinish={handleFinish}>
         <Row gutter={8}>
           <Col span={12}>
             <Form.Item
               label={<span className="font-medium text-gray-700">Tên</span>}
-              name="name"
+              name="hoTen"
               rules={[
                 {
                   required: true,
@@ -107,7 +109,7 @@ const UpdateProfile = () => {
               label={
                 <span className="font-medium text-gray-700">Tên đăng nhập</span>
               }
-              name="username"
+              name="userName"
               rules={[
                 {
                   required: true,
@@ -123,7 +125,7 @@ const UpdateProfile = () => {
               />
             </Form.Item>
           </Col>
-          <Col span={24}>
+          <Col span={12}>
             <Form.Item
               label={
                 <span className="font-medium text-gray-700">Địa chỉ Email</span>
@@ -147,7 +149,31 @@ const UpdateProfile = () => {
               />
             </Form.Item>
           </Col>
-          <Col span={24}>
+          <Col span={12}>
+            <Form.Item
+              label={
+                <span className="font-medium text-gray-700">Số điện thoại</span>
+              }
+              name="phoneNumber"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng nhập số điện thoại!",
+                },
+                {
+                  pattern: /^[0-9]{9,11}$/,
+                  message: "Số điện thoại không hợp lệ (9–11 chữ số)",
+                },
+              ]}
+            >
+              <Input
+                placeholder="Ví dụ: 0987654321"
+                className="rounded-md border-gray-300 hover:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                autoComplete="off"
+              />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
             <Form.Item
               name="city_code"
               label={
@@ -170,7 +196,7 @@ const UpdateProfile = () => {
               />
             </Form.Item>
           </Col>
-          <Col span={24}>
+          <Col span={12}>
             <Form.Item
               name="ward_code"
               label={
@@ -191,6 +217,24 @@ const UpdateProfile = () => {
                 // onChange={(value) => setSelectedCity(value)}
                 // onSearch={onSearch}
                 options={wardOptions}
+              />
+            </Form.Item>
+          </Col>
+          <Col span={24}>
+            <Form.Item
+              label={<span className="font-medium text-gray-700">Địa chỉ</span>}
+              name="address"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng nhập địa chỉ của bạn!",
+                },
+              ]}
+            >
+              <Input
+                placeholder="Nhập địa chỉ (số nhà, tên đường...)"
+                className="rounded-md border-gray-300 hover:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                autoComplete="off"
               />
             </Form.Item>
           </Col>

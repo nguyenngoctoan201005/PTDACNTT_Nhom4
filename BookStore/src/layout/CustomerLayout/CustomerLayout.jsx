@@ -72,7 +72,7 @@ const CustomerLayout = ({ type }) => {
       key: 1,
       label: (
         <div>
-          <Text strong>{user?.name}</Text>
+          <Text strong>{user?.hoTen}</Text>
           <br />
           <Text type="secondary" style={{ fontSize: 12 }}>
             {user?.email}
@@ -211,7 +211,9 @@ const CustomerLayout = ({ type }) => {
         </div>
       </Header>
       <Content style={{ marginTop: 20 }}>
-        {type === 1 ? <Outlet /> : <ProtectedRoute />}
+        <div className="bg-blue-50 py-4 mt-12 px-[80px]">
+          {type === 1 ? <Outlet /> : <ProtectedRoute />}
+        </div>
       </Content>
       <Footer style={{ backgroundColor: "white", padding: "60px 80px 20px" }}>
         <Row gutter={[32, 32]}>

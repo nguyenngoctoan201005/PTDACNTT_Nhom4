@@ -79,7 +79,7 @@ const ProfileLayout = () => {
       key: 1,
       label: (
         <div>
-          <Text strong>{user?.name}</Text>
+          <Text strong>{user?.hoTen}</Text>
           <br />
           <Text type="secondary" style={{ fontSize: 12 }}>
             {user?.email}
@@ -228,7 +228,7 @@ const ProfileLayout = () => {
                   icon={<UserOutlined />}
                   className="mx-auto mb-3"
                 />
-                <h3 className="text-lg font-semibold">{user.name}</h3>
+                <h3 className="text-lg font-semibold mt-3">{user.hoTen}</h3>
                 <p className="text-gray-500 mb-4 text-sm">{user.email}</p>
 
                 <Menu

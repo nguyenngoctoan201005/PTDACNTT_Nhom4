@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { App } from "antd";
 import { useNavigate } from "react-router-dom";
 import { saveToken, getToken, removeToken } from "./auth/auth";
-import { login as handleLogin } from "./api/authService";
+import { login as handleLogin, getUserInfo } from "./api/authService";
 
 const GlobalContext = createContext(null);
 
@@ -18,25 +18,6 @@ export const GlobalProvider = ({ children }) => {
   const [loadingAuth, setLoadingAuth] = useState(true);
 
   const [cart, setCart] = useState([]);
-
-  // Fake API get user info
-  const getUserInfo = async (token) => {
-    await new Promise((r) => setTimeout(r, 500));
-    // if (token === "fake-token-123") {
-    return {
-      data: {
-        id: 1,
-        username: "admin",
-        name: "Quản trị viên",
-        email: "admin@example.com",
-        phone_number: "0987654321",
-        city_code: 1,
-        ward_code: 4,
-      },
-    };
-    // }
-    throw new Error("Token không hợp lệ");
-  };
 
   // ✅ Kiểm tra token khi load app
   useEffect(() => {
@@ -54,7 +35,7 @@ export const GlobalProvider = ({ children }) => {
   const fetchUserInfo = async (token) => {
     try {
       const res = await getUserInfo(token);
-      setUser(res.data);
+      setUser(res.result);
     } catch (error) {
       console.error("Fetch user error:", error);
       handleLogout();

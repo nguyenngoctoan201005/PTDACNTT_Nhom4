@@ -36,9 +36,7 @@ const PersonalInfoCard = () => {
           <Typography.Text type="secondary" className="text-gray-500 text-sm">
             Số điện thoại
           </Typography.Text>
-          <Typography.Text className="font-medium">
-            {user.phone_number}
-          </Typography.Text>
+          <Typography.Text className="font-medium">{user.soDT}</Typography.Text>
         </div>
       </div>
 
@@ -49,7 +47,7 @@ const PersonalInfoCard = () => {
             Địa chỉ
           </Typography.Text>
           <Typography.Text className="font-medium">
-            {user.address}
+            {user.diaChi}
           </Typography.Text>
         </div>
       </div>
