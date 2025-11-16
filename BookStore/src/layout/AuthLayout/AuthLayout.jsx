@@ -30,7 +30,7 @@ const AuthLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const isLoginOrRegister =
-    location.pathname === "/login" || location.pathname === "register";
+    location.pathname === "/login" || location.pathname === "/register";
   const genres = [
     {
       label: "Fiction",
