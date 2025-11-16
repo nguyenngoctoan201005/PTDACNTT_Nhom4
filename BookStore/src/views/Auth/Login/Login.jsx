@@ -35,10 +35,13 @@ const Login = () => {
     try {
       setLoading(true);
       console.log(values);
-      await login(values);
+      await login({
+        userName: values.username,
+        matKhau: values.password,
+      });
     } catch (err) {
       console.log(">>>>>>>>>>>>", err.message);
-      message.error(err.message);
+      message.error("Sai tên đăng nhập hoặc mật khẩu");
     } finally {
       setLoading(false);
     }

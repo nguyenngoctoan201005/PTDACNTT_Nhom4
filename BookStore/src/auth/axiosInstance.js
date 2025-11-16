@@ -1,6 +1,5 @@
 import axios from "axios";
-import { getToken, removeRoles, removeToken } from "@auth/auth";
-import { useNavigate } from "react-router";
+import { getToken, removeRoles, removeToken } from "./auth";
 
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
@@ -29,11 +28,10 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   async (error) => {
-    const navigate = useNavigate();
     if (error.response?.status === 401) {
       await removeToken();
       await removeRoles();
-      navigate("login");
+      window.location.href = "/login";
     }
     return Promise.reject(error);
   }

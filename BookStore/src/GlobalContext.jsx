@@ -2,23 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { App } from "antd";
 import { useNavigate } from "react-router-dom";
 import { saveToken, getToken, removeToken } from "./auth/auth";
-
-export const handleLogin = async (data) => {
-  await new Promise((r) => setTimeout(r, 1000));
-  if (data.username === "admin" && data.password === "123456") {
-    return {
-      data: {
-        token: "fake-token-123",
-        user: { id: 1, name: "Admin", role: "admin" },
-      },
-      status: 200,
-    };
-  } else {
-    const error = new Error("Sai tài khoản hoặc mật khẩu!");
-    error.response = { status: 401, data: { message: "Unauthorized" } };
-    throw error;
-  }
-};
+import { login as handleLogin } from "./api/authService";
 
 const GlobalContext = createContext(null);
 
@@ -38,19 +22,19 @@ export const GlobalProvider = ({ children }) => {
   // Fake API get user info
   const getUserInfo = async (token) => {
     await new Promise((r) => setTimeout(r, 500));
-    if (token === "fake-token-123") {
-      return {
-        data: {
-          id: 1,
-          username: "admin",
-          name: "Quản trị viên",
-          email: "admin@example.com",
-          phone_number: "0987654321",
-          city_code: 1,
-          ward_code: 4,
-        },
-      };
-    }
+    // if (token === "fake-token-123") {
+    return {
+      data: {
+        id: 1,
+        username: "admin",
+        name: "Quản trị viên",
+        email: "admin@example.com",
+        phone_number: "0987654321",
+        city_code: 1,
+        ward_code: 4,
+      },
+    };
+    // }
     throw new Error("Token không hợp lệ");
   };
 
@@ -81,7 +65,7 @@ export const GlobalProvider = ({ children }) => {
     try {
       setIsLoading(true);
       const res = await handleLogin(data);
-      const t = res.data.token;
+      const t = res.result.token;
       await saveToken(t);
       setToken(t);
       await fetchUserInfo(t);
