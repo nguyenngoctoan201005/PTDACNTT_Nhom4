@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Card,
   Typography,
@@ -8,9 +8,13 @@ import {
   Divider,
   Space,
   Avatar,
+  message,
 } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
+import { getListDanhGia, insertListDanhGia } from "../../../api/danhGiaService";
+import { useGlobalContext } from "../../../GlobalContext";
+import { useParams } from "react-router";
 
 const { Title, Text, Paragraph } = Typography;
 const { TextArea } = Input;
@@ -21,44 +25,54 @@ const formatReviewDate = (isoString) => {
 };
 
 const BookReview = () => {
+  const { user } = useGlobalContext();
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState("");
+  const { bookId } = useParams();
 
-  const handleSubmit = () => {
-    console.log("Rating:", rating);
-    console.log("Review:", review);
+  const [listDanhGia, setListDanhGia] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const fetchDanhGia = async () => {
+    try {
+      const data = await getListDanhGia();
+      const sorted = [...data.result].sort(
+        (a, b) => dayjs(b.ngayBL).valueOf() - dayjs(a.ngayBL).valueOf()
+      );
+
+      setListDanhGia(sorted);
+    } catch (error) {
+      message.error("Lỗi khi lấy danh sách đánh giá");
+    }
   };
 
-  const userReview = [
-    {
-      id: 1,
-      full_name: "Harry",
-      description:
-        "This book completely changed my perspective. Highly recommended for anyone looking for a thought-provoking read.",
-      sent_time: "2025-01-10T09:10:00",
-    },
-    {
-      id: 2,
-      full_name: "Harry",
-      description:
-        "This book completely changed my perspective. Highly recommended for anyone looking for a thought-provoking read.",
-      sent_time: "2025-01-10T09:10:00",
-    },
-    {
-      id: 3,
-      full_name: "Harry",
-      description:
-        "This book completely changed my perspective. Highly recommended for anyone looking for a thought-provoking read.",
-      sent_time: "2025-01-10T09:10:00",
-    },
-    {
-      id: 4,
-      full_name: "Harry",
-      description:
-        "This book completely changed my perspective. Highly recommended for anyone looking for a thought-provoking read.",
-      sent_time: "2025-01-10T09:10:00",
-    },
-  ];
+  const handleSubmit = async () => {
+    try {
+      setLoading(true);
+      await insertListDanhGia({
+        maKH: user.maKH,
+        maSach: bookId,
+        soSao: rating,
+        binhLuan: review,
+      });
+
+      message.success("Gửi đánh giá thành công");
+
+      await fetchDanhGia();
+
+      setRating(0);
+      setReview("");
+    } catch (err) {
+      console.log("error >>>", err);
+      message.error(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchDanhGia();
+  }, []);
 
   return (
     <Card
@@ -71,34 +85,34 @@ const BookReview = () => {
       }}
     >
       <div>
-        <Title level={5}>Customer Reviews</Title>
+        <Title level={5}>Đánh giá của khách hàng</Title>
         <Text type="secondary">
-          2,847 reviews with an average rating of{" "}
+          2,847 lượt đánh giá với trung bình{" "}
           <Text strong style={{ color: "#faad14" }}>
             4.8
           </Text>{" "}
-          stars
+          sao
         </Text>
         <Divider />
 
         <div
-          style={{ overflowY: "auto", scrollbarWidth: "1px", maxHeight: 400 }}
+          style={{ overflowY: "auto", scrollbarWidth: "none", maxHeight: 400 }}
         >
-          {userReview.map((review) => {
-            const reviewDate = formatReviewDate(review.sent_time);
+          {listDanhGia.map((review, index) => {
+            const reviewDate = formatReviewDate(review.ngayBL);
             return (
-              <div style={{ marginTop: 12 }} key={review.id}>
+              <div style={{ marginTop: 12 }} key={index}>
                 <Avatar
                   size={32}
                   icon={<UserOutlined />}
                   style={{ marginRight: 10 }}
                 />
                 <Text type="secondary" style={{ marginRight: 10 }}>
-                  - {review.full_name} -
+                  - {review.hoTen} -
                 </Text>
-                <Rate disabled defaultValue={5} />
+                <Rate disabled defaultValue={review.soSao} />
                 <Paragraph style={{ margin: "8px 8px 4px" }}>
-                  {review.description}
+                  {review.binhLuan}
                 </Paragraph>
                 <Text type="secondary">- {reviewDate}</Text>
                 <Divider />
@@ -109,7 +123,7 @@ const BookReview = () => {
       </div>
 
       <div className="mt-2">
-        <Title level={5}>Write a Review</Title>
+        <Title level={5}>Viết đánh giá của bạn</Title>
 
         <div style={{ marginBottom: 12 }}>
           <Text strong>Rating</Text>
@@ -118,18 +132,18 @@ const BookReview = () => {
         </div>
 
         <div style={{ marginBottom: 16 }}>
-          <Text strong>Your Review</Text>
+          <Text strong>Đánh giá của bạn</Text>
           <TextArea
             rows={4}
-            placeholder="Share your thoughts about this book..."
+            placeholder="Chia sẻ suy nghĩ của bạn về cuốn sách này."
             value={review}
             onChange={(e) => setReview(e.target.value)}
           />
         </div>
 
         <Space>
-          <Button type="primary" onClick={handleSubmit}>
-            Submit Review
+          <Button type="primary" onClick={handleSubmit} loading={loading}>
+            Gửi
           </Button>
         </Space>
       </div>

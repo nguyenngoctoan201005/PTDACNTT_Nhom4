@@ -273,27 +273,29 @@ const BookDetail = () => {
                   scrollbarWidth: "none",
                 }}
               >
-                {premiumBooks.map((book, index) => (
-                  <div
-                    key={index}
-                    style={{
-                      flex: "1 1 240px",
-                      maxWidth: "240px",
-                      margin: "8px",
-                    }}
-                  >
-                    <BookCard
-                      imageUrl={book.imageUrl}
-                      type={book.type}
-                      discount={book.discount}
-                      name={book.name}
-                      author={book.author}
-                      price={book.price}
-                      id={book.id}
-                      showButton={false}
-                    />
-                  </div>
-                ))}
+                <div className="sm:grid sm:grid-cols-2">
+                  {premiumBooks.map((book, index) => (
+                    <div
+                      key={index}
+                      style={{
+                        flex: "1 1 240px",
+                        maxWidth: "240px",
+                        margin: "8px",
+                      }}
+                    >
+                      <BookCard
+                        imageUrl={book.imageUrl}
+                        type={book.type}
+                        discount={book.discount}
+                        name={book.name}
+                        author={book.author}
+                        price={book.price}
+                        id={book.id}
+                        showButton={false}
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
             </Card>
           </Col>
