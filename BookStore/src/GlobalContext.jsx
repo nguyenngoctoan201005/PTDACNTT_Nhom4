@@ -3,6 +3,11 @@ import { App } from "antd";
 import { useNavigate } from "react-router-dom";
 import { saveToken, getToken, removeToken } from "./auth/auth";
 import { login as handleLogin, getUserInfo } from "./api/authService";
+import {
+  insertGioHang,
+  updateSoLuongGioHang,
+  deleteSachFromGioHang,
+} from "./api/gioHangService";
 
 const GlobalContext = createContext(null);
 
@@ -14,12 +19,10 @@ export const GlobalProvider = ({ children }) => {
   const [token, setToken] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  // ✅ loadingAuth: trạng thái kiểm tra token từ storage
   const [loadingAuth, setLoadingAuth] = useState(true);
 
   const [cart, setCart] = useState([]);
 
-  // ✅ Kiểm tra token khi load app
   useEffect(() => {
     const initAuth = async () => {
       const storedToken = await getToken();
@@ -66,7 +69,55 @@ export const GlobalProvider = ({ children }) => {
     navigate("/login");
   };
 
-  // ✅ Trạng thái xác thực toàn cục
+  //   const fetchCart = async (tokenParam) => {
+  //   try {
+  //     const t = tokenParam || token;
+  //     if (!t) return;
+  //     const res = await getDanhSachGioHang(t);
+  //     setCart(res.result || []);
+  //   } catch (e) {
+  //     console.error("Fetch cart error:", e);
+  //   }
+  // };
+
+  // Thêm sách vào giỏ
+  const addToCart = async ({ maSach, soLuong }) => {
+    if (!token) return message.warning("Bạn cần đăng nhập để thêm vào giỏ!");
+
+    try {
+      await insertGioHang({ maSach, soLuong });
+      message.success("Đã thêm vào giỏ hàng!");
+
+      // await fetchCart(); // cập nhật state
+    } catch (e) {
+      console.error(e);
+      message.error("Không thể thêm vào giỏ hàng!");
+    }
+  };
+
+  // Cập nhật số lượng sách
+  const updateCartQty = async (maSach, soLuong) => {
+    try {
+      await updateSoLuongGioHang({ maSach, soLuong });
+      // await fetchCart();
+    } catch (e) {
+      console.error(e);
+      message.error("Không thể cập nhật số lượng!");
+    }
+  };
+
+  // Xóa sách khỏi giỏ
+  const deleteCartItem = async (maSach) => {
+    try {
+      await deleteSachFromGioHang(maSach);
+      message.success("Đã xóa khỏi giỏ hàng!");
+      // await fetchCart();
+    } catch (e) {
+      console.error(e);
+      message.error("Không thể xóa sách!");
+    }
+  };
+
   const isAuthenticated = !!user;
 
   return (
@@ -81,6 +132,10 @@ export const GlobalProvider = ({ children }) => {
         handleLogout,
         cart,
         setCart,
+        addToCart,
+        updateCartQty,
+        deleteCartItem,
+        // fetchCart,
       }}
     >
       {!loadingAuth && children}

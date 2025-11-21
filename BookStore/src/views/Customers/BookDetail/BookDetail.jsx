@@ -11,6 +11,7 @@ import {
   Card,
   Divider,
   Descriptions,
+  message,
 } from "antd";
 import {
   ShoppingCartOutlined,
@@ -24,6 +25,8 @@ import {
 import { useState } from "react";
 import BookReview from "./BookReview";
 import BookCard from "../../../components/BookCard";
+import { useParams } from "react-router";
+import { useGlobalContext } from "../../../GlobalContext";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -85,6 +88,9 @@ const BookDetail = () => {
 
   const [value, setValue] = useState(1);
   const [addFavorite, setAddFavorite] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const { addToCart } = useGlobalContext();
 
   const items = [
     {
@@ -143,6 +149,25 @@ const BookDetail = () => {
     },
   ];
 
+  const { bookId } = useParams();
+
+  const handleAddToCart = async () => {
+    try {
+      setLoading(true);
+      await addToCart({
+        maSach: bookId,
+        soLuong: value,
+      });
+
+      message.success("Thêm vào giỏ hàng thành công");
+    } catch (err) {
+      console.log("error >>>", err);
+      message.error(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="bg-blue-50 py-4 mt-20">
       <div
@@ -173,13 +198,13 @@ const BookDetail = () => {
               <Title level={2} style={{ margin: 0 }}>
                 {book.title}
               </Title>
-              <Text type="secondary">by {book.author}</Text>
+              <Text type="secondary">Tác giả: {book.author}</Text>
 
               <Space align="center" size="small">
                 <Rate disabled defaultValue={4} />
                 <Text strong>{book.rating}</Text>
                 <Text type="secondary">
-                  ({book.reviews.toLocaleString()} reviews)
+                  ({book.reviews.toLocaleString()} lượt đánh giá)
                 </Text>
               </Space>
 
@@ -198,7 +223,7 @@ const BookDetail = () => {
               <Text type="success">✓ In Stock ({book.stock} available)</Text>
 
               <Space align="center" style={{ marginTop: 8 }}>
-                <Text>Quantity:</Text>
+                <Text>Số lượng:</Text>
                 <Space>
                   <Button
                     icon={<MinusOutlined />}
@@ -225,8 +250,10 @@ const BookDetail = () => {
                   type="primary"
                   size="large"
                   icon={<ShoppingCartOutlined />}
+                  onClick={handleAddToCart}
+                  loading={loading}
                 >
-                  Add to Cart
+                  Thêm vào giỏ hàng
                 </Button>
                 <Button
                   icon={
@@ -273,7 +300,7 @@ const BookDetail = () => {
                   scrollbarWidth: "none",
                 }}
               >
-                <div className="sm:grid sm:grid-cols-2">
+                <div className="sm:grid sm:grid-cols-2 lg:grid-cols-1">
                   {premiumBooks.map((book, index) => (
                     <div
                       key={index}

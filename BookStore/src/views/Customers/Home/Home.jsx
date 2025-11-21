@@ -13,9 +13,11 @@ import "./Home.css";
 import BookCard from "../../../components/BookCard";
 import { Link } from "react-router";
 import { useNavigate } from "react-router-dom";
+import { useGlobalContext } from "../../../GlobalContext";
 
 const Home = () => {
   const navigate = useNavigate();
+  const { addToCart } = useGlobalContext();
 
   const books = [
     {
@@ -215,7 +217,7 @@ const Home = () => {
                 author={book.author}
                 price={book.price}
                 id={book.id}
-                onAddToCart={() => console.log("added")}
+                onAddToCart={() => addToCart({ maSach: book.id, soLuong: 1 })}
                 onAddToFavorite={() => console.log("added")}
               />
             </div>
