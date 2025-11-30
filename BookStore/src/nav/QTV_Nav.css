@@ -1,0 +1,62 @@
+.qtv_nav{
+    width: 300px;
+    background-color: white;
+    border: 1px solid gainsboro;
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.05);
+    position: fixed;
+    height: 100vh;
+}
+
+.qtv_nav_tieude_text{
+    text-align: center;
+}
+.qtv_nav_tieude_hr{
+    border: 0.1px solid gainsboro;
+    width: 250px;
+    margin-bottom: 15px;
+    border-collapse: collapse;
+}
+.qtv_nav_tieude_text{
+    font-size: 30px;
+    font-weight: 700;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.qtv_nav_chucnang{
+    padding: 15px 0;
+    font-size: 18px;
+    font-weight: 400;
+    color: #374151;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    width: 280px;
+    border-radius: 10px;
+    justify-content: start;
+}
+
+.qtv_nav_chucnang:hover{
+    color: rgb(37 99 235) ;
+    cursor: pointer;
+    background-color:rgb(219 234 254)  ;
+}
+
+.qtv_nav_chucnang svg{
+    fill: currentColor; /* icon đổi màu theo chữ */
+    width: 25px;
+    height: 25px;
+    margin-right: 15px;
+    margin-top: 3px;
+    margin-left: 25px;
+}
+
+.qtv_nav_chucnang_icon_logout{
+    margin-top: 100px;
+    color: red;
+}
+
+.qtv_nav_chucnang_icon_logout svg{
+    fill: red;
+}
+
