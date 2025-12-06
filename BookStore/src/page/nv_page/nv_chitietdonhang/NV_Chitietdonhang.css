@@ -1,0 +1,244 @@
+
+.nv_trangctdh_tieude{
+    font-size: 40px;
+    font-weight: bold;
+    margin: 20px;
+    color: #111827;
+}
+
+
+
+
+.nv_trangctdh_main{
+    width: calc(100% - 280px);
+    height: 100vh;
+    overflow: auto;
+    margin-left: 280px;
+}
+
+.nv_trangctdh_caco{
+    background-color: rgb(255, 255, 255);
+    width: 1100px;
+    margin-left: 50px;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 30px;
+    margin-bottom: 40px;
+}
+
+.nv_trangctdh_caco_tieude{
+    font-size: 30px;
+    font-weight: bold;
+    color: #111827;
+    margin-bottom: 20px;
+}
+
+.nv_trangctdh_caco_nhan{
+    font-size: 20px;
+    color: #111827;
+    font-weight: 400;
+    margin-bottom: 15px;
+    margin-left: 25px;
+}
+.nv_trangctdh_caco_cntt select{
+    font-size: 20px;
+    color: #111827;
+    font-weight: 400;
+    margin-bottom: 15px;
+    margin-left: 15px;
+}
+
+.nv_trangctdh_caco_cntt select{
+    width: 220px;
+    height: 40px;
+    border-radius: 10px;
+    padding-left: 10px;
+    cursor: pointer;
+}
+.nv_trangctdh_caco_cntt option{
+    font-size: 18px;
+    color: #111827;
+    font-weight: 400;
+}
+
+.nv_trangctdh_caco_button{
+    background-color: #2563eb;
+    color: white;
+    font-size: 20px;
+    font-weight: 500;
+    border: none;
+    border-radius: 10px;
+    width: 150px;
+    height: 40px;
+    margin-left: 15px;
+    cursor: pointer;
+}
+
+.nv_trangctdh_caco_button:hover{
+    background-color: #1e40af;
+    transition: all 0.3s ease;
+}
+
+
+.nv_trangctdh_caco_trangthaidh_noidungtrangthai{
+    font-size: 20px;
+    color: green;
+    font-weight: 500;
+}
+
+.nv_trangctdh_caco_trangthaidh{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 25px;
+    padding: 10px ;
+    background-color: #d1fae5; 
+    border-radius: 25px;
+}
+
+.nv_trangctdh_caco_trangthaidh svg{
+    width: 20px;
+    height: 20px;
+    fill: green;
+    margin-top: 5px;
+    margin-right: 5px;
+}
+
+.nv_trangctdh_caco_trangthaidh div{
+    background-color: #d1fae5;
+}
+.ctdh_th1{
+    width: 400px;
+    border-radius: 10px 0 0 10px ;
+}
+.ctdh_th2{
+    width: 100px;
+}
+.ctdh_th3{
+    width: 100px;
+}
+.ctdh_th4{
+    width: 200px;
+    border-radius: 0px 10px 10px 0 ;
+}
+.ctdh_th{
+    background-color: #f3f4f6;
+    padding: 10px;
+    font-size: 18px;
+    color: #111827;
+}
+
+.ctdh_tb{
+    margin-left: 5px;
+    margin-right: 15px;
+}
+
+.nv_trangctdh_caco_sach{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    margin-left: 10px;
+    width: 480px;
+}
+
+.nv_trangctdh_caco_sach_anh img{
+    width: 80px;
+    height: 110px;
+    border-radius: 10px;
+    margin-right: 15px;
+}
+
+.nv_trangctdh_caco_sach_ten{
+    font-size: 18px;
+    font-weight: 500;
+    color: #111827;
+}
+
+.ctdh_td{
+    text-align: center;
+    padding: 15px;
+}
+
+.nv_trangctdh_caco_sach_gia,.nv_trangctdh_caco_sach_sl{
+    font-size: 18px;
+    color: #5d626f;
+}
+
+.nv_trangctdh_caco_sach_ttien{
+    font-size: 20px;
+    font-weight: 600;
+    color: #111827;
+}
+
+
+.nv_trangctdh_caco_ttkhachhangvathanhtoan_bang{
+    background-color: rgb(255, 255, 255);
+    width: 480px;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    padding: 20px;
+}
+
+.nv_trangctdh_caco_ttkhachhangvathanhtoan_bang_tieude{
+    font-size: 30px;
+    font-weight: bold;
+    color: #111827;
+    margin-bottom: 20px;
+}
+
+.tenkh{
+    font-size: 20px;
+    color: #111827;
+    font-weight: 400;
+}
+
+.nv_trangctdh_caco_ttkhachhangvathanhtoan_bang_thongtin{
+    font-size: 18px;
+    color: #5d626f;
+    font-weight: 400;
+    margin-left: 25px;
+    line-height: 1.6;
+}
+
+.thanhtoan_phuongthuc{
+    font-size: 20px;
+    color: #111827;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.thanhtoan_phuongthuc_dulieu{
+    font-size: 18px;
+    color: #5d626f;
+    font-weight: 400;
+    margin-left: 25px;
+    line-height: 1.6;
+}
+
+.nv_trangctdh_caco_ttkhachhangvathanhtoan{
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+    margin-bottom: 50px;
+    margin-left: 10px;
+}
+
+.nv_trangctdh_caco_dongdulieu{
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.nv_trangctdh_caco_dongdulieu_thtin{
+    font-size: 20px;
+    color: #5d626f;
+    font-weight: 300;
+    margin-bottom: 5px;
+    margin-left: 25px;
+    line-height: 1.6;
+    margin-right: 20px;
+} 
+
+

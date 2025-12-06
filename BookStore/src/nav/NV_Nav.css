@@ -1,0 +1,82 @@
+/* Header */
+
+.nv_nav{
+    width: 280px;
+    height: 100vh;
+    background-color: #374151;
+    border-radius: 10 0 0 10px;
+    position: fixed;
+}
+.nav_tieude{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    padding: 20px 0 30px 0 ;
+    font-size: 30px;
+    font-weight: bold;
+}
+.nav_chucnang{
+    display: flex;
+    align-items: center;
+}
+
+.nav_chucnang_noidung{
+    color: #9CA3AF;
+    font-weight: 400;
+    font-size: 18px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    width: 240px;
+}
+
+.nav_chucnang{
+    padding: 15px 0 15px 0;
+    color: #9CA3AF;
+    font-weight: 400;
+    font-size: 18px;
+    margin: 10px 0 10px 0;
+    transition: all 0.3s ease;
+}
+.nav_chucnang:hover{
+    color: white;
+    cursor: pointer;
+    background-color: #2d333b;
+    border-radius: 20px;
+    font-size: 20px;
+}
+
+.nav_chucnang svg{
+    fill: currentColor; /* icon đổi màu theo chữ */
+    width: 25px;
+    height: 25px;
+    margin-right: 5px;
+    margin-top: 3px;
+    margin-left: 25px;
+}
+
+a{
+    text-decoration: none;
+    color: inherit;
+}
+
+.nav_chucnang_thongbao{
+    background-color: red;
+    color: white;
+    font-weight: 800;
+    border-radius: 7px;
+    width: 20px;
+    height: 20px;
+    font-size: 16px;
+    margin-left: 5px;
+    text-align: center;
+}
+
+hr{
+    border: 1px solid rgb(210, 206, 206); width: 80%; margin-left: 10%;
+}
+

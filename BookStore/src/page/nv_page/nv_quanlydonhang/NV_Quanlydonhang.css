@@ -1,0 +1,78 @@
+
+.nv_trangqldh_main{
+    background-color: #f3f4f6;
+    width: calc(100% - 280px);
+    height: 100vh;
+    border-radius: 0 10px 10px 0;
+    overflow-y: auto;
+    margin-left: 280px;
+
+}
+
+.nv_trangqldh_tieude{
+    font-size: 40px;
+    font-weight: bold;
+    margin: 20px;
+    color: #111827;
+}
+
+
+.nv_qldh_td{
+    text-align: center;
+    font-size: 16px;
+    color: #4e5765;
+    padding: 20px 0 20px 0;
+}
+
+.nv_qldh_th{
+    background-color: rgb(227, 226, 226);
+    color: #111827; ;
+    font-size: 18px;
+    padding: 15px 0 15px 0;
+}
+
+.nv_trangqldh_trangthai{
+    display: inline-block;
+    background-color:rgba(254,240,138,1) ;
+    padding: 5px 9px 5px 9px;
+    border-radius: 15px;
+    color: #92400e;
+    font-weight: 500;
+}
+
+.nv_trangqldh_button_xct , .nv_trangqldh_button_xn{
+    color: white;
+    font-size: 15px;
+    border: none;
+    padding: 10px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.nv_trangqldh_button_xct{
+    background-color: #3b82f6;
+    margin-right: 5px;
+    border-radius: 15px;
+}
+.nv_trangqldh_button_xn{
+    background-color: #10b981;
+    border-radius: 15px;
+}
+
+.nv_trangqldh_button:hover{
+    background-color: #2563eb;
+    transition: all 0.3s ease;
+}
+
+.ql_btn_xn:hover{
+    background-color: #0d9e6e;
+    transition: all 0.3s ease;
+}
+
+.nv_qldh_table{
+    border-collapse: collapse;
+    background-color: rgb(255, 255, 255);
+    margin-left: 70px;
+    border-radius: 20px;
+
+}

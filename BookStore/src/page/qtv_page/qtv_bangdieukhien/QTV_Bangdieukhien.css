@@ -1,0 +1,259 @@
+.qtv_trangbdk_main{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: #F9FAFB;
+    width: calc(100vw - 300px);
+    margin-left: 300px;
+    overflow-y: auto;
+}
+
+.qtv_trangbdk_tieude {
+    font-size: 30px;
+    font-weight: bold;
+    background-color: rgb(255, 255, 255);
+    padding: 22px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 1165px;
+    box-sizing: border-box;
+    margin: 20px 0 20px 25px;
+    border-radius: 15px;
+}
+
+.bdkcaco_tieude_text{
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.bdkcaco_tieude_icon svg{
+    width: 25px;
+    height: 25px;
+}
+.bdkcaco_tieude_icon{
+    padding: 15px;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+}
+
+.bdkcaco_tieude{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.qtv_trangbdk_noidung_othu1_tieude_icon{
+    background-color: #DCFCE7;
+}
+
+.qtv_trangbdk_noidung_othu2_tieude_icon{
+    background-color: #DBEAFE;
+}
+
+.qtv_trangbdk_noidung_othu3_tieude_icon{
+    background-color: #FEEDD5;
+}
+
+.qtv_trangbdk_noidung_othu4_tieude_icon{
+    background-color: #F3E8FF;
+}
+
+
+.bdkcaco{
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    width: 530px;
+    height: 410px;
+    padding: 20px;
+}
+
+.bdkcaco_dlchinh_tieude {
+    font-size: 18px;
+    color: gray;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.bdkcaco_dlchinh_giatri{
+    font-size: 36px;
+    font-weight: bold;
+}
+
+
+
+.qtv_trangbdk_noidung_othu1_dlchinh_giatri{
+    color: rgb(22 163 74);
+}
+
+.qtv_trangbdk_noidung_othu2_dlchinh_giatri{
+    color: #2563EB;
+}
+
+.qtv_trangbdk_noidung_othu3_dlchinh_giatri{
+    color: #DC2626;
+}
+
+.qtv_trangbdk_noidung_othu4_dlchinh_giatri{
+    color: #9333EA;
+}
+
+
+
+.qtv_trangbd_hr1{
+    border: 0.1px solid #E5E7EB;
+    width: 525px;
+    margin: 0;
+    margin-bottom: 20px;
+}
+
+.bdkcaco_dltop_tieude{
+    font-size: 18px;
+    color: gray;
+    font-weight: 500;
+}
+
+.bdkcaco_dltop_dl_giatri1{
+    font-size: 17px;
+    color: #1F2937 ;
+    margin-left: 10px;
+}
+.bdkcaco_dltop_dl_giatri2{
+    font-size: 17px;
+}
+
+.bdkcaco_dltop_dl_giatri{
+    display: flex ;
+    justify-content: space-between;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.bdkcaco_ft{
+    font-size: 13px;
+    margin-top: 25px;
+}
+
+.qtv_trangbdk_noidung_othu1_ft{
+    color: rgb(22 163 74);
+    font-weight: 500;
+}
+
+.qtv_trangbdk_noidung_othu3_ft{
+    color: #EA580C;
+    font-weight: 500;
+}
+.qtv_trangbdk_noidung_othu4_ft{
+    color: #9333EA;
+    font-weight: 500;
+}
+
+.toro_bgr1{
+    background-color: #dcfce7;
+    padding: 2px 0;
+    border-radius: 5px;
+}
+
+.toro_sl1{
+    color: rgb(22 163 74);
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.toro_ten1{
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.toro_bgr2{
+    background-color: #fdf2e580;
+    padding: 2px 0;
+    border-radius: 5px;
+}
+
+.toro_sl2{
+    color: #EA580C;
+    font-weight: bold;
+    font-size: 20px;
+}
+.toro_ten2{
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.qtv_trangbdk_noidung_tang1 , .qtv_trangbdk_noidung_tang2{
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+.bdkcaco_dlphu1dong_tieude{
+    font-weight: 500;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.bdkcaco_dlphu1dong_tieude svg{
+    width: 20px;
+    height: 20px;
+}
+.bdkcaco_dlphu1dong_giatri{
+    font-weight: 800;
+    font-size: 24px;
+    margin-right: 10px;
+}
+
+.bdkcaco_dlphu1dong{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+.qtv_trangbdk_noidung_othu2_dlphu_giatri1{
+    color: rgb(22 163 74);
+}
+.qtv_trangbdk_noidung_othu2_dlphu_giatri2{
+    color: #DC2626;
+}
+
+.qtv_trangbdk_noidung_othu2_dlphu_giatri3{
+    color: #CA8A04;
+}
+
+
+.qtv_trangbdk_noidung_tang3_tieude{
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.qtv_trangbdk_noidung_tang3{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+
+.qtv_trangbdk_noidung_tang3_box{
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    width: 1115px;
+    height: 400px;
+    padding: 25px
+}
+
+.qtv_trangbdk_noidung_tang3_dulieu{
+    border-radius: 20px;
+    background-color: #F3F4F6;
+    border: 2px dashed #9CA3AF;
+    height: 330px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+} 
+
