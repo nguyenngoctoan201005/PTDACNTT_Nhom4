@@ -1,5 +1,5 @@
 @import "tailwindcss";
-body{
-    margin: 0;
-    font-family: 'Roboto', sans-serif;
+
+:where(.css-dev-only-do-not-override-1v28nim).ant-app {
+    line-height: 1.15;
 }
