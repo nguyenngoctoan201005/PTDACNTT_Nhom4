@@ -43,7 +43,8 @@
 }
 
 .qtv_qlkhuyenmai_noidung {
-    width: 1120px;
+    width: 100%;
+    max-width: 1150px;
     background-color: white;
     padding: 25px;
     border-radius: 15px;
@@ -64,6 +65,10 @@
     background-color: #ccc;
     font-size: 16px;
     color: #333;
+}
+
+.qtv_qlkhuyenmai_table {
+    width: 100%;
 }
 
 .qtv_qlkhuyenmai_table_th1 {

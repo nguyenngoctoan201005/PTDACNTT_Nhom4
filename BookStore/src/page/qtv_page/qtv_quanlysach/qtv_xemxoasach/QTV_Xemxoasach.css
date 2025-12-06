@@ -40,13 +40,18 @@
 }
 
 .qtv_trangqls_noidung{
-    width: 1100px;
+    width: 100%;
+    max-width: 1140px;
     background-color: white;
     padding: 0 20px 20px 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 20px;
     overflow-x: auto;
     margin-left: 45px;
+}
+
+.qtv_trangqls_noidung_table {
+    width: 100%;
 }
 
 .qtv_trangqls_th{
@@ -95,11 +100,12 @@
 }
 
 .qtv_qls_td5{
-    text-align: center;
+    display: flex;
+    justify-content: center;
 }
 .qtv_qls_td5 svg{
     width: 20px;
-    height: 20px;
+    height: 100px;
     cursor: pointer;
 }
 

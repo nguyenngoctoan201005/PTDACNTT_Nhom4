@@ -39,7 +39,7 @@
 .qtv_themtheloaimoi_content{
     background-color: #fff;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 1100px;
+    width: 100%;
     padding: 15px;
     border-radius: 20px;    
 }
@@ -68,6 +68,11 @@
     color: #4B5563;
     padding: 18px;
     border-bottom: 0.5px solid rgb(213, 213, 213);
+}
+
+.themtheloai_td.qtv_themtheloaimoi_content_td3 {
+    display: flex;
+    justify-content: center;
 }
 
 .qtv_themtheloaimoi_content_td1{
@@ -182,6 +187,9 @@
     margin-left: 10px;
 }
 
+table {
+    border-collapse: separate !important;
+}
 
 
 

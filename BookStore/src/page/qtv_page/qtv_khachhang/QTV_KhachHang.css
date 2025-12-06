@@ -74,7 +74,8 @@
 }
 
 .qtv_khachhang_noidung{
-    width: 1130px;
+    width: 100%;
+    max-width: 1150px;
     padding: 10px;
     background-color: white;
     border-radius: 20px;
@@ -178,5 +179,11 @@
     cursor: pointer;
 }
 
+table.qtv_khachhang_noidung_table {
+    width: 100%;
+}
 
-
+.qtv_kh_td.qtv_khachhang_noidung_table_td6{
+    display: flex;
+    justify-content: center;
+}

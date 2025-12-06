@@ -32,8 +32,8 @@
 }
 .bdkcaco_tieude_icon{
     padding: 15px;
-    width: 25px;
-    height: 25px;
+    min-width: 25px;
+    min-height: 25px;
     border-radius: 50%;
 }
 
@@ -66,8 +66,8 @@
     background-color: white;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 20px;
-    width: 530px;
-    height: 410px;
+    min-width: 530px;
+    min-height: 410px;
     padding: 20px;
 }
 
