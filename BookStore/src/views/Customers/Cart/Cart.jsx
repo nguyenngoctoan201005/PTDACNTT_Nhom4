@@ -1,84 +1,81 @@
-import { Button, Card, Col, Divider, Row, Space, Typography } from "antd";
+import {
+  Button,
+  Card,
+  Col,
+  Divider,
+  Row,
+  Space,
+  Typography,
+  Empty,
+} from "antd";
 import OrderCard from "../../../components/OrderCard";
+import { ShoppingCartOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { UnorderedListOutlined } from "@ant-design/icons";
+import { useGlobalContext } from "../../../GlobalContext";
+import { formatCurrency } from "../../../hooks/formatCurrentcy";
 
 const Cart = () => {
-  const orderBook = [
-    {
-      id: 1,
-      name: "The Midnight Library",
-      author: "Matt Haig",
-      price: 29.99,
-      discount: 17,
-      discountPrice: 24.99,
-      imageUrl: "https://via.placeholder.com/100x140?text=The+Midnight+Library",
-    },
-    {
-      id: 2,
-      name: "The Midnight Library",
-      author: "Matt Haig",
-      price: 29.99,
-      discount: 17,
-      discountPrice: 24.99,
-      imageUrl: "https://via.placeholder.com/100x140?text=The+Midnight+Library",
-    },
-    {
-      id: 3,
-      name: "The Midnight Library",
-      author: "Matt Haig",
-      price: 29.99,
-      discount: 17,
-      discountPrice: 24.99,
-      imageUrl: "https://via.placeholder.com/100x140?text=The+Midnight+Library",
-    },
-    {
-      id: 4,
-      name: "The Midnight Library",
-      author: "Matt Haig",
-      price: 29.99,
-      discount: 17,
-      discountPrice: 24.99,
-      imageUrl: "https://via.placeholder.com/100x140?text=The+Midnight+Library",
-    },
-  ];
+  const { cart, fetchCart } = useGlobalContext();
 
-  const booksWithQuantity = orderBook.map((book) => {
-    return {
-      ...book,
-      quantity: 1,
-    };
-  });
-  const [books, setBooks] = useState(booksWithQuantity);
+  const orderBooks =
+    cart?.chiTietGHResponses?.map((c) => ({
+      ...c.sach,
+      soLuong: c.soLuong,
+    })) || [];
+
+  const [books, setBooks] = useState(orderBooks);
+  const [totalPrice, setTotalPrice] = useState(cart.tongTien);
 
   const navigate = useNavigate();
 
   const handleRemove = (id) => {
-    setBooks((prevBooks) => prevBooks.filter((book) => book.id !== id));
+    setBooks((prevBooks) => prevBooks.filter((book) => book.maSach !== id));
+    fetchCart();
   };
 
-  const handleQuantityChange = (id, quantity) => {
-    if (quantity < 1) return;
+  const handleQuantityChange = (id, soLuong) => {
+    if (soLuong < 1) return;
     setBooks((prevBooks) =>
-      prevBooks.map((book) => (book.id === id ? { ...book, quantity } : book))
+      prevBooks.map((book) =>
+        book.maSach === id ? { ...book, soLuong } : book
+      )
     );
+    fetchCart();
   };
 
-  const totalPrice = books
-    .reduce((sum, b) => sum + b.discountPrice * b.quantity, 0)
-    .toFixed(2);
+  useEffect(() => {
+    setTotalPrice(cart.tongTien);
+  }, [cart]);
 
   return (
-    <div className="bg-blue-50 py-4 mt-20 px-[80px]">
-      <Typography.Title level={2}>Shopping Cart</Typography.Title>
+    <div className="bg-blue-50 py-6">
       <Row gutter={[16, 16]}>
-        <Col span={18}>
+        <Col span={24}>
+          <Card>
+            <Typography.Title
+              level={3}
+              style={{
+                marginBottom: 0,
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+              }}
+            >
+              <div className="text-2xl bg-blue-500 p-2 rounded-md flex items-center justify-center text-white">
+                <ShoppingCartOutlined />
+              </div>
+              Giỏ hàng
+            </Typography.Title>
+          </Card>
+        </Col>
+        <Col span={books.length > 0 ? 18 : 24}>
           {books.length > 0 ? (
             <div>
               {books.map((book) => (
                 <OrderCard
-                  key={book.id}
+                  key={book.maSach}
                   book={book}
                   onRemove={handleRemove}
                   onQuantityChange={handleQuantityChange}
@@ -86,42 +83,51 @@ const Cart = () => {
               ))}
             </div>
           ) : (
-            <Card>Not available</Card>
+            <Card className="flex flex-col items-center justify-center py-12">
+              <Empty
+                description="Giỏ hàng của bạn đang trống"
+                image={Empty.PRESENTED_IMAGE_SIMPLE}
+              />
+            </Card>
           )}
         </Col>
-        <Col span={6}>
-          <Card>
-            <div className="flex justify-between items-center mb-8">
-              <Typography.Title level={5} style={{ marginBottom: 0 }}>
-                Order Summary
+        {books.length > 0 ? (
+          <Col span={6}>
+            <Card>
+              <div className="flex justify-between items-center mb-8">
+                <Typography.Title level={5} style={{ marginBottom: 0 }}>
+                  Tổng tiền
+                </Typography.Title>
+                <Button
+                  icon={<UnorderedListOutlined />}
+                  type="text"
+                  onClick={() => {
+                    navigate("/order-list");
+                  }}
+                />
+              </div>
+              <Typography.Title level={4} className="flex justify-between">
+                <div>Tổng tiền</div>
+                <span>{formatCurrency(totalPrice)}</span>
               </Typography.Title>
-              <Button
-                icon={<UnorderedListOutlined />}
-                type="text"
-                onClick={() => {
-                  navigate("/order-list");
-                }}
-              />
-            </div>
-            <Typography.Title level={4} className="flex justify-between">
-              <div>Total</div>
-              <span>{totalPrice}</span>
-            </Typography.Title>
-            <Divider />
-            <div className="flex flex-col gap-2">
-              <Button
-                type="primary"
-                block
-                onClick={() => navigate("/checkout")}
-              >
-                Proceed to Checkout
-              </Button>
-              <Button block onClick={() => navigate("/home")}>
-                Continue Shopping
-              </Button>
-            </div>
-          </Card>
-        </Col>
+              <Divider />
+              <div className="flex flex-col gap-2">
+                <Button
+                  type="primary"
+                  block
+                  onClick={() => navigate("/checkout")}
+                >
+                  Thanh toán
+                </Button>
+                <Button block onClick={() => navigate("/home")}>
+                  Tiếp tục mua sắm
+                </Button>
+              </div>
+            </Card>
+          </Col>
+        ) : (
+          <></>
+        )}
       </Row>
     </div>
   );
