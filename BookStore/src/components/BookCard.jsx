@@ -5,6 +5,8 @@ import {
   CloseOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
+import { formatCurrency } from "../hooks/formatCurrentcy";
+import { useGlobalContext } from "../GlobalContext";
 
 const { Title, Text } = Typography;
 
@@ -20,6 +22,11 @@ const BookCard = ({
   onAddToFavorite,
   onAddToCart,
 }) => {
+  const { addToCart } = useGlobalContext();
+  const discountedPrice = discount
+    ? Math.round(price - (price * discount) / 100)
+    : price;
+
   return (
     <Card
       hoverable
@@ -33,7 +40,7 @@ const BookCard = ({
         <Link to={`/books/${id}`}>
           <div style={{ position: "relative" }}>
             <img
-              alt="The Midnight Library"
+              alt={name}
               src={imageUrl}
               style={{ width: "100%", height: 180, objectFit: "cover" }}
             />
@@ -48,17 +55,19 @@ const BookCard = ({
             >
               {type}
             </Tag>
-            <Tag
-              color="red"
-              style={{
-                position: "absolute",
-                top: 8,
-                right: 8,
-                borderRadius: "8px",
-              }}
-            >
-              {discount}% OFF
-            </Tag>
+            {!!discount && (
+              <Tag
+                color="red"
+                style={{
+                  position: "absolute",
+                  top: 8,
+                  right: 8,
+                  borderRadius: "8px",
+                }}
+              >
+                {discount}% OFF
+              </Tag>
+            )}
             {onRemove && (
               <Button
                 type="text"
@@ -88,7 +97,7 @@ const BookCard = ({
             {name}
           </Title>
         </Link>
-        <Text type="secondary">by {author}</Text>
+        {!!author && <Text type="secondary">by {author}</Text>}
 
         <Row align="middle" style={{ marginTop: 8 }}>
           <Rate disabled defaultValue={4} style={{ fontSize: 14 }} />
@@ -97,18 +106,24 @@ const BookCard = ({
           </Text>
         </Row>
 
-        <Row align="middle" style={{ marginTop: 8 }}>
-          {!!discount && (
+        <Row align="start" style={{ marginTop: 8 }}>
+          {discount ? (
+            <>
+              <Text strong style={{ fontSize: 20, color: "#1677ff" }}>
+                {formatCurrency(discountedPrice)}
+              </Text>
+              <Text
+                delete
+                style={{ marginLeft: 8, fontSize: 16, color: "#999" }}
+              >
+                {formatCurrency(price)}
+              </Text>
+            </>
+          ) : (
             <Text strong style={{ fontSize: 20, color: "#1677ff" }}>
-              $24.99
+              {formatCurrency(price)}
             </Text>
           )}
-          <Text
-            delete={!discount ? false : true}
-            style={{ marginLeft: 8, fontSize: 16, color: "#999" }}
-          >
-            ${price}
-          </Text>
         </Row>
 
         <Space
@@ -121,14 +136,14 @@ const BookCard = ({
               type="primary"
               block
               icon={<ShoppingCartOutlined />}
-              onClick={() => onAddToCart(id)}
+              onClick={() => addToCart({ maSach: id, soLuong: 1 })}
               style={{
                 backgroundColor: "#f44336",
                 borderColor: "#f44336",
                 borderRadius: 6,
               }}
             >
-              Add to Cart
+              Thêm vào giỏ hàng
             </Button>
           )}
 
@@ -143,7 +158,7 @@ const BookCard = ({
                 borderRadius: 6,
               }}
             >
-              Add to Favorite
+              Thêm vào yêu thích
             </Button>
           )}
         </Space>

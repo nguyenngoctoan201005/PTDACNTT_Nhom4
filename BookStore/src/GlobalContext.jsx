@@ -7,6 +7,7 @@ import {
   insertGioHang,
   updateSoLuongGioHang,
   deleteSachFromGioHang,
+  getGioHang,
 } from "./api/gioHangService";
 
 const GlobalContext = createContext(null);
@@ -22,6 +23,7 @@ export const GlobalProvider = ({ children }) => {
   const [loadingAuth, setLoadingAuth] = useState(true);
 
   const [cart, setCart] = useState([]);
+  const [cartAmount, setCartAmount] = useState(0);
 
   useEffect(() => {
     const initAuth = async () => {
@@ -29,6 +31,7 @@ export const GlobalProvider = ({ children }) => {
       if (storedToken) {
         setToken(storedToken);
         await fetchUserInfo(storedToken);
+        await fetchCart();
       }
       setLoadingAuth(false);
     };
@@ -53,6 +56,7 @@ export const GlobalProvider = ({ children }) => {
       await saveToken(t);
       setToken(t);
       await fetchUserInfo(t);
+      await fetchCart();
       message.success("Đăng nhập thành công!");
       navigate("/");
     } catch (err) {
@@ -69,16 +73,21 @@ export const GlobalProvider = ({ children }) => {
     navigate("/login");
   };
 
-  //   const fetchCart = async (tokenParam) => {
-  //   try {
-  //     const t = tokenParam || token;
-  //     if (!t) return;
-  //     const res = await getDanhSachGioHang(t);
-  //     setCart(res.result || []);
-  //   } catch (e) {
-  //     console.error("Fetch cart error:", e);
-  //   }
-  // };
+  const fetchCart = async () => {
+    try {
+      const res = await getGioHang();
+      setCart(res.result || []);
+
+      let total = 0;
+      res.result.chiTietGHResponses.forEach((g) => {
+        total += g.soLuong;
+      });
+
+      setCartAmount(total);
+    } catch (e) {
+      console.error("Fetch cart error:", e);
+    }
+  };
 
   // Thêm sách vào giỏ
   const addToCart = async ({ maSach, soLuong }) => {
@@ -88,7 +97,7 @@ export const GlobalProvider = ({ children }) => {
       await insertGioHang({ maSach, soLuong });
       message.success("Đã thêm vào giỏ hàng!");
 
-      // await fetchCart(); // cập nhật state
+      await fetchCart();
     } catch (e) {
       console.error(e);
       message.error("Không thể thêm vào giỏ hàng!");
@@ -99,7 +108,7 @@ export const GlobalProvider = ({ children }) => {
   const updateCartQty = async (maSach, soLuong) => {
     try {
       await updateSoLuongGioHang({ maSach, soLuong });
-      // await fetchCart();
+      await fetchCart();
     } catch (e) {
       console.error(e);
       message.error("Không thể cập nhật số lượng!");
@@ -111,7 +120,7 @@ export const GlobalProvider = ({ children }) => {
     try {
       await deleteSachFromGioHang(maSach);
       message.success("Đã xóa khỏi giỏ hàng!");
-      // await fetchCart();
+      await fetchCart();
     } catch (e) {
       console.error(e);
       message.error("Không thể xóa sách!");
@@ -131,11 +140,12 @@ export const GlobalProvider = ({ children }) => {
         login,
         handleLogout,
         cart,
+        cartAmount,
         setCart,
         addToCart,
         updateCartQty,
         deleteCartItem,
-        // fetchCart,
+        fetchCart,
       }}
     >
       {!loadingAuth && children}

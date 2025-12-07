@@ -25,10 +25,14 @@ import {
   UserOutlined,
   KeyOutlined,
   LogoutOutlined,
+  ReadOutlined,
 } from "@ant-design/icons";
 import "./CustomerLayout.css";
 import { useGlobalContext } from "../../GlobalContext";
 import ProtectedRoute from "../../routes/guard/ProtectedRoutes";
+import { useDebounce } from "../../hooks/useDebounce";
+import { useState, useEffect, useRef } from "react";
+import { suggestSach } from "../../api/sachService";
 
 const { Header, Content, Footer } = Layout;
 const { Title, Text, Link } = Typography;
@@ -36,9 +40,10 @@ const { Title, Text, Link } = Typography;
 const CustomerLayout = ({ type }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, handleLogout } = useGlobalContext();
+  const { user, handleLogout, cart, cartAmount } = useGlobalContext();
   const isLoginOrRegister =
     location.pathname === "/login" || location.pathname === "register";
+  const searchRef = useRef(null);
 
   const genres = [
     {
@@ -113,6 +118,58 @@ const CustomerLayout = ({ type }) => {
     navigate(`${e.key}`);
   };
 
+  // Suggest sách
+  const [searchTerm, setSearchTerm] = useState("");
+  const debouncedSearch = useDebounce(searchTerm, 400);
+  const [suggestions, setSuggestions] = useState([]);
+  const [loadingSuggest, setLoadingSuggest] = useState(false);
+
+  useEffect(() => {
+    const fetchSuggestions = async () => {
+      if (!debouncedSearch.trim()) {
+        setSuggestions([]);
+        return;
+      }
+
+      try {
+        setLoadingSuggest(true);
+        const res = await suggestSach({ term: debouncedSearch });
+        setSuggestions(res.result || []);
+      } catch (e) {
+        console.error("Error fetching suggestions:", e);
+      } finally {
+        setLoadingSuggest(false);
+      }
+    };
+
+    fetchSuggestions();
+  }, [debouncedSearch]);
+
+  const handleInputFocus = async () => {
+    if (searchTerm.trim()) {
+      const res = await suggestSach({ term: searchTerm });
+      setSuggestions(res.result || []);
+    }
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setSuggestions([]);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const handleEnterSearch = () => {
+    navigate(`/books?keyword=${searchTerm}`);
+  };
+
   return (
     <Layout>
       <Header
@@ -147,11 +204,59 @@ const CustomerLayout = ({ type }) => {
               />
             </div>
           </Space>
-          <Input
-            prefix={<SearchOutlined />}
-            placeholder="Search books, authors, ..."
-            style={{ flex: 1, marginTop: 10 }}
-          />
+          <div style={{ position: "relative", flex: 1 }} ref={searchRef}>
+            <Input
+              prefix={<SearchOutlined />}
+              placeholder="Nhập tên sách bạn muốn tìm tại đây"
+              style={{ flex: 1, marginTop: 10 }}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onPressEnter={handleEnterSearch}
+              onFocus={handleInputFocus}
+            />
+            {suggestions.length > 0 && (
+              <div
+                style={{
+                  position: "absolute",
+                  top: 55,
+                  left: 0,
+                  right: 0,
+                  background: "white",
+                  borderRadius: 6,
+                  boxShadow: "0px 3px 8px rgba(0,0,0,0.15)",
+                  zIndex: 2000,
+                }}
+              >
+                {loadingSuggest ? (
+                  <div className="px-4 py-2 text-gray-500">Loading...</div>
+                ) : (
+                  suggestions.slice(0, 4).map((book) => (
+                    <div
+                      key={book.maSach}
+                      className="px-4 py-2 hover:bg-blue-100 cursor-pointer leading-tight flex items-center gap-3"
+                      onClick={() => {
+                        navigate(`/books/${book.maSach}`);
+                        setSearchTerm("");
+                        setSuggestions([]);
+                      }}
+                    >
+                      <Avatar
+                        icon={<ReadOutlined />}
+                        shape="square"
+                        size={54}
+                      />
+                      <div>
+                        <p style={{ marginBottom: 1 }}>{book.tenSach}</p>
+                        <Typography.Text type="secondary">
+                          Đơn giá: {book.donGia}
+                        </Typography.Text>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            )}
+          </div>
           <Space align="end" style={{ marginTop: 10 }}>
             <Flex gap={20} align="center">
               <Button
@@ -161,7 +266,7 @@ const CustomerLayout = ({ type }) => {
                 }
                 onClick={() => navigate("/favorite")}
               />
-              <Badge count={3}>
+              <Badge count={cartAmount}>
                 <Button
                   type="link"
                   icon={

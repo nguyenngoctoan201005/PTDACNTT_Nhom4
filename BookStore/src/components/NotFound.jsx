@@ -1,11 +1,9 @@
 import { Link } from "react-router-dom";
-import { Button, Tag, Card, List } from "antd";
+import { Button } from "antd";
 import {
   ArrowLeftOutlined,
   BookOutlined,
   SearchOutlined,
-  CompassOutlined,
-  ArrowRightOutlined,
 } from "@ant-design/icons";
 
 export default function NotFoundPage() {
@@ -18,7 +16,7 @@ export default function NotFoundPage() {
 
       <div className="relative z-10 container mx-auto px-4 h-screen flex items-center justify-center">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-5xl w-full">
-          <div className="flex items-center justify-center order-2 lg:order-1">
+          <div className="flex items-center justify-center lg:order-1">
             <div className="relative w-full max-w-sm">
               <div className="space-y-8 text-center">
                 <div className="relative">
@@ -42,9 +40,6 @@ export default function NotFoundPage() {
                             <h2 className="text-5xl font-bold text-white mb-1">
                               ?
                             </h2>
-                            {/* <p className="text-xs text-white font-semibold tracking-wide">
-                              LOST PAGES
-                            </p> */}
                           </div>
                         </div>
                       </div>
