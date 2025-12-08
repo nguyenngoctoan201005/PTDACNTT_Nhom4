@@ -9,7 +9,7 @@
     overflow-y: auto;
 }
 
-.qtv_qlnhanvien_tieude{
+.qtv_qlnhanvien_tieude {
     background-color: white;
     padding: 20px 10px;
     border-radius: 15px;
@@ -23,7 +23,7 @@
     margin-top: 50px;
 }
 
-.qtv_qlnhanvien_tieude_btn{
+.qtv_qlnhanvien_tieude_btn {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -34,12 +34,14 @@
     font-weight: bold;
     color: white;
 }
-.qtv_qlnhanvien_tieude_btn svg{
+
+.qtv_qlnhanvien_tieude_btn svg {
     fill: white;
     width: 25px;
     height: 25px;
 }
-.qtv_qlnhanvien_noidung{
+
+.qtv_qlnhanvien_noidung {
     width: 100%;
     max-width: 1150px;
     background-color: white;
@@ -50,13 +52,13 @@
     margin-left: 25px;
 }
 
-.qtv_qlnhanvien_tieude_tt{
+.qtv_qlnhanvien_tieude_tt {
     font-size: 30px;
     font-weight: bold;
     color: #333;
 }
 
-.qtv_qlnv_th{
+.qtv_qlnv_th {
     padding: 15px;
     text-align: center;
     background-color: #ccc;
@@ -64,44 +66,46 @@
     color: #333;
 }
 
-.qtv_qlnhanvien_table{
+.qtv_qlnhanvien_table {
     width: 100%;
 }
 
-.qtv_qlnhanvien_table_th1{
+.qtv_qlnhanvien_table_th1 {
     width: 250px;
     border-radius: 10px 0 0 10px;
 }
 
-.qtv_qlnhanvien_table_th2{
+.qtv_qlnhanvien_table_th2 {
     width: 230px;
 }
 
-.qtv_qlnhanvien_table_th3{
-    width: 200px;
-}
-.qtv_qlnhanvien_table_th4{
+.qtv_qlnhanvien_table_th3 {
     width: 200px;
 }
 
-.qtv_qlnhanvien_table_th5{
+.qtv_qlnhanvien_table_th4 {
+    width: 200px;
+}
+
+.qtv_qlnhanvien_table_th5 {
     width: 150px;
     border-radius: 0 10px 10px 0;
 }
 
-.qtv_qlnhanvien_table_td5{
+.qtv_qlnhanvien_table_td5 {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
 }
-.qtv_qlnhanvien_table_td5 svg{
+
+.qtv_qlnhanvien_table_td5 svg {
     width: 20px;
     height: 20px;
     cursor: pointer;
 }
 
-.qtv_qlnv_td{
+.qtv_qlnv_td {
     padding: 20px;
     border-bottom: 1px solid #ccc;
     text-align: center;
@@ -112,28 +116,44 @@
 
 
 
-.qtv_qlnhanvien_themnhanvien{
+.qtv_qlnhanvien_themnhanvien {
     width: 1000px;
     background-color: white;
     padding: 25px;
     border-radius: 15px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
     margin-top: 50px;
     margin-left: 25px;
+    position: fixed;
+    top: -20px;
+    left: 370px;
 }
-.qtv_qlnhanvien_themnhanvien_tieude{
+
+.qtv_qlnhanvien_themnhanvien_tieude {
     font-size: 30px;
     font-weight: bold;
     color: #333;
     text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 50px;
 }
 
-.qtv_qlnhanvien_themnhanvien_nhapdl_nhan{
+.qtv_qlnhanvien_themnhanvien_tieude svg {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+
+.qtv_qlnhanvien_themnhanvien_nhapdl_nhan {
     font-size: 18px;
     color: #333;
 }
 
-.qtv_qlnhanvien_themnhanvien_nhapdl input{
+.qtv_qlnhanvien_themnhanvien_nhapdl input {
     width: 950px;
     padding: 20px;
     border: 1px solid #ccc;
@@ -143,12 +163,12 @@
     margin-top: 10px;
 }
 
-.qtv_qlnhanvien_themnhanvien_noidung{
+.qtv_qlnhanvien_themnhanvien_noidung {
     margin-top: 20px;
     margin-left: 16px;
 }
 
-.qtv_qlnhanvien_themnhanvien_button_nhan{
+.qtv_qlnhanvien_themnhanvien_button_nhan {
     text-align: center;
     width: 500px;
     padding: 15px;
@@ -161,48 +181,64 @@
     cursor: pointer;
 }
 
-.qtv_qlnhanvien_themnhanvien_button_nhan:hover{
+.qtv_qlnhanvien_themnhanvien_button_nhan:hover {
     background-color: #1d4ed8;
     transition: background-color 0.3s ease;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     width: 510px;
 }
-.qtv_qlnhanvien_themnhanvien_button{
+
+.qtv_qlnhanvien_themnhanvien_button {
     display: flex;
     align-items: center;
     justify-content: center;
     margin-top: 40px;
 }
 
-.qtv_qlnhanvien_themnhanvien{
+.qtv_qlnhanvien_themnhanvien {
     margin-bottom: 50px;
 }
 
 
 
 
-.qtv_qlnhanvien_suanhanvien{
+.qtv_qlnhanvien_suanhanvien {
     width: 1000px;
     background-color: white;
     padding: 25px;
     border-radius: 15px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
     margin-top: 50px;
     margin-left: 25px;
+    position: fixed;
+    top: -10px;
+    left: 400px;
 }
-.qtv_qlnhanvien_suanhanvien_tieude{
+
+.qtv_qlnhanvien_suanhanvien_tieude {
     font-size: 30px;
     font-weight: bold;
     color: #333;
     text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 50px;
 }
 
-.qtv_qlnhanvien_suanhanvien_nhapdl_nhan{
+.qtv_qlnhanvien_suanhanvien_tieude svg {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.qtv_qlnhanvien_suanhanvien_nhapdl_nhan {
     font-size: 18px;
     color: #333;
 }
 
-.qtv_qlnhanvien_suanhanvien_nhapdl input{
+.qtv_qlnhanvien_suanhanvien_nhapdl input {
     width: 950px;
     padding: 20px;
     border: 1px solid #ccc;
@@ -212,12 +248,12 @@
     margin-top: 10px;
 }
 
-.qtv_qlnhanvien_suanhanvien_noidung{
+.qtv_qlnhanvien_suanhanvien_noidung {
     margin-top: 20px;
     margin-left: 16px;
 }
 
-.qtv_qlnhanvien_suanhanvien_button_nhan1{
+.qtv_qlnhanvien_suanhanvien_button_nhan1 {
     text-align: center;
     width: 200px;
     padding: 15px;
@@ -231,7 +267,7 @@
     margin-right: 10px;
 }
 
-.qtv_qlnhanvien_suanhanvien_button_nhan2{
+.qtv_qlnhanvien_suanhanvien_button_nhan2 {
     text-align: center;
     width: 100px;
     padding: 15px;
@@ -244,24 +280,25 @@
     cursor: pointer;
 }
 
-.qtv_qlnhanvien_suanhanvien_button_nhan1:hover{
+.qtv_qlnhanvien_suanhanvien_button_nhan1:hover {
     background-color: #1d4ed8;
     transition: background-color 0.3s ease;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
-.qtv_qlnhanvien_suanhanvien_button_nhan2:hover{
+.qtv_qlnhanvien_suanhanvien_button_nhan2:hover {
     background-color: #cb1a35;
     transition: background-color 0.3s ease;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
-.qtv_qlnhanvien_suanhanvien_button{
+
+.qtv_qlnhanvien_suanhanvien_button {
     display: flex;
     align-items: center;
     justify-content: center;
     margin-top: 40px;
 }
 
-.qtv_qlnhanvien_suanhanvien{
+.qtv_qlnhanvien_suanhanvien {
     margin-bottom: 50px;
 }

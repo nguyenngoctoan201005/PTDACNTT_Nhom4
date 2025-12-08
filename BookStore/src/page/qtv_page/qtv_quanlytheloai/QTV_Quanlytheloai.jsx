@@ -37,7 +37,7 @@ export function QTV_Quanlytheloai() {
                             </td>
                         </tr>
 
-                        
+
 
 
                     </table>
@@ -51,7 +51,7 @@ export function QTV_Quanlytheloai() {
 
                             <div className='qtv_xemsuaxoatheloai_suatheloai_title'>
                                 Sửa thông tin thể loại
-                                <svg onClick={() => setSuaTheloai(false)}  xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 8 8"><path fill="" d="M1.41 0L0 1.41l.72.72L2.5 3.94L.72 5.72L0 6.41l1.41 1.44l.72-.72l1.81-1.81l1.78 1.81l.69.72l1.44-1.44l-.72-.69l-1.81-1.78l1.81-1.81l.72-.72L6.41 0l-.69.72L3.94 2.5L2.13.72L1.41 0z" /></svg>
+                                <svg onClick={() => setSuaTheloai(false)} xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 8 8"><path fill="" d="M1.41 0L0 1.41l.72.72L2.5 3.94L.72 5.72L0 6.41l1.41 1.44l.72-.72l1.81-1.81l1.78 1.81l.69.72l1.44-1.44l-.72-.69l-1.81-1.78l1.81-1.81l.72-.72L6.41 0l-.69.72L3.94 2.5L2.13.72L1.41 0z" /></svg>
                             </div>
                             <hr className='qtv_xemsuaxoatheloai_hr' />
 
@@ -77,52 +77,50 @@ export function QTV_Quanlytheloai() {
 
                             <div className='qtv_xemsuaxoatheloai_suatheloai_cont_btn'>
                                 <div onClick={() => setSuaTheloai(false)} className='qtv_xemsuaxoatheloai_suatheloai_cont_btn_huybo'>Hủy bỏ</div>
-                                <div className='qtv_xemsuaxoatheloai_suatheloai_cont_btn_luu'>Lưu</div>        
+                                <div className='qtv_xemsuaxoatheloai_suatheloai_cont_btn_luu'>Lưu</div>
                             </div>
 
                         </div>
                     )
                 }
 
-                
+
                 {themTheloai && (
-                <div className='qtv_xemsuaxoatheloai_suatheloai'>
+                    <div className='qtv_xemsuaxoatheloai_suatheloai'>
 
-                            <div className='qtv_xemsuaxoatheloai_suatheloai_title'>
-                                Thêm thể loại mới
-                                <svg onClick={() => setThemTheloai(false)}  xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 8 8"><path fill="" d="M1.41 0L0 1.41l.72.72L2.5 3.94L.72 5.72L0 6.41l1.41 1.44l.72-.72l1.81-1.81l1.78 1.81l.69.72l1.44-1.44l-.72-.69l-1.81-1.78l1.81-1.81l.72-.72L6.41 0l-.69.72L3.94 2.5L2.13.72L1.41 0z" /></svg>
-                            </div>
-                            <hr className='qtv_xemsuaxoatheloai_hr' />
-
-
-                            <div className='qtv_xemsuaxoatheloai_suatheloai_cont'>
-                                <div className='qtv_xemsuaxoatheloai_suatheloai_cont_tt'>
-                                    Tên thể loại
-                                </div>
-                                <div className='qtv_xemsuaxoatheloai_suatheloai_cont_inpt'>
-                                    <input type="text" placeholder='Enter category name' />
-                                </div>
-                            </div>
-
-                            <div className='qtv_xemsuaxoatheloai_suatheloai_cont'>
-                                <div className='qtv_xemsuaxoatheloai_suatheloai_cont_tt'>
-                                    Mô tả
-                                </div>
-                                <div className='qtv_xemsuaxoatheloai_suatheloai_cont_inpt'>
-                                    <textarea placeholder='Enter description' rows="4" cols="70"></textarea>
-                                </div>
-                            </div>
-
-
-                            <div className='qtv_xemsuaxoatheloai_suatheloai_cont_btn'>
-                                <div onClick={() => setThemTheloai(false)} className='qtv_xemsuaxoatheloai_suatheloai_cont_btn_huybo'>Hủy bỏ</div>
-                                <div className='qtv_xemsuaxoatheloai_suatheloai_cont_btn_luu'>Lưu</div>        
-                            </div>
-
+                        <div className='qtv_xemsuaxoatheloai_suatheloai_title'>
+                            Thêm thể loại mới
+                            <svg onClick={() => setThemTheloai(false)} xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 8 8"><path fill="" d="M1.41 0L0 1.41l.72.72L2.5 3.94L.72 5.72L0 6.41l1.41 1.44l.72-.72l1.81-1.81l1.78 1.81l.69.72l1.44-1.44l-.72-.69l-1.81-1.78l1.81-1.81l.72-.72L6.41 0l-.69.72L3.94 2.5L2.13.72L1.41 0z" /></svg>
                         </div>
+                        <hr className='qtv_xemsuaxoatheloai_hr' />
+
+
+                        <div className='qtv_xemsuaxoatheloai_suatheloai_cont'>
+                            <div className='qtv_xemsuaxoatheloai_suatheloai_cont_tt'>
+                                Tên thể loại
+                            </div>
+                            <div className='qtv_xemsuaxoatheloai_suatheloai_cont_inpt'>
+                                <input type="text" placeholder='Enter category name' />
+                            </div>
+                        </div>
+
+                        <div className='qtv_xemsuaxoatheloai_suatheloai_cont'>
+                            <div className='qtv_xemsuaxoatheloai_suatheloai_cont_tt'>
+                                Mô tả
+                            </div>
+                            <div className='qtv_xemsuaxoatheloai_suatheloai_cont_inpt'>
+                                <textarea placeholder='Enter description' rows="4" cols="70"></textarea>
+                            </div>
+                        </div>
+
+
+                        <div className='qtv_xemsuaxoatheloai_suatheloai_cont_btn'>
+                            <div onClick={() => setThemTheloai(false)} className='qtv_xemsuaxoatheloai_suatheloai_cont_btn_huybo'>Hủy bỏ</div>
+                            <div className='qtv_xemsuaxoatheloai_suatheloai_cont_btn_luu'>Lưu</div>
+                        </div>
+
+                    </div>
                 )}
-
-
             </main>
         </>
     )

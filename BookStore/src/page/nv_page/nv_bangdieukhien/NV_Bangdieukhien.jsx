@@ -1,7 +1,13 @@
 import './NV_Bangdieukhien.css'
 import { NV_Nav } from '../../../nav/NV_Nav'
+import { useState } from 'react'
+import { useEffect } from 'react'
+import axios from 'axios'
 
 export function NV_Bangdieukhien() {
+
+
+
     return (
         <>
             <NV_Nav />

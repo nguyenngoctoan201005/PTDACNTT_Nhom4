@@ -1,4 +1,4 @@
-.qtv_themtheloaimoi_main{
+.qtv_themtheloaimoi_main {
     padding: 30px;
     overflow-y: auto;
     overflow-x: hidden;
@@ -7,14 +7,14 @@
     box-sizing: border-box;
 }
 
-.qtv_themtheloaimoi_header_title{
+.qtv_themtheloaimoi_header_title {
     font-size: 35px;
     color: #1F2937;
     font-weight: bold;
 }
 
-.qtv_themtheloaimoi_header_button{
-    background-color: rgba(37,99,235,1);
+.qtv_themtheloaimoi_header_button {
+    background-color: rgba(37, 99, 235, 1);
     color: #fff;
     font-weight: bold;
     padding: 10px 20px;
@@ -24,45 +24,47 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
-.qtv_themtheloaimoi_header{
+.qtv_themtheloaimoi_header {
     display: flex;
     justify-content: space-between;
     margin: 20px 0 20px 0;
     background-color: #fff;
     padding: 15px;
-    width: 1130px ;
+    width: 1130px;
     box-sizing: border-box;
     border-radius: 15px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
-.qtv_themtheloaimoi_content{
+.qtv_themtheloaimoi_content {
     background-color: #fff;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     width: 100%;
     padding: 15px;
-    border-radius: 20px;    
+    border-radius: 20px;
 }
 
-.themtheloai_th{
+.themtheloai_th {
     background-color: #e5e7eb;
     padding: 12px;
     font-size: 17px;
 }
 
-.qtv_themtheloaimoi_content_th1{
+.qtv_themtheloaimoi_content_th1 {
     width: 600px;
     border-radius: 5px 0 0 5px;
 }
-.qtv_themtheloaimoi_content_th2{
+
+.qtv_themtheloaimoi_content_th2 {
     width: 200px;
 }
-.qtv_themtheloaimoi_content_th3{
+
+.qtv_themtheloaimoi_content_th3 {
     width: 300px;
     border-radius: 0 5px 5px 0;
 }
 
-.themtheloai_td{
+.themtheloai_td {
     text-align: center;
     font-size: 16px;
     color: #4B5563;
@@ -75,26 +77,26 @@
     justify-content: center;
 }
 
-.qtv_themtheloaimoi_content_td1{
+.qtv_themtheloaimoi_content_td1 {
     text-align: start;
     padding-left: 25px;
 }
 
-.qtv_themtheloaimoi_content_td3 svg{
+.qtv_themtheloaimoi_content_td3 svg {
     width: 18px;
     height: 18px;
     margin-right: 10px;
     cursor: pointer;
 }
 
-.themtheloai_tr:hover{
+.themtheloai_tr:hover {
     background-color: #e5e7eb;
     cursor: pointer;
 }
 
 
 
-.qtv_xemsuaxoatheloai_suatheloai{
+.qtv_xemsuaxoatheloai_suatheloai {
     background-color: #fff;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
     width: 600px;
@@ -107,13 +109,13 @@
 
 
 
-.qtv_xemsuaxoatheloai_suatheloai svg{
+.qtv_xemsuaxoatheloai_suatheloai svg {
     width: 20px;
     height: 20px;
     cursor: pointer;
 }
 
-.qtv_xemsuaxoatheloai_suatheloai_title{
+.qtv_xemsuaxoatheloai_suatheloai_title {
     font-size: 25px;
     color: #1F2937;
     font-weight: bold;
@@ -123,27 +125,27 @@
     margin-bottom: 20px;
 }
 
-.qtv_xemsuaxoatheloai_hr{
+.qtv_xemsuaxoatheloai_hr {
     width: 100%;
     border: 1px solid rgba(0, 0, 0, 0.1);
     background-color: #e5e7eb;
     margin: 0;
 }
 
-.qtv_xemsuaxoatheloai_suatheloai_cont{
+.qtv_xemsuaxoatheloai_suatheloai_cont {
     margin-top: 20px;
 }
 
-.qtv_xemsuaxoatheloai_suatheloai_cont_tt{
+.qtv_xemsuaxoatheloai_suatheloai_cont_tt {
     font-size: 16px;
     color: rgb(101, 99, 99);
     font-weight: bold;
 }
 
-.qtv_xemsuaxoatheloai_suatheloai_cont_inpt input{
-    width: 575px;
+.qtv_xemsuaxoatheloai_suatheloai_cont_inpt input {
+    width: 565px;
     height: 30px;
-    padding: 8px;
+    padding: 20px 20px 20px 10px;
     border-radius: 5px;
     border: 1px solid rgba(0, 0, 0, 0.3);
     margin-top: 5px;
@@ -151,35 +153,36 @@
     margin-left: 5px;
 }
 
-.qtv_xemsuaxoatheloai_suatheloai_cont_inpt textarea{
-    width: 585px;
+.qtv_xemsuaxoatheloai_suatheloai_cont_inpt textarea {
+    width: 565px;
     height: 100px;
     border-radius: 5px;
     border: 1px solid rgba(0, 0, 0, 0.3);
     margin-top: 5px;
     font-size: 15px;
     margin-left: 5px;
+    padding: 10px;
 }
 
-.qtv_xemsuaxoatheloai_suatheloai_cont_btn{
+.qtv_xemsuaxoatheloai_suatheloai_cont_btn {
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.qtv_xemsuaxoatheloai_suatheloai_cont_btn div{
+.qtv_xemsuaxoatheloai_suatheloai_cont_btn div {
     padding: 10px;
     cursor: pointer;
 }
 
-.qtv_xemsuaxoatheloai_suatheloai_cont_btn_huybo{
+.qtv_xemsuaxoatheloai_suatheloai_cont_btn_huybo {
     background-color: red;
     color: #fff;
     border-radius: 5px;
     font-weight: bold;
 }
 
-.qtv_xemsuaxoatheloai_suatheloai_cont_btn_luu{
+.qtv_xemsuaxoatheloai_suatheloai_cont_btn_luu {
     background-color: rgb(37, 99, 235);
     color: #fff;
     border-radius: 5px;
@@ -190,6 +193,3 @@
 table {
     border-collapse: separate !important;
 }
-
-
-
