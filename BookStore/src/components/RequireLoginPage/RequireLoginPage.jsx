@@ -12,7 +12,7 @@ const { Title, Paragraph } = Typography;
 
 export default function RequireLoginPage() {
   return (
-    <div className="min-h-auto relative overflow-hidden flex items-center justify-center px-6 py-6">
+    <div className="min-h-auto relative overflow-hidden flex items-center justify-center px-6 py-6 mt-20">
       <div className="absolute top-10 left-10 w-72 h-72 bg-blue-200/40 rounded-full blur-3xl opacity-50" />
       <div className="absolute bottom-10 right-10 w-96 h-96 bg-purple-200/40 rounded-full blur-3xl opacity-50" />
 

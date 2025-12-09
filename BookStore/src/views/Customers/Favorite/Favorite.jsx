@@ -72,7 +72,7 @@ const Favorite = () => {
   };
 
   return (
-    <div className="bg-blue-50 py-4 mt-20 px-[80px]">
+    <div className="bg-blue-50 py-6 px-[80px]">
       <Breadcrumb
         items={[
           {
