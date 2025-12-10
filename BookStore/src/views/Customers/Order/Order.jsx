@@ -1,8 +1,11 @@
-import { Breadcrumb, Table, Tag, Button, message } from "antd";
+import { Breadcrumb, Table, Tag, Button, message, Card } from "antd";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import RequireLoginPage from "../../../components/RequireLoginPage";
+import { useGlobalContext } from "../../../GlobalContext";
 
 const Order = () => {
+  const { token } = useGlobalContext();
   // Fake data đơn hàng
   const dataSource = [
     {
@@ -113,10 +116,13 @@ const Order = () => {
     message.success("Đơn hàng đã được hủy thành công!");
   };
 
+  if (!token) {
+    return <RequireLoginPage />;
+  }
+
   return (
-    <div className="bg-blue-50 py-4 mt-20 px-[80px]">
-      {/* Breadcrumb */}
-      <div className=" py-4 mb-6 px-4 rounded-md">
+    <div className="bg-blue-50 py-4 px-[80px]">
+      <div className="pt-4 mb-6 px-4 rounded-md">
         <Breadcrumb
           items={[
             {
@@ -131,15 +137,17 @@ const Order = () => {
         />
       </div>
 
-      <h2 className="text-center text-3xl font-semibold mb-8">Đơn hàng</h2>
+      <Card>
+        <h2 className="text-center text-3xl font-semibold mb-8">Đơn hàng</h2>
 
-      <Table
-        bordered
-        dataSource={orders}
-        columns={columns}
-        pagination={false}
-        className="rounded-lg"
-      />
+        <Table
+          bordered
+          dataSource={orders}
+          columns={columns}
+          pagination={false}
+          className="rounded-lg"
+        />
+      </Card>
     </div>
   );
 };

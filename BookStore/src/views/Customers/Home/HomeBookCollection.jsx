@@ -17,7 +17,8 @@ const HomeBookCollection = ({
         background: bg,
         padding: "60px 80px",
         marginBottom: 40,
-        height: "700px",
+        minHeight: "500px",
+        height: "auto",
       }}
     >
       <Row gutter={48} align="middle" className="h-full">

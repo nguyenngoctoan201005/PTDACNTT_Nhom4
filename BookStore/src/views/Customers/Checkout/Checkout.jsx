@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import {
   Form,
   Input,
@@ -14,110 +14,168 @@ import {
 import { Link } from "react-router";
 import OrderCard from "../../../components/OrderCard";
 import { useNavigate } from "react-router";
+import {
+  getListProvinces,
+  getProvinceDetail,
+} from "../../../api/provinceService";
+import { useGlobalContext } from "../../../GlobalContext";
+import { insertDonHang } from "../../../api/donHangService";
+import { formatCurrency } from "../../../hooks/formatCurrentcy";
+import RequireLoginPage from "../../../components/RequireLoginPage";
 
 const { Option } = Select;
 
 const Checkout = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
+  const { user, cart, fetchCart, token } = useGlobalContext();
+
   const [discount, setDiscount] = useState(0);
   const [discountCode, setDiscountCode] = useState("");
   const [orderSummary, setOrderSummary] = useState({
-    subtotal: 300000,
-    shipping: 10000,
-    total: 310000,
+    subtotal: 0,
+    total: 0,
   });
   const [products, setProducts] = useState([]);
 
-  // Fake API data
   const orderData = {
-    name: "Nguyễn Văn A",
-    email: "a@gmail.com",
-    phone: "0123456789",
-    province: "Hà Nội",
-    district: "Đống Đa",
-    ward: "Phường Láng Hạ",
-    address: "Số 12, ngõ 34 Láng Hạ",
-    products: [
-      {
-        id: 1,
-        name: "Sách A",
-        author: "Tác giả A",
-        price: 120,
-        discountPrice: 100,
-        discount: 20,
-        quantity: 2,
-        imageUrl: "https://placehold.co/100x140",
-      },
-      {
-        id: 2,
-        name: "Sách B",
-        author: "Tác giả B",
-        price: 150,
-        quantity: 1,
-        imageUrl: "https://placehold.co/100x140",
-      },
-    ],
+    ...user,
+    ...cart,
   };
 
-  const provinceData = ["Hà Nội", "Hồ Chí Minh", "Đà Nẵng"];
-  const districtData = ["Đống Đa", "Ba Đình", "Cầu Giấy"];
-  const wardData = ["Phường Láng Hạ", "Phường Thành Công", "Phường Trung Liệt"];
+  const [provinces, setProvinces] = useState([]);
+  const [wards, setWards] = useState([]);
+  const [selectedCity, setSelectedCity] = useState(null);
 
-  const calcSummary = (productList, discountValue = discount) => {
-    const subtotal = productList.reduce(
-      (sum, p) => sum + (p.discountPrice ?? p.price) * p.quantity,
-      0
-    );
-    setOrderSummary({
-      subtotal,
-      shipping: 10000,
-      total: subtotal + 10000 - discountValue,
-    });
+  useEffect(() => {
+    getListProvinces()
+      .then((data) => {
+        setProvinces(data);
+      })
+      .catch((error) => {
+        console.error("Lỗi khi lấy danh sách tỉnh:", error);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (!selectedCity) return;
+    getProvinceDetail(selectedCity, 2)
+      .then((data) => {
+        setWards(data.wards);
+      })
+      .catch((error) => {
+        console.error("Lỗi khi lấy danh sách xã:", error);
+      });
+  }, [selectedCity]);
+
+  const provinceOptions = useMemo(
+    () => provinces.map((p) => ({ label: p.name, value: p.code })),
+    [provinces]
+  );
+
+  const wardOptions = useMemo(
+    () => wards.map((p) => ({ label: p.name, value: p.code })),
+    [wards]
+  );
+
+  const handleChangeCity = (value) => {
+    setSelectedCity(value);
+    form.setFieldValue("ward", null);
   };
 
   useEffect(() => {
     form.setFieldsValue(orderData);
-    setProducts(orderData.products);
-    calcSummary(orderData.products);
-  }, []);
+    if (orderData.chiTietGHResponses) {
+      setProducts(orderData.chiTietGHResponses);
+    }
+  }, [cart]);
+
+  useEffect(() => {
+    const subtotal = products.reduce((sum, item) => {
+      const price = item.sach.donGia;
+      const itemDiscount = item.sach.discount || 0;
+      const discountedPrice = itemDiscount
+        ? Math.round(price - (price * itemDiscount) / 100)
+        : price;
+      return sum + discountedPrice * item.soLuong;
+    }, 0);
+
+    setOrderSummary({
+      subtotal: subtotal,
+      total: subtotal - discount,
+    });
+  }, [products, discount]);
 
   const handleApplyDiscount = () => {
     if (discountCode === "123456789") {
       const newDiscount = 8500;
       setDiscount(newDiscount);
-      calcSummary(products, newDiscount);
       message.success("Áp dụng mã giảm giá thành công!");
     } else {
       setDiscount(0);
-      calcSummary(products, 0);
       message.warning("Mã giảm giá không hợp lệ!");
     }
   };
 
-  const handleQuantityChange = (id, newQty) => {
-    const updated = products.map((p) =>
-      p.id === id ? { ...p, quantity: newQty } : p
-    );
-    setProducts(updated);
-    calcSummary(updated);
-  };
-
   const handleRemove = (id) => {
-    const updated = products.filter((p) => p.id !== id);
+    const updated = products.filter((p) => p.sach.maSach !== id);
     setProducts(updated);
-    calcSummary(updated);
+    fetchCart();
   };
 
-  const handleFinish = (values) => {
-    console.log("Thông tin đặt hàng:", values);
-    console.log("Sản phẩm:", products);
-    console.log("Tóm tắt:", orderSummary);
-    message.success("Đặt hàng thành công!");
+  const handleQuantityChange = (id, newQty) => {
+    setProducts((prev) =>
+      prev.map((p) => (p.sach.maSach === id ? { ...p, soLuong: newQty } : p))
+    );
+    fetchCart();
   };
+
+  const handleFinish = async (values) => {
+    try {
+      const payload = {
+        tenNguoiNhan: values.hoTen,
+        email: values.email,
+        diaChiGiaoHang: `${values.address}, ${values.ward}, ${values.city}`,
+        phiGiaoHang: orderSummary.total,
+        trangThai: "CHO_XAC_NHAN",
+        ngayDat: new Date().toISOString().split("T")[0],
+        soDTNguoiNhan: values.soDT,
+        maNV: 1,
+        maGiamGia: discount > 0 ? 1 : 1,
+        maKH: user?.maKH,
+        maPTTT: 1,
+        maQuanHuyen: values.ward,
+        chiTietDonHang: products.map((p) => ({
+          maSach: p.sach.id,
+          soLuong: p.soLuong,
+          donGia: p.sach.donGia,
+        })),
+      };
+
+      console.log("Payload gửi lên:", payload);
+
+      await insertDonHang(payload);
+
+      message.success("Đặt hàng thành công!");
+      fetchCart();
+      navigate("/orders");
+    } catch (error) {
+      console.error("Lỗi đặt hàng:", error);
+      message.error("Đặt hàng thất bại, vui lòng thử lại!");
+    }
+  };
+
+  const orderBooks = products.map((c) => ({
+    ...c.sach,
+    soLuong: c.soLuong,
+  }));
+
+  if (!token) {
+    return <RequireLoginPage />;
+  }
 
   return (
-    <div className="bg-blue-50 py-8 mt-20 px-[80px]">
+    <div className="bg-blue-50 py-8 px-[80px]">
       <Breadcrumb
         items={[
           {
@@ -143,7 +201,7 @@ const Checkout = () => {
                 Thông tin khách hàng
               </h3>
               <Form.Item
-                name="name"
+                name="hoTen"
                 label="Họ và tên"
                 rules={[{ required: true, message: "Vui lòng nhập họ và tên" }]}
               >
@@ -157,7 +215,7 @@ const Checkout = () => {
                 <Input placeholder="Nhập email" />
               </Form.Item>
               <Form.Item
-                name="phone"
+                name="soDT"
                 label="Điện thoại"
                 rules={[
                   { required: true, message: "Vui lòng nhập số điện thoại" },
@@ -166,47 +224,47 @@ const Checkout = () => {
                 <Input placeholder="Nhập số điện thoại" />
               </Form.Item>
               <Form.Item
-                name="province"
-                label="Tỉnh / Thành phố"
-                rules={[{ required: true, message: "Vui lòng chọn tỉnh" }]}
-              >
-                <Select placeholder="Chọn tỉnh / thành phố">
-                  {provinceData.map((p) => (
-                    <Option key={p} value={p}>
-                      {p}
-                    </Option>
-                  ))}
-                </Select>
-              </Form.Item>
-              <Form.Item
-                name="district"
-                label="Quận / Huyện"
+                name="city"
+                label={
+                  <span className="font-medium text-gray-700">Thành phố</span>
+                }
                 rules={[
-                  { required: true, message: "Vui lòng chọn quận / huyện" },
+                  {
+                    required: true,
+                    message: "Vui lòng chọn thành phố của bạn!",
+                  },
                 ]}
               >
-                <Select placeholder="Chọn quận / huyện">
-                  {districtData.map((d) => (
-                    <Option key={d} value={d}>
-                      {d}
-                    </Option>
-                  ))}
-                </Select>
+                <Select
+                  showSearch
+                  placeholder="Chọn thành phố"
+                  optionFilterProp="label"
+                  onChange={handleChangeCity}
+                  // onSearch={onSearch}
+                  options={provinceOptions}
+                />
               </Form.Item>
               <Form.Item
                 name="ward"
-                label="Phường / Xã"
+                label={
+                  <span className="font-medium text-gray-700">Phường/Xã</span>
+                }
                 rules={[
-                  { required: true, message: "Vui lòng chọn phường / xã" },
+                  {
+                    required: true,
+                    message: "Vui lòng chọn phường/xã của bạn",
+                  },
                 ]}
               >
-                <Select placeholder="Chọn phường / xã">
-                  {wardData.map((w) => (
-                    <Option key={w} value={w}>
-                      {w}
-                    </Option>
-                  ))}
-                </Select>
+                <Select
+                  showSearch
+                  virtual
+                  placeholder="Chọn phường xã"
+                  optionFilterProp="label"
+                  // onChange={(value) => setSelectedCity(value)}
+                  // onSearch={onSearch}
+                  options={wardOptions}
+                />
               </Form.Item>
               <Form.Item
                 name="address"
@@ -236,25 +294,18 @@ const Checkout = () => {
               <Card className="shadow-md bg-gray-50 border border-gray-200">
                 <p>
                   <b>Số lượng sản phẩm:</b>{" "}
-                  {orderData.products.reduce(
-                    (sum, item) => sum + item.quantity,
-                    0
-                  )}{" "}
-                  sản phẩm
+                  {products.reduce((sum, item) => sum + item.soLuong, 0)} sản
+                  phẩm
                 </p>
                 <p>
-                  <b>Thành tiền:</b> {orderSummary.subtotal.toLocaleString()}đ
-                </p>
-                <p>
-                  <b>Phí vận chuyển:</b>{" "}
-                  {orderSummary.shipping.toLocaleString()}đ
+                  <b>Thành tiền:</b> {formatCurrency(orderSummary.subtotal)}
                 </p>
                 <p>
                   <b>Giảm giá:</b> {discount.toLocaleString()}đ
                 </p>
                 <hr className="my-2" />
                 <p className="text-lg font-semibold">
-                  Tổng cộng: {orderSummary.total.toLocaleString()}đ
+                  Tổng cộng: {formatCurrency(orderSummary.total)}
                 </p>
                 <Button
                   type="primary"
@@ -284,10 +335,10 @@ const Checkout = () => {
             Sản phẩm
           </Typography.Title>
           <Col span={24}>
-            {products.length === 0 ? (
+            {orderBooks.length === 0 ? (
               <p>Giỏ hàng trống.</p>
             ) : (
-              products.map((item) => (
+              orderBooks.map((item) => (
                 <OrderCard
                   key={item.id}
                   book={item}

@@ -12,6 +12,7 @@ import {
   Divider,
   Descriptions,
   message,
+  Spin,
 } from "antd";
 import {
   ShoppingCartOutlined,
@@ -22,11 +23,14 @@ import {
   HeartOutlined,
   HeartFilled,
 } from "@ant-design/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BookReview from "./BookReview";
 import BookCard from "../../../components/BookCard";
 import { useParams } from "react-router";
 import { useGlobalContext } from "../../../GlobalContext";
+import { getSachDetail } from "../../../api/sachService";
+import { formatCurrency } from "../../../hooks/formatCurrentcy";
+import LoadingSpinner from "../../../components/LoadingSpinner";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -86,11 +90,13 @@ const BookDetail = () => {
     },
   ];
 
+  const [bookDetail, setBookDetail] = useState();
   const [value, setValue] = useState(1);
   const [addFavorite, setAddFavorite] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [cartLoading, setCartLoading] = useState(false);
 
-  const { addToCart } = useGlobalContext();
+  const { addToCart, cart } = useGlobalContext();
 
   const items = [
     {
@@ -98,8 +104,8 @@ const BookDetail = () => {
       label: "Mô tả",
       children: (
         <Card>
-          <Typography.Title level={5}>About this book</Typography.Title>
-          {book.description}
+          <Typography.Title level={5}>Mô tả</Typography.Title>
+          {bookDetail?.moTa}
         </Card>
       ),
     },
@@ -110,7 +116,7 @@ const BookDetail = () => {
         <Card>
           <Descriptions
             bordered={false}
-            column={2}
+            column={1}
             labelStyle={{
               width: 200,
               fontWeight: 500,
@@ -120,22 +126,22 @@ const BookDetail = () => {
               color: "#000",
             }}
           >
-            <Descriptions.Item label="Loại sản phẩm">Bìa mềm</Descriptions.Item>
+            {/* <Descriptions.Item label="Loại sản phẩm">Bìa mềm</Descriptions.Item>
             <Descriptions.Item label="Dịch giả">
               Phạm Thị Nguyệt
-            </Descriptions.Item>
+            </Descriptions.Item> */}
 
-            <Descriptions.Item label="Kích thước">
+            {/* <Descriptions.Item label="Kích thước">
               13 × 20.5 cm
-            </Descriptions.Item>
+            </Descriptions.Item> */}
             <Descriptions.Item label="Nhà Xuất Bản">
-              NXB Văn Học
+              {bookDetail?.nhaXuatBan?.tenNXB}
             </Descriptions.Item>
 
-            <Descriptions.Item label="Số trang">127</Descriptions.Item>
+            {/* <Descriptions.Item label="Số trang">127</Descriptions.Item>
             <Descriptions.Item label="Đơn Vị Liên Kết Xuất Bản">
               Phương Nam Book
-            </Descriptions.Item>
+            </Descriptions.Item> */}
 
             <Descriptions.Item label="Tác giả">Ihara Saikaku</Descriptions.Item>
           </Descriptions>
@@ -151,9 +157,29 @@ const BookDetail = () => {
 
   const { bookId } = useParams();
 
+  const fetchSachDetail = async () => {
+    try {
+      window.scrollTo(0, 0);
+      setLoading(true);
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      const response = await getSachDetail({
+        id: bookId,
+      });
+      setBookDetail(response.result);
+    } catch (error) {
+      message.error("Lỗi khi lấy chi tiết sách");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchSachDetail();
+  }, [bookId]);
+
   const handleAddToCart = async () => {
     try {
-      setLoading(true);
+      setCartLoading(true);
       await addToCart({
         maSach: bookId,
         soLuong: value,
@@ -164,25 +190,40 @@ const BookDetail = () => {
       console.log("error >>>", err);
       message.error(err.message);
     } finally {
-      setLoading(false);
+      setCartLoading(false);
     }
   };
 
-  return (
-    <div className="bg-blue-50 py-4 mt-20">
+  if (loading) {
+    return (
       <div
         style={{
-          padding: "60px 100px",
+          margin: "0 80px",
+          borderRadius: 8,
+        }}
+        className="p-10"
+      >
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
+  return (
+    <div className="bg-blue-50 mt-10">
+      {/* <Spin spinning={loading} size="large" tip="Đang tải dữ liệu..."> */}
+      <div
+        style={{
           background: "#fff",
           margin: "0 80px",
           borderRadius: 8,
         }}
+        className="p-10"
       >
         <Row gutter={[40, 40]} align="middle">
           <Col xs={24} md={12} lg={12}>
             <img
-              src={book.cover}
-              alt={book.title}
+              src={"https://via.placeholder.com/150x200?text=Midnight+Library"}
+              alt={bookDetail?.tenSach}
               style={{
                 width: "100%",
                 borderRadius: 8,
@@ -193,34 +234,34 @@ const BookDetail = () => {
 
           <Col xs={24} md={12} lg={12}>
             <Space direction="vertical" size="middle" style={{ width: "100%" }}>
-              <Tag color="blue">{book.category}</Tag>
+              <Tag color="blue">{bookDetail?.loaiSach.tenLoai}</Tag>
 
               <Title level={2} style={{ margin: 0 }}>
-                {book.title}
+                {bookDetail?.tenSach}
               </Title>
-              <Text type="secondary">Tác giả: {book.author}</Text>
+              <Text type="secondary">Tác giả: {1}</Text>
 
               <Space align="center" size="small">
                 <Rate disabled defaultValue={4} />
-                <Text strong>{book.rating}</Text>
-                <Text type="secondary">
-                  ({book.reviews.toLocaleString()} lượt đánh giá)
-                </Text>
+                <Text strong>{5}</Text>
+                <Text type="secondary">(5 lượt đánh giá)</Text>
               </Space>
 
               <Space align="baseline" size="middle">
                 <Title level={2} style={{ color: "#1677ff", margin: 0 }}>
-                  ${book.price.toFixed(2)}
+                  {formatCurrency(bookDetail?.donGia)}
                 </Title>
-                <Text delete>${book.oldPrice.toFixed(2)}</Text>
-                <Tag color="red">{book.discount}% OFF</Tag>
+                {/* <Text delete>{formatNumber(bookDetail?.giaBan)}</Text> */}
+                {/* <Tag color="red">{bookDetail?.giamGia}% OFF</Tag> */}
               </Space>
 
               <Paragraph style={{ maxWidth: 600 }}>
-                {book.introduction}
+                {bookDetail?.moTa}
               </Paragraph>
 
-              <Text type="success">✓ In Stock ({book.stock} available)</Text>
+              <Text type="success">
+                ✓ Số lượng hiện có ({bookDetail?.soLuongCo} quyển)
+              </Text>
 
               <Space align="center" style={{ marginTop: 8 }}>
                 <Text>Số lượng:</Text>
@@ -251,7 +292,7 @@ const BookDetail = () => {
                   size="large"
                   icon={<ShoppingCartOutlined />}
                   onClick={handleAddToCart}
-                  loading={loading}
+                  loading={cartLoading}
                 >
                   Thêm vào giỏ hàng
                 </Button>
@@ -328,6 +369,7 @@ const BookDetail = () => {
           </Col>
         </Row>
       </div>
+      {/* </Spin> */}
     </div>
   );
 };

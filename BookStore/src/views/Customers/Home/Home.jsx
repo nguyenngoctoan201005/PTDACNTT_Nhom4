@@ -122,8 +122,8 @@ const Home = () => {
           autoplay
           arrows
           style={{
-            backgroundColor: "lightblue",
-            height: "calc(100vh - 80px - 40px)",
+            backgroundColor: "white",
+            marginTop: "40px",
             marginBottom: "80px",
           }}
           dots={{

@@ -12,7 +12,11 @@ import {
 } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
-import { getListDanhGia, insertListDanhGia } from "../../../api/danhGiaService";
+import { formatDate } from "../../../hooks/formatDate";
+import {
+  getListDanhGiaByMaSach,
+  insertListDanhGia,
+} from "../../../api/danhGiaService";
 import { useGlobalContext } from "../../../GlobalContext";
 import { useParams } from "react-router";
 
@@ -21,7 +25,7 @@ const { TextArea } = Input;
 
 const formatReviewDate = (isoString) => {
   if (!isoString) return "";
-  return "on " + dayjs(isoString).format("MMMM D, YYYY");
+  return "vào lúc " + formatDate(isoString);
 };
 
 const BookReview = () => {
@@ -35,7 +39,9 @@ const BookReview = () => {
 
   const fetchDanhGia = async () => {
     try {
-      const data = await getListDanhGia();
+      const data = await getListDanhGiaByMaSach({
+        maSach: bookId,
+      });
       const sorted = [...data.result].sort(
         (a, b) => dayjs(b.ngayBL).valueOf() - dayjs(a.ngayBL).valueOf()
       );
@@ -73,6 +79,8 @@ const BookReview = () => {
   useEffect(() => {
     fetchDanhGia();
   }, []);
+
+  console.log("listDanhGia", listDanhGia);
 
   return (
     <Card

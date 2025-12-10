@@ -1,12 +1,20 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { App } from "antd";
 import { useNavigate } from "react-router-dom";
-import { saveToken, getToken, removeToken } from "./auth/auth";
+import {
+  saveToken,
+  getToken,
+  removeToken,
+  saveRoles,
+  getRoles,
+  removeRoles,
+} from "./auth/auth";
 import { login as handleLogin, getUserInfo } from "./api/authService";
 import {
   insertGioHang,
   updateSoLuongGioHang,
   deleteSachFromGioHang,
+  getGioHang,
 } from "./api/gioHangService";
 
 const GlobalContext = createContext(null);
@@ -17,18 +25,25 @@ export const GlobalProvider = ({ children }) => {
 
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
+  const [roles, setRoles] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const [loadingAuth, setLoadingAuth] = useState(true);
 
   const [cart, setCart] = useState([]);
+  const [cartAmount, setCartAmount] = useState(0);
 
   useEffect(() => {
     const initAuth = async () => {
       const storedToken = await getToken();
+      const storedRoles = await getRoles();
       if (storedToken) {
         setToken(storedToken);
+        if (storedRoles) {
+          setRoles(storedRoles);
+        }
         await fetchUserInfo(storedToken);
+        await fetchCart();
       }
       setLoadingAuth(false);
     };
@@ -50,11 +65,19 @@ export const GlobalProvider = ({ children }) => {
       setIsLoading(true);
       const res = await handleLogin(data);
       const t = res.result.token;
+      const roles = res.result.roles || ["USER"];
       await saveToken(t);
       setToken(t);
+      await saveRoles(roles);
+      setRoles(roles);
       await fetchUserInfo(t);
+      await fetchCart();
       message.success("Đăng nhập thành công!");
-      navigate("/");
+      if (roles.includes("ADMIN")) {
+        navigate("/admin");
+      } else {
+        navigate("/");
+      }
     } catch (err) {
       throw err;
     } finally {
@@ -64,21 +87,28 @@ export const GlobalProvider = ({ children }) => {
 
   const handleLogout = () => {
     removeToken();
+    removeRoles();
     setToken(null);
+    setRoles([]);
     setUser(null);
     navigate("/login");
   };
 
-  //   const fetchCart = async (tokenParam) => {
-  //   try {
-  //     const t = tokenParam || token;
-  //     if (!t) return;
-  //     const res = await getDanhSachGioHang(t);
-  //     setCart(res.result || []);
-  //   } catch (e) {
-  //     console.error("Fetch cart error:", e);
-  //   }
-  // };
+  const fetchCart = async () => {
+    try {
+      const res = await getGioHang();
+      setCart(res.result || []);
+
+      let total = 0;
+      res.result.chiTietGHResponses.forEach((g) => {
+        total += g.soLuong;
+      });
+
+      setCartAmount(total);
+    } catch (e) {
+      console.error("Fetch cart error:", e);
+    }
+  };
 
   // Thêm sách vào giỏ
   const addToCart = async ({ maSach, soLuong }) => {
@@ -88,7 +118,7 @@ export const GlobalProvider = ({ children }) => {
       await insertGioHang({ maSach, soLuong });
       message.success("Đã thêm vào giỏ hàng!");
 
-      // await fetchCart(); // cập nhật state
+      await fetchCart();
     } catch (e) {
       console.error(e);
       message.error("Không thể thêm vào giỏ hàng!");
@@ -99,7 +129,7 @@ export const GlobalProvider = ({ children }) => {
   const updateCartQty = async (maSach, soLuong) => {
     try {
       await updateSoLuongGioHang({ maSach, soLuong });
-      // await fetchCart();
+      await fetchCart();
     } catch (e) {
       console.error(e);
       message.error("Không thể cập nhật số lượng!");
@@ -111,7 +141,7 @@ export const GlobalProvider = ({ children }) => {
     try {
       await deleteSachFromGioHang(maSach);
       message.success("Đã xóa khỏi giỏ hàng!");
-      // await fetchCart();
+      await fetchCart();
     } catch (e) {
       console.error(e);
       message.error("Không thể xóa sách!");
@@ -125,17 +155,19 @@ export const GlobalProvider = ({ children }) => {
       value={{
         user,
         token,
+        roles,
         isAuthenticated,
         isLoading,
         loadingAuth,
         login,
         handleLogout,
         cart,
+        cartAmount,
         setCart,
         addToCart,
         updateCartQty,
         deleteCartItem,
-        // fetchCart,
+        fetchCart,
       }}
     >
       {!loadingAuth && children}
