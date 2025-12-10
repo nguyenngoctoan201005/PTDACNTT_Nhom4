@@ -2,8 +2,11 @@ import { Breadcrumb, Card, Flex, Typography } from "antd";
 import { Link } from "react-router";
 import BookCard from "../../../components/BookCard";
 import { useState } from "react";
+import RequireLoginPage from "../../../components/RequireLoginPage";
+import { useGlobalContext } from "../../../GlobalContext";
 
 const Favorite = () => {
+  const { token } = useGlobalContext();
   const favoriteBooks = [
     {
       imageUrl: "https://via.placeholder.com/150x200?text=Midnight+Library",
@@ -70,6 +73,10 @@ const Favorite = () => {
   const handleAddToCart = (id) => {
     setBooks((prevBooks) => prevBooks.filter((book) => book.id !== id));
   };
+
+  if (!token) {
+    return <RequireLoginPage />;
+  }
 
   return (
     <div className="bg-blue-50 py-6 px-[80px]">

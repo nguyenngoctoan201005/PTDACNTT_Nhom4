@@ -5,6 +5,7 @@ import { Navigate, Outlet } from "react-router-dom";
 import { profileRoutes } from "./modules/profile";
 import ProfileLayout from "../layout/ProfileLayout/ProfileLayout";
 import { adminRoutes } from "./modules/admin";
+import ProtectedRoute from "./guard/ProtectedRoutes";
 
 export const privateRoutes = [
   {
@@ -22,11 +23,7 @@ export const privateRoutes = [
   },
   {
     path: "/admin",
-    element: (
-      <>
-        <Outlet />
-      </>
-    ),
+    element: <ProtectedRoute allowedRoles={["ADMIN"]} />,
     children: [
       { index: true, element: <Navigate to="qtvbangdieukhien" replace /> },
       ...adminRoutes,

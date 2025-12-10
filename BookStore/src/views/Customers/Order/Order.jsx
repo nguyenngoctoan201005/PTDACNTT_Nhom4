@@ -1,8 +1,11 @@
 import { Breadcrumb, Table, Tag, Button, message, Card } from "antd";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import RequireLoginPage from "../../../components/RequireLoginPage";
+import { useGlobalContext } from "../../../GlobalContext";
 
 const Order = () => {
+  const { token } = useGlobalContext();
   // Fake data đơn hàng
   const dataSource = [
     {
@@ -112,6 +115,10 @@ const Order = () => {
     );
     message.success("Đơn hàng đã được hủy thành công!");
   };
+
+  if (!token) {
+    return <RequireLoginPage />;
+  }
 
   return (
     <div className="bg-blue-50 py-4 px-[80px]">

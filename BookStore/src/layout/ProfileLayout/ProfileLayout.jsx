@@ -32,6 +32,7 @@ import "./ProfileLayout.css";
 import { useGlobalContext } from "../../GlobalContext";
 import ProtectedRoute from "../../routes/guard/ProtectedRoutes";
 import { useEffect, useState } from "react";
+import RequireLoginPage from "../../components/RequireLoginPage/RequireLoginPage";
 
 const { Header, Content, Footer } = Layout;
 const { Title, Text, Link } = Typography;
@@ -39,7 +40,7 @@ const { Title, Text, Link } = Typography;
 const ProfileLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, handleLogout } = useGlobalContext();
+  const { user, handleLogout, token } = useGlobalContext();
 
   const [selectedKey, setSelectedKey] = useState("info");
 
@@ -220,48 +221,52 @@ const ProfileLayout = () => {
       </Header>
       <Content style={{ marginTop: 20 }}>
         <div className="bg-blue-50 py-4 mt-20 px-[80px]">
-          <div className="flex gap-6 p-6">
-            {!!user && (
-              <Card className="w-72 p-4 text-center">
-                <Avatar
-                  size={96}
-                  icon={<UserOutlined />}
-                  className="mx-auto mb-3"
-                />
-                <h3 className="text-lg font-semibold mt-3">{user.hoTen}</h3>
-                <p className="text-gray-500 mb-4 text-sm">{user.email}</p>
+          {!token ? (
+            <RequireLoginPage />
+          ) : (
+            <div className="flex gap-6 p-6">
+              {!!user && (
+                <Card className="w-72 p-4 text-center">
+                  <Avatar
+                    size={96}
+                    icon={<UserOutlined />}
+                    className="mx-auto mb-3"
+                  />
+                  <h3 className="text-lg font-semibold mt-3">{user.hoTen}</h3>
+                  <p className="text-gray-500 mb-4 text-sm">{user.email}</p>
 
-                <Menu
-                  onClick={handleMenuClick}
-                  defaultSelectedKeys={["info"]}
-                  selectedKeys={[selectedKey]}
-                  mode="inline"
-                  className="text-left mt-4 border-none menu-profile"
-                  items={[
-                    {
-                      key: "info",
-                      icon: <UserOutlined />,
-                      label: "Thông tin tài khoản",
-                    },
-                    {
-                      key: "update",
-                      icon: <SettingOutlined />,
-                      label: "Cập nhật thông tin",
-                    },
-                    {
-                      key: "change-password",
-                      icon: <KeyOutlined />,
-                      label: "Đổi mật khẩu",
-                    },
-                  ]}
-                />
-              </Card>
-            )}
+                  <Menu
+                    onClick={handleMenuClick}
+                    defaultSelectedKeys={["info"]}
+                    selectedKeys={[selectedKey]}
+                    mode="inline"
+                    className="text-left mt-4 border-none menu-profile"
+                    items={[
+                      {
+                        key: "info",
+                        icon: <UserOutlined />,
+                        label: "Thông tin tài khoản",
+                      },
+                      {
+                        key: "update",
+                        icon: <SettingOutlined />,
+                        label: "Cập nhật thông tin",
+                      },
+                      {
+                        key: "change-password",
+                        icon: <KeyOutlined />,
+                        label: "Đổi mật khẩu",
+                      },
+                    ]}
+                  />
+                </Card>
+              )}
 
-            <div className="flex-1">
-              <ProtectedRoute />
+              <div className="flex-1">
+                <ProtectedRoute />
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </Content>
       <Footer style={{ backgroundColor: "white", padding: "60px 80px 20px" }}>

@@ -36,8 +36,12 @@ export const GlobalProvider = ({ children }) => {
   useEffect(() => {
     const initAuth = async () => {
       const storedToken = await getToken();
+      const storedRoles = await getRoles();
       if (storedToken) {
         setToken(storedToken);
+        if (storedRoles) {
+          setRoles(storedRoles);
+        }
         await fetchUserInfo(storedToken);
         await fetchCart();
       }
@@ -61,7 +65,7 @@ export const GlobalProvider = ({ children }) => {
       setIsLoading(true);
       const res = await handleLogin(data);
       const t = res.result.token;
-      const roles = res.result.roles;
+      const roles = res.result.roles || ["USER"];
       await saveToken(t);
       setToken(t);
       await saveRoles(roles);
@@ -69,7 +73,11 @@ export const GlobalProvider = ({ children }) => {
       await fetchUserInfo(t);
       await fetchCart();
       message.success("Đăng nhập thành công!");
-      navigate("/");
+      if (roles.includes("ADMIN")) {
+        navigate("/admin");
+      } else {
+        navigate("/");
+      }
     } catch (err) {
       throw err;
     } finally {
@@ -79,7 +87,9 @@ export const GlobalProvider = ({ children }) => {
 
   const handleLogout = () => {
     removeToken();
+    removeRoles();
     setToken(null);
+    setRoles([]);
     setUser(null);
     navigate("/login");
   };

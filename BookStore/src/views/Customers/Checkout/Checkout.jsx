@@ -21,13 +21,14 @@ import {
 import { useGlobalContext } from "../../../GlobalContext";
 import { insertDonHang } from "../../../api/donHangService";
 import { formatCurrency } from "../../../hooks/formatCurrentcy";
+import RequireLoginPage from "../../../components/RequireLoginPage";
 
 const { Option } = Select;
 
 const Checkout = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
-  const { user, cart, fetchCart } = useGlobalContext();
+  const { user, cart, fetchCart, token } = useGlobalContext();
 
   const [discount, setDiscount] = useState(0);
   const [discountCode, setDiscountCode] = useState("");
@@ -168,6 +169,10 @@ const Checkout = () => {
     ...c.sach,
     soLuong: c.soLuong,
   }));
+
+  if (!token) {
+    return <RequireLoginPage />;
+  }
 
   return (
     <div className="bg-blue-50 py-8 px-[80px]">
