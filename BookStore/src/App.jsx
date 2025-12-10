@@ -14,14 +14,14 @@ import { NV_Quanlydanhgia } from "./page/nv_page/nv_quanlydanhgia/NV_Quanlydanhg
 import { NV_Chitietdonhang } from "./page/nv_page/nv_chitietdonhang/NV_Chitietdonhang.jsx";
 import { NV_Thongke } from "./page/nv_page/nv_thongke/NV_Thongke.jsx";
 import { NV_Chinhsuasach } from "./page/nv_page/nv_chinhsuasach/NV_Chinhsuasach.jsx";
-import { QTV_Bangdieukhien } from "./page/qtv_page/qtv_bangdieukhien/QTV_Bangdieukhien.jsx";
-import { QTV_Xemxoasach } from "./page/qtv_page/qtv_quanlysach/qtv_xemxoasach/QTV_Xemxoasach.jsx";
-import { QTV_Quanlytheloai } from "./page/qtv_page/qtv_quanlytheloai/QTV_Quanlytheloai.jsx";
-import { QTV_KhachHang } from "./page/qtv_page/qtv_khachhang/QTV_KhachHang.jsx";
-import { QTV_Quanlynhanvien } from "./page/qtv_page/qtv_quanlynhanvien/QTV_Quanlynhanvien.jsx";
-import { QTV_Quanlykhuyenmai } from "./page/qtv_page/qtv_quanlykhuyenmai/QTV_Quanlykhuyenmai.jsx";
-import { QTV_Lichsuchinhsua } from "./page/qtv_page/qtv_lichsuchinhsua/QTV_Lichsuchinhsua.jsx";
-import { QTV_Themsachmoi } from "./page/qtv_page/qtv_quanlysach/qtv_themsachmoi/QTV_Themsachmoi.jsx";
+// import { QTV_Bangdieukhien } from "./page/qtv_page/qtv_bangdieukhien/QTV_Bangdieukhien.jsx";
+// import { QTV_Xemxoasach } from "./page/qtv_page/qtv_quanlysach/qtv_xemxoasach/QTV_Xemxoasach.jsx";
+// import { QTV_Quanlytheloai } from "./page/qtv_page/qtv_quanlytheloai/QTV_Quanlytheloai.jsx";
+// import { QTV_KhachHang } from "./page/qtv_page/qtv_khachhang/QTV_KhachHang.jsx";
+// import { QTV_Quanlynhanvien } from "./page/qtv_page/qtv_quanlynhanvien/QTV_Quanlynhanvien.jsx";
+// import { QTV_Quanlykhuyenmai } from "./page/qtv_page/qtv_quanlykhuyenmai/QTV_Quanlykhuyenmai.jsx";
+// import { QTV_Lichsuchinhsua } from "./page/qtv_page/qtv_lichsuchinhsua/QTV_Lichsuchinhsua.jsx";
+// import { QTV_Themsachmoi } from "./page/qtv_page/qtv_quanlysach/qtv_themsachmoi/QTV_Themsachmoi.jsx";
 
 function App() {
   return (
@@ -64,7 +64,7 @@ function App() {
               path="/chitietdonhang"
               element={<NV_Chitietdonhang />}
             ></Route>
-            <Route
+            {/* <Route
               path="/qtvbangdieukhien"
               element={<QTV_Bangdieukhien />}
             ></Route>
@@ -86,7 +86,7 @@ function App() {
             <Route
               path="/qtvlichsuchinhsua"
               element={<QTV_Lichsuchinhsua />}
-            ></Route>
+            ></Route> */}
           </Routes>
         </Suspense>
       </GlobalProvider>

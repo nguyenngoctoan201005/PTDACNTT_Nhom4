@@ -1,7 +1,14 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { App } from "antd";
 import { useNavigate } from "react-router-dom";
-import { saveToken, getToken, removeToken } from "./auth/auth";
+import {
+  saveToken,
+  getToken,
+  removeToken,
+  saveRoles,
+  getRoles,
+  removeRoles,
+} from "./auth/auth";
 import { login as handleLogin, getUserInfo } from "./api/authService";
 import {
   insertGioHang,
@@ -18,6 +25,7 @@ export const GlobalProvider = ({ children }) => {
 
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
+  const [roles, setRoles] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const [loadingAuth, setLoadingAuth] = useState(true);
@@ -53,8 +61,11 @@ export const GlobalProvider = ({ children }) => {
       setIsLoading(true);
       const res = await handleLogin(data);
       const t = res.result.token;
+      const roles = res.result.roles;
       await saveToken(t);
       setToken(t);
+      await saveRoles(roles);
+      setRoles(roles);
       await fetchUserInfo(t);
       await fetchCart();
       message.success("Đăng nhập thành công!");
@@ -134,6 +145,7 @@ export const GlobalProvider = ({ children }) => {
       value={{
         user,
         token,
+        roles,
         isAuthenticated,
         isLoading,
         loadingAuth,
