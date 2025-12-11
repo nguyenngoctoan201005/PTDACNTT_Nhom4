@@ -23,3 +23,19 @@ export const getSachDetail = async (data) => {
 
   return res.data;
 };
+
+// CRUD operations (might be mocked or not fully implemented on backend yet, but kept for admin logic)
+export const insertSach = async (data) => {
+  const res = await axiosInstance.post("/sach", data);
+  return res.data;
+};
+
+export const updateSach = async (data) => {
+  const res = await axiosInstance.put(`/sach/${data.maSach}`, data);
+  return res.data;
+};
+
+export const deleteSach = async (maSach) => {
+  const res = await axiosInstance.delete(`/sach/${maSach}`);
+  return res.data;
+};
