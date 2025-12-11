@@ -234,7 +234,7 @@ const BookDetail = () => {
 
           <Col xs={24} md={12} lg={12}>
             <Space direction="vertical" size="middle" style={{ width: "100%" }}>
-              <Tag color="blue">{bookDetail?.loaiSach.tenLoai}</Tag>
+              <Tag color="blue">{bookDetail?.loaiSach?.tenLoai || ""}</Tag>
 
               <Title level={2} style={{ margin: 0 }}>
                 {bookDetail?.tenSach}
