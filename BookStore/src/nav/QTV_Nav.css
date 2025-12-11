@@ -42,6 +42,12 @@
     background-color:rgb(219 234 254)  ;
 }
 
+.qtv_nav_chucnang_selected{
+    color: rgb(37 99 235) ;
+    cursor: pointer;
+    background-color:rgb(219 234 254)  ;
+}
+
 .qtv_nav_chucnang svg{
     fill: currentColor; /* icon đổi màu theo chữ */
     width: 25px;
