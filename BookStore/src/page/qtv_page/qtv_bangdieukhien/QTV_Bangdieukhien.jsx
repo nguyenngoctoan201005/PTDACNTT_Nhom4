@@ -1,6 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { QTV_Nav } from "../../../nav/QTV_Nav";
-import { Card, Row, Col, Statistic, Table, Tag, Avatar, List } from "antd";
+import {
+  Card,
+  Row,
+  Col,
+  Statistic,
+  Table,
+  Tag,
+  Avatar,
+  List,
+  DatePicker,
+  Space,
+} from "antd";
+import dayjs from "dayjs";
 import {
   ArrowUpOutlined,
   ArrowDownOutlined,
@@ -25,6 +37,8 @@ import {
   Legend,
 } from "recharts";
 import "./QTV_Bangdieukhien.css";
+
+const { RangePicker } = DatePicker;
 
 // --- Fake Data ---
 
@@ -96,14 +110,39 @@ const recentOrders = [
 ];
 
 const topBooks = [
-  { name: "Đắc Nhân Tâm", sales: 1200 },
-  { name: "Nhà Giả Kim", sales: 980 },
-  { name: "Tuổi Trẻ Đáng Giá Bao Nhiêu", sales: 850 },
-  { name: "Cà Phê Cùng Tony", sales: 600 },
-  { name: "Mắt Biếc", sales: 450 },
+  { name: "Đắc Nhân Tâm", author: "Dale Carnegie", sales: 1200, price: 90000 },
+  { name: "Nhà Giả Kim", author: "Paulo Coelho", sales: 980, price: 85000 },
+  {
+    name: "Tuổi Trẻ Đáng Giá Bao Nhiêu",
+    author: "Rosie Nguyễn",
+    sales: 850,
+    price: 95000,
+  },
+  {
+    name: "Cà Phê Cùng Tony",
+    author: "Tony Buổi Sáng",
+    sales: 600,
+    price: 110000,
+  },
+  { name: "Mắt Biếc", author: "Nguyễn Nhật Ánh", sales: 450, price: 125000 },
 ];
 
 export default function QTV_Bangdieukhien() {
+  const [dateRange, setDateRange] = useState([
+    dayjs().startOf("month"),
+    dayjs(),
+  ]);
+
+  const onDateChange = (dates) => {
+    if (dates) {
+      setDateRange(dates);
+      console.log("From: ", dates[0].format("YYYY-MM-DD"));
+      console.log("To: ", dates[1].format("YYYY-MM-DD"));
+    } else {
+      console.log("Clear");
+    }
+  };
+
   const renderStatusTag = (status) => {
     let color = "";
     switch (status) {
@@ -160,9 +199,11 @@ export default function QTV_Bangdieukhien() {
       <QTV_Nav />
       {/* Container chính, padding điều chỉnh cho phù hợp layout */}
       <main className="qtv_trangbdk_main bg-gray-50 min-h-screen p-6">
-        <h2 className="text-2xl font-bold mb-6 text-gray-800">
-          Tổng quan hệ thống
-        </h2>
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold text-gray-800 m-0">
+            Tổng quan hệ thống
+          </h2>
+        </div>
 
         {/* Row 1: Statistic Cards */}
         <Row gutter={[16, 16]} className="mb-6">
@@ -248,6 +289,16 @@ export default function QTV_Bangdieukhien() {
           <Col xs={24} lg={16}>
             <Card
               title="Biểu đồ doanh thu năm 2025"
+              extra={
+                <Space>
+                  <span className="text-gray-600 font-medium">Lọc:</span>
+                  <RangePicker
+                    defaultValue={[dayjs().startOf("month"), dayjs()]}
+                    format="DD/MM/YYYY"
+                    onChange={onDateChange}
+                  />
+                </Space>
+              }
               bordered={false}
               className="shadow-sm h-full"
             >
@@ -394,8 +445,22 @@ export default function QTV_Bangdieukhien() {
                           {index + 1}
                         </Avatar>
                       }
-                      title={<a href="#">{item.name}</a>}
-                      description={`Đã bán: ${item.sales} cuốn`}
+                      title={
+                        <a href="#">
+                          {item.name} - {item.author}
+                        </a>
+                      }
+                      description={
+                        <Space direction="vertical" size={0}>
+                          <div>Đã bán: {item.sales} cuốn</div>
+                          <div className="font-semibold text-blue-600">
+                            {new Intl.NumberFormat("vi-VN", {
+                              style: "currency",
+                              currency: "VND",
+                            }).format(item.price)}
+                          </div>
+                        </Space>
+                      }
                     />
                   </List.Item>
                 )}

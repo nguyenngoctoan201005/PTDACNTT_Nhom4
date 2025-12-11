@@ -98,6 +98,31 @@ const ModalNhanVien = ({ open, onCancel, onOk, type = "create", dataEdit }) => {
         </Form.Item>
 
         <Form.Item
+          name="soDienThoai"
+          label="Số điện thoại"
+          rules={[
+            { required: true, message: "Vui lòng nhập số điện thoại" },
+            {
+              pattern: /^[0-9]{10,11}$/,
+              message: "Số điện thoại không hợp lệ",
+            },
+          ]}
+        >
+          <Input placeholder="Nhập số điện thoại" />
+        </Form.Item>
+
+        <Form.Item
+          name="email"
+          label="Email"
+          rules={[
+            { required: true, message: "Vui lòng nhập email" },
+            { type: "email", message: "Email không hợp lệ" },
+          ]}
+        >
+          <Input placeholder="Nhập email" />
+        </Form.Item>
+
+        <Form.Item
           name="tenDangNhap"
           label="Tên đăng nhập"
           rules={[
