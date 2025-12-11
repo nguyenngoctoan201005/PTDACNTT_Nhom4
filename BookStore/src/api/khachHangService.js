@@ -17,3 +17,15 @@ export const insertKhachHang = async (data) => {
 
   return res.data;
 };
+
+export const updateKhachHang = async (data) => {
+  const res = await axiosInstance.put(`/kh/${data.maKhachHang}`, { ...data });
+
+  return res.data;
+};
+
+export const deleteKhachHang = async (maKhachHang) => {
+  const res = await axiosInstance.delete(`/kh/${maKhachHang}`);
+
+  return res.data;
+};
