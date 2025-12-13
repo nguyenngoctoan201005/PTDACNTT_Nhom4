@@ -84,8 +84,8 @@ export function NV_Nav() {
                     9
                 </div>
             </div>
-            
-             <div className="nav_chucnang">
+
+            <div className="nav_chucnang">
                 <div className='nav_chucnang_noidung'>
                     <div>
                         <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 24 24" fill="#000000">

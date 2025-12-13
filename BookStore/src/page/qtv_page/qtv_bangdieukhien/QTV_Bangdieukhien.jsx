@@ -1,8 +1,10 @@
 import {QTV_Nav} from '../../../nav/QTV_Nav.jsx'
 import './QTV_Bangdieukhien.css'
-
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 export function QTV_Bangdieukhien() {
 
+    
     return (
         <>
             <QTV_Nav />
