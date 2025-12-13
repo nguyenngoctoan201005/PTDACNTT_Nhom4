@@ -1,10 +1,9 @@
-.qtv_qlkhuyenmai_main {
+.qtv_quanlykhuyenmai_main {
     margin: 0;
     padding: 0;
-    width: 100%;
+    width: calc(100vw - 300px);
     height: 100vh;
     background-color: #F9FAFB;
-    width: calc(100vw - 300px);
     margin-left: 300px;
     overflow-y: auto;
 }
@@ -162,151 +161,6 @@
     text-align: center;
     width: 300px;
     padding: 15px;
-    border: none;
-    border-radius: 20px;
-    background-color: #2563eb;
-    color: white;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.qtv_qlkhuyenmai_themkhuyenmai_button_nhan1:hover {
-    background-color: #2b4ca7;
-    transition: background-color 0.3s ease;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
-
-.qtv_qlkhuyenmai_themkhuyenmai_button_nhan2 {
-    text-align: center;
-    width: 300px;
-    padding: 15px;
-    border: none;
-    border-radius: 20px;
-    background-color: #d11427;
-    color: white;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.qtv_qlkhuyenmai_themkhuyenmai_button_nhan2:hover {
-    background-color: #a92727;
-    transition: background-color 0.3s ease;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
-
-.qtv_qlkhuyenmai_themkhuyenmai_button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 20px;
-}
-
-.qtv_qlkhuyenmai_themkhuyenmai {
-    margin-bottom: 50px;
-}
-
-.qtv_qlkhuyenmai_themkhuyenmai_nhapdl textarea {
-    width: 650px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    height: 60px;
-    font-size: 16px;
-    margin-top: 10px;
-}
-
-
-
-
-.qtv_qlkhuyenmai_suakm {
-    width: 700px;
-    background-color: white;
-    padding: 8px;
-    border-radius: 15px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    margin-top: 50px;
-    margin-left: 25px;
-    position: fixed;
-    top: -30px;
-    left: 500px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-}
-
-.qtv_qlkhuyenmai_suakm_tieude {
-    font-size: 30px;
-    font-weight: bold;
-    color: #333;
-    text-align: center;
-}
-
-.qtv_qlkhuyenmai_suakm_nhapdl_nhan {
-    font-size: 18px;
-    color: #333;
-}
-
-.qtv_qlkhuyenmai_suakm_nhapdl input {
-    width: 950px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    height: 25px;
-    font-size: 16px;
-    margin-top: 10px;
-}
-
-.qtv_qlkhuyenmai_suakm_noidung {
-    margin-top: 20px;
-    margin-left: 16px;
-}
-
-.qtv_qlkhuyenmai_suakm_button_nhan1 {
-    text-align: center;
-    width: 200px;
-    padding: 15px;
-    border: none;
-    border-radius: 20px;
-    background-color: #2563eb;
-    color: white;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-right: 10px;
-}
-
-.qtv_qlkhuyenmai_suakm_button_nhan2 {
-    text-align: center;
-    width: 100px;
-    padding: 15px;
-    border: none;
-    border-radius: 20px;
-    background-color: #eb2532;
-    color: white;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.qtv_qlkhuyenmai_suakm_button_nhan1:hover {
-    background-color: #1d4ed8;
-    transition: background-color 0.3s ease;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
-
-.qtv_qlkhuyenmai_suakm_button_nhan2:hover {
-    background-color: #cb1a35;
-    transition: background-color 0.3s ease;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
-
-.qtv_qlkhuyenmai_suakm_button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 40px;
-}
-
-.qtv_qlkhuyenmai_suakm {
-    margin-bottom: 50px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
 }

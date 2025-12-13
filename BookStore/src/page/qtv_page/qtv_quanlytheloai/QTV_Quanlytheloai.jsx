@@ -1,190 +1,186 @@
 import "./QTV_Quanlytheloai.css";
 import { QTV_Nav } from "../../../nav/QTV_Nav";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Table, Button, Input, message, Modal } from "antd";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  PlusOutlined,
+  SearchOutlined,
+} from "@ant-design/icons";
+import { getListTheLoai, deleteTheLoai } from "../../../api/theLoaiService"; // Import API
+import ModalTheLoai from "./components/ModalTheLoai"; // Import Modal
+import { useDebounce } from "../../../hooks/useDebounce"; // Import debounce hook if exists, otherwise I'll need to check or just standard filter
 
 export default function QTV_Quanlytheloai() {
-  const [suaTheloai, setSuaTheloai] = useState(false);
-  const [themTheloai, setThemTheloai] = useState(false);
+  const [listTheLoai, setListTheLoai] = useState([]);
+  const [selectedTheLoai, setSelectedTheLoai] = useState(null);
+  const [modalState, setModalState] = useState({
+    open: false,
+    type: "create",
+  });
+  const [showModalDelete, setShowModalDelete] = useState(false);
+  const [searchText, setSearchText] = useState("");
+  const debouncedSearchText = useDebounce(searchText, 500);
+
+  const fetchTheLoai = async () => {
+    try {
+      const res = await getListTheLoai();
+      // Assuming res.result is the array based on other files
+      setListTheLoai(res.result || []);
+    } catch (error) {
+      console.error(error);
+      message.error("Lỗi khi lấy danh sách thể loại");
+    }
+  };
+
+  useEffect(() => {
+    fetchTheLoai();
+  }, []);
+
+  const handleDelete = async () => {
+    try {
+      await deleteTheLoai(selectedTheLoai.maTheLoai);
+      message.success("Xóa thể loại thành công");
+      fetchTheLoai();
+      setShowModalDelete(false);
+      setSelectedTheLoai(null);
+    } catch (error) {
+      console.error(error);
+      message.error("Lỗi khi xóa thể loại");
+    }
+  };
+
+  const openCreateModal = () => {
+    setModalState({ open: true, type: "create" });
+    setSelectedTheLoai(null);
+  };
+
+  const openEditModal = (record) => {
+    setModalState({ open: true, type: "update" });
+    setSelectedTheLoai(record);
+  };
+
+  const closeModal = () => {
+    setModalState((prev) => ({ ...prev, open: false }));
+    setSelectedTheLoai(null);
+  };
+
+  const handleSuccess = () => {
+    fetchTheLoai();
+  };
+
+  const filteredData = listTheLoai.filter((item) =>
+    item.tenLoai?.toLowerCase().includes(debouncedSearchText.toLowerCase())
+  );
+
+  const columns = [
+    {
+      title: "STT",
+      key: "stt",
+      render: (text, record, index) => index + 1,
+      width: 80,
+    },
+    {
+      title: "TÊN THỂ LOẠI",
+      dataIndex: "tenLoai",
+      key: "tenLoai",
+    },
+    // {
+    //   title: "MÔ TẢ",
+    //   dataIndex: "moTa",
+    //   key: "moTa",
+    // },
+    // Old table had "SỐ SÁCH" column, but valid API might not return it.
+    // I'll check if it's there, otherwise display 0 or ignore.
+    // Previous hardcoded table had '5'.
+    // {
+    //   title: "SỐ SÁCH",
+    //   dataIndex: "soSach", // Assuming API returns this, or we can leave it out if not available
+    //   key: "soSach",
+    //   render: (text) => text || 0,
+    // },
+    {
+      title: "THAO TÁC",
+      key: "action",
+      fixed: "right",
+      width: 100,
+      render: (_, record) => (
+        <div className="flex gap-2 items-center">
+          <Button
+            onClick={() => openEditModal(record)}
+            type="text"
+            icon={<EditOutlined style={{ color: "blue" }} />}
+          />
+          <Button
+            onClick={() => {
+              setSelectedTheLoai(record);
+              setShowModalDelete(true);
+            }}
+            type="text"
+            icon={<DeleteOutlined style={{ color: "red" }} />}
+          />
+        </div>
+      ),
+    },
+  ];
+
+  console.log("listTheLoai", listTheLoai);
 
   return (
     <>
       <QTV_Nav />
-      <main className="qtv_themtheloaimoi_main">
-        <div className="qtv_themtheloaimoi_header">
-          <div className="qtv_themtheloaimoi_header_title">
-            Quản lý thể loại
-          </div>
-          <div
-            onClick={() => setThemTheloai(true)}
-            className="qtv_themtheloaimoi_header_button"
+      <main className="qtv_quanlytheloai_main">
+        <div className="qtv_quanlytheloai_header mx-4 mt-4 rounded-lg flex items-center justify-between">
+          <div>Quản lý thể loại</div>
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            onClick={openCreateModal}
           >
-            + Thêm thể loại mới
-          </div>
+            Thêm thể loại mới
+          </Button>
         </div>
-
-        <div className="qtv_themtheloaimoi_content">
-          <table className="qtv_themtheloaimoi_content_table">
-            <tr className="themtheloai_tr">
-              <th className="themtheloai_th qtv_themtheloaimoi_content_th1">
-                TÊN THỂ LOẠI
-              </th>
-              <th className="themtheloai_th qtv_themtheloaimoi_content_th2">
-                SỐ SÁCH
-              </th>
-              <th className="themtheloai_th qtv_themtheloaimoi_content_th3">
-                THAO TÁC
-              </th>
-            </tr>
-
-            <tr className="themtheloai_tr">
-              <td className="themtheloai_td qtv_themtheloaimoi_content_td1">
-                Trinh tham
-              </td>
-              <td className="themtheloai_td qtv_themtheloaimoi_content_td2">
-                5
-              </td>
-              <td className="themtheloai_td qtv_themtheloaimoi_content_td3">
-                <svg
-                  onClick={() => setSuaTheloai(true)}
-                  className="qtv_themtheloaimoi_content_svg1"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="200"
-                  height="200"
-                  viewBox="0 0 1025 1023"
-                >
-                  <path
-                    fill="rgba(37,99,235,1)"
-                    d="M896.428 1023h-768q-53 0-90.5-37.5T.428 895V127q0-53 37.5-90t90.5-37h576l-128 127h-384q-27 0-45.5 19t-18.5 45v640q0 27 19 45.5t45 18.5h640q27 0 45.5-18.5t18.5-45.5V447l128-128v576q0 53-37.5 90.5t-90.5 37.5zm-576-464l144 144l-208 64zm208 96l-160-159l479-480q17-16 40.5-16t40.5 16l79 80q16 16 16.5 39.5t-16.5 40.5z"
-                  />
-                </svg>
-                <svg
-                  className="qtv_themtheloaimoi_content_svg2"
-                  width="200"
-                  height="200"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    fill="rgb(239 68 68)"
-                    fill-rule="evenodd"
-                    d="M19 7a1 1 0 0 1 1 1v11.6a3.4 3.4 0 0 1-3.4 3.4H7.4a3.4 3.4 0 0 1-3.395-3.226L4 19.6V8l.005-.103A1 1 0 0 1 5 7zM8 12v6h2v-6zm3 0v6h2v-6zm3 0v6h2v-6zm1.024-10.988A2.204 2.204 0 0 1 17 3.2V4h4a1 1 0 1 1 0 2H3a1 1 0 0 1 0-2h4v-.8C7 1.988 7.988 1 9.2 1h5.6zM9.2 3c-.108 0-.2.092-.2.2V4h6v-.8a.205.205 0 0 0-.16-.196L14.8 3z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              </td>
-            </tr>
-          </table>
+        <div className="flex flex-col md:flex-row gap-4 p-4 mx-4 bg-white rounded-lg shadow-md my-4 items-center">
+          <Input
+            placeholder="Tìm kiếm thể loại..."
+            allowClear
+            className="w-full md:w-96"
+            onChange={(e) => setSearchText(e.target.value)}
+            prefix={<SearchOutlined />}
+          />
         </div>
-
-        {suaTheloai && (
-          <div className="qtv_xemsuaxoatheloai_suatheloai">
-            <div className="qtv_xemsuaxoatheloai_suatheloai_title">
-              Sửa thông tin thể loại
-              <svg
-                onClick={() => setSuaTheloai(false)}
-                xmlns="http://www.w3.org/2000/svg"
-                width="200"
-                height="200"
-                viewBox="0 0 8 8"
-              >
-                <path
-                  fill=""
-                  d="M1.41 0L0 1.41l.72.72L2.5 3.94L.72 5.72L0 6.41l1.41 1.44l.72-.72l1.81-1.81l1.78 1.81l.69.72l1.44-1.44l-.72-.69l-1.81-1.78l1.81-1.81l.72-.72L6.41 0l-.69.72L3.94 2.5L2.13.72L1.41 0z"
-                />
-              </svg>
-            </div>
-            <hr className="qtv_xemsuaxoatheloai_hr" />
-
-            <div className="qtv_xemsuaxoatheloai_suatheloai_cont">
-              <div className="qtv_xemsuaxoatheloai_suatheloai_cont_tt">
-                Tên thể loại
-              </div>
-              <div className="qtv_xemsuaxoatheloai_suatheloai_cont_inpt">
-                <input type="text" placeholder="Enter category name" />
-              </div>
-            </div>
-
-            <div className="qtv_xemsuaxoatheloai_suatheloai_cont">
-              <div className="qtv_xemsuaxoatheloai_suatheloai_cont_tt">
-                Mô tả
-              </div>
-              <div className="qtv_xemsuaxoatheloai_suatheloai_cont_inpt">
-                <textarea
-                  placeholder="Enter description"
-                  rows="4"
-                  cols="70"
-                ></textarea>
-              </div>
-            </div>
-
-            <div className="qtv_xemsuaxoatheloai_suatheloai_cont_btn">
-              <div
-                onClick={() => setSuaTheloai(false)}
-                className="qtv_xemsuaxoatheloai_suatheloai_cont_btn_huybo"
-              >
-                Hủy bỏ
-              </div>
-              <div className="qtv_xemsuaxoatheloai_suatheloai_cont_btn_luu">
-                Lưu
-              </div>
-            </div>
-          </div>
-        )}
-
-        {themTheloai && (
-          <div className="qtv_xemsuaxoatheloai_suatheloai">
-            <div className="qtv_xemsuaxoatheloai_suatheloai_title">
-              Thêm thể loại mới
-              <svg
-                onClick={() => setThemTheloai(false)}
-                xmlns="http://www.w3.org/2000/svg"
-                width="200"
-                height="200"
-                viewBox="0 0 8 8"
-              >
-                <path
-                  fill=""
-                  d="M1.41 0L0 1.41l.72.72L2.5 3.94L.72 5.72L0 6.41l1.41 1.44l.72-.72l1.81-1.81l1.78 1.81l.69.72l1.44-1.44l-.72-.69l-1.81-1.78l1.81-1.81l.72-.72L6.41 0l-.69.72L3.94 2.5L2.13.72L1.41 0z"
-                />
-              </svg>
-            </div>
-            <hr className="qtv_xemsuaxoatheloai_hr" />
-
-            <div className="qtv_xemsuaxoatheloai_suatheloai_cont">
-              <div className="qtv_xemsuaxoatheloai_suatheloai_cont_tt">
-                Tên thể loại
-              </div>
-              <div className="qtv_xemsuaxoatheloai_suatheloai_cont_inpt">
-                <input type="text" placeholder="Enter category name" />
-              </div>
-            </div>
-
-            <div className="qtv_xemsuaxoatheloai_suatheloai_cont">
-              <div className="qtv_xemsuaxoatheloai_suatheloai_cont_tt">
-                Mô tả
-              </div>
-              <div className="qtv_xemsuaxoatheloai_suatheloai_cont_inpt">
-                <textarea
-                  placeholder="Enter description"
-                  rows="4"
-                  cols="70"
-                ></textarea>
-              </div>
-            </div>
-
-            <div className="qtv_xemsuaxoatheloai_suatheloai_cont_btn">
-              <div
-                onClick={() => setThemTheloai(false)}
-                className="qtv_xemsuaxoatheloai_suatheloai_cont_btn_huybo"
-              >
-                Hủy bỏ
-              </div>
-              <div className="qtv_xemsuaxoatheloai_suatheloai_cont_btn_luu">
-                Lưu
-              </div>
-            </div>
-          </div>
-        )}
+        <div className="bg-white p-4 mx-4 rounded-lg shadow-md">
+          <Table
+            columns={columns}
+            dataSource={filteredData}
+            pagination={{
+              pageSize: 10,
+              showSizeChanger: true,
+              showQuickJumper: true,
+            }}
+            rowKey="maTheLoai"
+            className="overflow-x-auto"
+          />
+        </div>
+        <ModalTheLoai
+          open={modalState.open}
+          type={modalState.type}
+          dataEdit={selectedTheLoai}
+          onCancel={closeModal}
+          onOk={handleSuccess}
+        />
+        <Modal
+          title="Xóa thể loại"
+          open={showModalDelete}
+          onOk={handleDelete}
+          onCancel={() => setShowModalDelete(false)}
+        >
+          <p>
+            Bạn có chắc chắn muốn xóa thể loại{" "}
+            <strong>{selectedTheLoai?.tenTheLoai}</strong>?
+          </p>
+        </Modal>
       </main>
     </>
   );

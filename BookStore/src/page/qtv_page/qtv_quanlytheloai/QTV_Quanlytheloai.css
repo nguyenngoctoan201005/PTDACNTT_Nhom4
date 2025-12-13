@@ -4,7 +4,10 @@
     overflow-x: hidden;
     margin-left: 300px;
     width: calc(100vw - 300px);
-    box-sizing: border-box;
+    height: 100vh;
+    background-color: #F9FAFB;
+    margin-left: 300px;
+    overflow-y: auto;
 }
 
 .qtv_themtheloaimoi_header_title {

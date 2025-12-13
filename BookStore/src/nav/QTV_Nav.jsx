@@ -1,9 +1,13 @@
 import "./QTV_Nav.css";
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
+import { Dropdown, Avatar } from "antd";
+import { UserOutlined, LogoutOutlined } from "@ant-design/icons";
+import { useGlobalContext } from "../GlobalContext";
 
 export function QTV_Nav() {
   const location = useLocation();
+  const { user, handleLogout } = useGlobalContext();
   const [selected, setSelected] = useState(
     location.pathname.replace("/admin/", "")
   );
@@ -179,15 +183,42 @@ export function QTV_Nav() {
         </Link>
       </div> */}
 
-      <div className="qtv_nav_chucnang qtv_nav_chucnang_icon_logout">
-        <svg width="200" height="200" viewBox="0 0 20 20">
-          <path
-            fill=""
-            d="M17 17H9v2h8c1.1 0 2-.9 2-2V3c0-1.1-.9-2-2-2H9v2h8z"
-          />
-          <path fill="" d="M7 15v-4h8V9H7V5l-6 5z" />
-        </svg>
-        Đăng xuất
+      <div className="absolute bottom-0 left-0 right-0 border-t border-gray-200">
+        <Dropdown
+          menu={{
+            items: [
+              {
+                key: "1",
+                label: user?.hoTen || user?.userName || "Admin",
+                disabled: true,
+              },
+              {
+                type: "divider",
+              },
+              {
+                key: "logout",
+                icon: <LogoutOutlined style={{ color: "red" }} />,
+                label: "Đăng xuất",
+                onClick: handleLogout,
+              },
+            ],
+          }}
+          placement="topRight"
+          trigger={["hover"]}
+        >
+          <div className="flex items-center gap-2 px-4 py-3 cursor-pointer hover:bg-gray-100 rounded-lg transition-colors">
+            <Avatar
+              icon={<UserOutlined />}
+              className="bg-blue-500"
+              size="large"
+            />
+            <span className="text-lg font-medium text-gray-700">
+              {user?.hoTen || user?.userName || "Admin"}
+              <br />
+              {user?.email}
+            </span>
+          </div>
+        </Dropdown>
       </div>
     </nav>
   );
