@@ -1,5 +1,18 @@
 import axiosInstance from "../auth/axiosInstance";
 
+export const insertDonHang = async (data) => {
+  const res = await axiosInstance.post("/don-hang/createDH", { ...data });
+
+  return res.data;
+};
+
+export const getDetailDonHang = async (data) => {
+  const res = await axiosInstance.get(`/don-hang/getDH/${data.id}`, { ...data });
+
+  return res.data;
+};
+import axiosInstance from "../auth/axiosInstance";
+
 export const createDonHang = async (data) => {
     // data structure matches DonHangCreate body in backend
     const res = await axiosInstance.post("/don-hang/createDH", data);

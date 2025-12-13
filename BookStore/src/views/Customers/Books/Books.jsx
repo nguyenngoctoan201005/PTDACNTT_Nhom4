@@ -12,11 +12,14 @@ import {
   Flex,
   Pagination,
   Breadcrumb,
+  message,
+  Slider,
+  Button,
 } from "antd";
-import { useDebounce } from "../../../hooks/useDebounce";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import BookCard from "../../../components/BookCard";
-import { Link } from "react-router";
+import { Link, useSearchParams } from "react-router";
+import { getListRequestSach, searchSach } from "../../../api/sachService";
 
 const Books = () => {
   const genres = [
@@ -51,11 +54,6 @@ const Books = () => {
       value: "",
     },
     ...genres,
-  ];
-  const prices = [
-    { label: "Dưới 50,000", value: 1 },
-    { label: "50,000 - 100,000", value: 2 },
-    { label: "Hơn 100,000", value: 3 },
   ];
   const premiumBooks = [
     {
@@ -168,61 +166,115 @@ const Books = () => {
     },
   ];
 
-  //Form
-  const [form] = Form.useForm();
-  const [formValues, setFormValues] = useState({});
+  const [searchParams] = useSearchParams();
+  const keyword = searchParams.get("keyword");
 
-  const debouncedValues = useDebounce(formValues, 600);
+  const [form] = Form.useForm();
+  const [listSach, setListSach] = useState([]);
+  const [loadingSearch, setLoadingSearch] = useState(false);
 
   useEffect(() => {
-    if (Object.keys(debouncedValues).length > 0) {
-      console.log("debouncedValues", debouncedValues);
-    }
-  }, [debouncedValues]);
+    form.setFieldsValue({
+      name: keyword || "",
+      genres: [],
+      price: [0, 5000000],
+    });
 
-  const handleFormChange = (_, allValues) => {
-    setFormValues(allValues);
+    form.submit();
+  }, [keyword]);
+
+  const handleSubmitFilter = async (values) => {
+    setCurrentPage(1);
+    setLoadingSearch(true);
+    const { name, genres, price } = values;
+
+    const hasSearch = !!name;
+
+    const DEFAULT_PRICE = [0, 5000000];
+
+    const isPriceChanged =
+      price[0] !== DEFAULT_PRICE[0] || price[1] !== DEFAULT_PRICE[1];
+
+    const hasFilter = genres?.length > 0 || isPriceChanged;
+
+    const resetAfterFilter = () => {
+      // form.resetFields();
+      setCurrentPage(1);
+      setLoadingSearch(false);
+    };
+
+    try {
+      if (!hasSearch && !hasFilter) {
+        const res = await getListRequestSach({
+          // genres: genres || [],
+          minPrice: 0,
+          maxPrice: 5000000,
+          orderBy: "donGia",
+          order: "asc",
+        });
+        setListSach(res);
+        resetAfterFilter();
+        return;
+      }
+
+      if (hasSearch && !hasFilter) {
+        const res = await searchSach({ term: name });
+        setListSach(res.result);
+        resetAfterFilter();
+        return;
+      }
+
+      if (!hasSearch && hasFilter) {
+        const res = await getListRequestSach({
+          // genres: genres || [],
+          minPrice: price?.[0] || 0,
+          maxPrice: price?.[1] || 5000000,
+          orderBy: "donGia",
+          order: "asc",
+        });
+        setListSach(res);
+        resetAfterFilter();
+        return;
+      }
+
+      if (hasSearch && hasFilter) {
+        const [searchRes, filterRes] = await Promise.all([
+          searchSach({ term: name }),
+          getListRequestSach({
+            // genres: genres || [],
+            minPrice: price?.[0] || 0,
+            maxPrice: price?.[1] || 5000000,
+            orderBy: "donGia",
+            order: "asc",
+          }),
+        ]);
+
+        const intersect = searchRes.filter((item) =>
+          filterRes.some((f) => f.id === item.id)
+        );
+
+        setListSach(intersect);
+        resetAfterFilter();
+        return;
+      }
+    } catch (err) {
+      message.error("Lỗi khi lọc / tìm kiếm sách");
+    }
   };
 
-  //Filter
-  const filteredBooks = useMemo(() => {
-    let filtered = premiumBooks;
-
-    const { name, genres, price } = debouncedValues;
-
-    if (name) {
-      filtered = filtered.filter((b) =>
-        b.name.toLowerCase().includes(name.toLowerCase())
-      );
-    }
-
-    if (genres && genres.length > 0) {
-      filtered = filtered.filter((b) => genres.includes(b.type));
-    }
-
-    if (price) {
-      filtered = filtered.filter((b) => {
-        if (price === 1) return b.price < 50000;
-        if (price === 2) return b.price >= 50000 && b.price <= 100000;
-        if (price === 3) return b.price > 100000;
-        return true;
-      });
-    }
-
-    return filtered;
-  }, [debouncedValues, premiumBooks]);
-
-  //Book list
+  //Book list pagination
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 8;
 
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
 
-  const currentBooks = filteredBooks.slice(startIndex, endIndex);
+  const temptSach = typeof listSach === "object" ? listSach : premiumBooks;
+
+  const currentBooks = temptSach.slice(startIndex, endIndex);
 
   return (
-    <div className="bg-blue-50 py-4 mt-20 px-[80px]">
+    <div className="bg-blue-50 py-6 px-[80px]">
       <Breadcrumb
         items={[
           {
@@ -235,7 +287,7 @@ const Books = () => {
         style={{ marginBottom: 10 }}
       />
       <Row gutter={[16, 16]}>
-        <Col span={4}>
+        <Col span={24}>
           <Card>
             <div className="flex gap-3">
               <FilterOutlined style={{ fontSize: 20 }} />
@@ -246,60 +298,81 @@ const Books = () => {
             <Divider />
             <Form
               form={form}
-              onValuesChange={handleFormChange}
+              onFinish={handleSubmitFilter}
               layout="vertical"
+              className="flex flex-col gap-3"
             >
-              <Form.Item
-                name="name"
-                label={<Typography.Title level={5}>Search</Typography.Title>}
-              >
-                <Input prefix={<SearchOutlined />} placeholder="Tìm sách" />
-              </Form.Item>
-              <Form.Item
-                name="genres"
-                label={<Typography.Title level={5}>Thể loại</Typography.Title>}
-              >
-                <Select
-                  showSearch
-                  mode="multiple"
-                  placeholder="Chọn 1 thể loại"
-                  optionFilterProp="label"
-                  options={genreList}
-                />
-              </Form.Item>
-              <Form.Item
-                name="price"
-                label={
-                  <Typography.Title level={5}>Price Range</Typography.Title>
-                }
-              >
-                <Radio.Group
-                  options={prices}
-                  style={{ display: "flex", flexDirection: "column" }}
-                />
+              <div className="flex gap-3 items-center">
+                <Form.Item
+                  name="name"
+                  label={<Typography.Title level={5}>Search</Typography.Title>}
+                  className="flex-1"
+                >
+                  <Input prefix={<SearchOutlined />} placeholder="Tìm sách" />
+                </Form.Item>
+                <Form.Item
+                  name="genres"
+                  label={
+                    <Typography.Title level={5}>Thể loại</Typography.Title>
+                  }
+                  className="min-w-3xs"
+                >
+                  <Select
+                    showSearch
+                    mode="multiple"
+                    placeholder="Chọn 1 thể loại"
+                    optionFilterProp="label"
+                    options={genreList}
+                  />
+                </Form.Item>
+                <Form.Item
+                  name="price"
+                  label={
+                    <Typography.Title level={5}>Price Range</Typography.Title>
+                  }
+                  className="min-w-3xs"
+                  placeholder="Chọn 1 khoảng giá"
+                >
+                  <Slider
+                    range
+                    min={0}
+                    max={5000000}
+                    step={50000}
+                    tooltip={{ formatter: (v) => v.toLocaleString() + "₫" }}
+                  />
+                </Form.Item>
+              </div>
+              <Form.Item className="flex justify-end">
+                <Button
+                  htmlType="submit"
+                  type="primary"
+                  icon={<SearchOutlined />}
+                  loading={loadingSearch}
+                >
+                  Tìm kiếm
+                </Button>
               </Form.Item>
             </Form>
           </Card>
         </Col>
-        <Col span={20}>
-          <Flex wrap gap={2}>
+        <Col span={24}>
+          <Flex wrap gap={12} className="justify-center">
             {currentBooks.map((book, index) => (
               <div
                 key={index}
                 style={{
                   flex: "1 1 240px",
                   maxWidth: "240px",
-                  margin: "8px",
                 }}
               >
                 <BookCard
                   imageUrl={book.imageUrl}
                   type={book.type}
                   discount={book.discount}
-                  name={book.name}
+                  name={book.tenSach}
                   author={book.author}
-                  price={book.price}
-                  id={book.id}
+                  price={book.donGia}
+                  id={book.maSach}
                   showButton={true}
                   onAddToCart={() => console.log("added")}
                   onAddToFavorite={() => console.log("added")}
@@ -311,7 +384,7 @@ const Books = () => {
             align="center"
             current={currentPage}
             pageSize={pageSize}
-            total={filteredBooks.length}
+            total={premiumBooks.length}
             onChange={(page) => setCurrentPage(page)}
             style={{ marginTop: 16, textAlign: "center" }}
             showQuickJumper

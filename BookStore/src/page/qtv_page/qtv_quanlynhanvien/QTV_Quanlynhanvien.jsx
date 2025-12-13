@@ -1,137 +1,189 @@
-import './QTV_Quanlynhanvien.css'
-import { QTV_Nav } from '../../../nav/QTV_Nav'
-import { useState } from 'react'
+import "./QTV_Quanlynhanvien.css";
+import { QTV_Nav } from "../../../nav/QTV_Nav";
+import { getListNhanVien, deleteNhanVien } from "../../../api/nhanVienService";
+import { useEffect, useState } from "react";
+import { Table, Button, Modal, Input, message } from "antd";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  PlusOutlined,
+  SearchOutlined,
+} from "@ant-design/icons";
+import { useDebounce } from "../../../hooks/useDebounce";
+import ModalNhanVien from "./components/ModalNhanVien";
 
-export function QTV_Quanlynhanvien() {
+export default function QTV_Quanlynhanvien() {
+  const [listNhanVien, setListNhanVien] = useState([]);
+  const [selectedNhanVien, setSelectedNhanVien] = useState(null);
+  const [modalState, setModalState] = useState({
+    open: false,
+    type: "create",
+  });
+  const [showModalDelete, setShowModalDelete] = useState(false);
+  const [searchText, setSearchText] = useState("");
+  const debouncedSearchText = useDebounce(searchText, 500);
 
-    const [show, setShow] = useState(false)
-    const [show1, setShow1] = useState(false)
+  const fetchNhanVien = async () => {
+    try {
+      const res = await getListNhanVien();
+      setListNhanVien(res.result);
+    } catch (error) {
+      message.error("Lỗi khi lấy danh sách nhân viên");
+    }
+  };
 
-    return (
-        <>
-            <QTV_Nav />
-            <main className='qtv_qlnhanvien_main'>
-                <div className='qtv_qlnhanvien_tieude'>
-                    <div className='qtv_qlnhanvien_tieude_tt'>
-                        Quản Lý Nhân Viên
-                    </div>
-                    <div className='qtv_qlnhanvien_tieude_btn' onClick={() => setShow(true)}>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 32 32"><path fill="" d="M28.523 23.813c-.518-.51-6.795-2.938-7.934-3.396c-1.133-.45-1.585-1.697-1.585-1.697s-.51.282-.51-.51c0-.793.51.51 1.02-2.548c0 0 1.415-.397 1.134-3.68h-.34s.85-3.51 0-4.698c-.853-1.188-1.187-1.98-3.06-2.548c-1.87-.567-1.19-.454-2.548-.396c-1.36.057-2.492.793-2.492 1.188c0 0-.85.057-1.188.397c-.34.34-.906 1.924-.906 2.32s.283 3.06.566 3.624l-.337.11c-.283 3.284 1.132 3.682 1.132 3.682c.51 3.058 1.02 1.755 1.02 2.548c0 .792-.51.51-.51.51s-.453 1.246-1.585 1.697c-1.132.453-7.416 2.887-7.927 3.396c-.51.52-.453 2.896-.453 2.896h26.954s.063-2.378-.453-2.897zm-6.335 2.25h-4.562v-1.25h4.562v1.25z" /></svg>
-                        + Thêm nhân viên
-                    </div>
-                </div>
+  useEffect(() => {
+    fetchNhanVien();
+  }, []);
 
+  const handleCreateSuccess = () => {
+    fetchNhanVien();
+  };
 
-                <div className='qtv_qlnhanvien_noidung'>
-                    <table className='qtv_qlnhanvien_table'>
-                        <tr className='qtv_qlnhanvien_table_tr'>
-                            <th className='qtv_qlnv_th qtv_qlnhanvien_table_th1'>NHÂN VIÊN</th>
-                            <th className='qtv_qlnv_th qtv_qlnhanvien_table_th2'>SỐ CCCD</th>
-                            <th className='qtv_qlnv_th qtv_qlnhanvien_table_th3'>TÊN ĐĂNG NHẬP</th>
-                            <th className='qtv_qlnv_th qtv_qlnhanvien_table_th4'>MẬT KHẨU</th>
-                            <th className='qtv_qlnv_th qtv_qlnhanvien_table_th5'>THAO TÁC</th>
-                        </tr>
+  const openCreateModal = () => {
+    setModalState({ open: true, type: "create" });
+    setSelectedNhanVien(null);
+  };
 
-                        <tr className='qtv_qlnhanvien_table_tr'>
-                            <td className='qtv_qlnv_td qtv_qlnhanvien_table_td1'>Nguyễn Văn A</td>
-                            <td className='qtv_qlnv_td qtv_qlnhanvien_table_td2'>00120000334</td>
-                            <td className='qtv_qlnv_td qtv_qlnhanvien_table_td3'>nguyenvana##</td>
-                            <td className='qtv_qlnv_td qtv_qlnhanvien_table_td4'>nguyenvana99</td>
-                            <td className='qtv_qlnv_td qtv_qlnhanvien_table_td5'>
-                                <svg onClick={() => setShow1(true)} xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 1025 1023"><path fill="#004cff" d="M896.428 1023h-768q-53 0-90.5-37.5T.428 895V127q0-53 37.5-90t90.5-37h576l-128 127h-384q-27 0-45.5 19t-18.5 45v640q0 27 19 45.5t45 18.5h640q27 0 45.5-18.5t18.5-45.5V447l128-128v576q0 53-37.5 90.5t-90.5 37.5zm-576-464l144 144l-208 64zm208 96l-160-159l479-480q17-16 40.5-16t40.5 16l79 80q16 16 16.5 39.5t-16.5 40.5z" /></svg>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 16 16"><path fill="#ff0000" fill-rule="evenodd" d="M5.75 3V1.5h4.5V3h-4.5Zm-1.5 0V1a1 1 0 0 1 1-1h5.5a1 1 0 0 1 1 1v2h2.5a.75.75 0 0 1 0 1.5h-.365l-.743 9.653A2 2 0 0 1 11.148 16H4.852a2 2 0 0 1-1.994-1.847L2.115 4.5H1.75a.75.75 0 0 1 0-1.5h2.5Zm-.63 1.5h8.76l-.734 9.538a.5.5 0 0 1-.498.462H4.852a.5.5 0 0 1-.498-.462L3.62 4.5Z" clip-rule="evenodd" /></svg>
-                            </td>
-                        </tr>
+  const openEditModal = (nhanVien) => {
+    setModalState({ open: true, type: "update" });
+    setSelectedNhanVien(nhanVien);
+  };
 
+  const closeModal = () => {
+    setModalState((prev) => ({ ...prev, open: false }));
+    setSelectedNhanVien(null);
+  };
 
-                    </table>
-                </div>
+  const deleteNV = async (maNhanVien) => {
+    try {
+      await deleteNhanVien(maNhanVien);
+      message.success("Xóa nhân viên thành công");
+      fetchNhanVien();
+      setShowModalDelete(false);
+    } catch (error) {
+      message.error("Lỗi khi xóa nhân viên");
+    }
+  };
 
+  const columns = [
+    {
+      title: "STT",
+      dataIndex: "maNhanVien",
+      key: "stt",
+      render: (text, record, index) => index + 1,
+    },
+    {
+      title: "NHÂN VIÊN",
+      dataIndex: "hoTen",
+      key: "hoTen",
+    },
+    {
+      title: "SỐ CCCD",
+      dataIndex: "soCCCD",
+      key: "soCCCD",
+    },
+    {
+      title: "TÊN ĐĂNG NHẬP",
+      dataIndex: "tenDangNhap",
+      key: "tenDangNhap",
+    },
+    {
+      title: "MẬT KHẨU",
+      dataIndex: "matKhau",
+      key: "matKhau",
+      render: (text) => "******", // Hide password
+    },
+    {
+      title: "THAO TÁC",
+      key: "action",
+      render: (_, record) => (
+        <div className="flex gap-2 items-center">
+          <Button
+            onClick={() => openEditModal(record)}
+            type="text"
+            icon={<EditOutlined style={{ color: "blue" }} />}
+          />
+          <Button
+            onClick={() => {
+              setShowModalDelete(true);
+              setSelectedNhanVien(record);
+            }}
+            type="text"
+            icon={<DeleteOutlined style={{ color: "red" }} />}
+          />
+        </div>
+      ),
+    },
+  ];
 
-                {show && (
-                    <div className='qtv_qlnhanvien_themnhanvien' style={{ display: show ? 'block' : 'none' }}>
-                        <div className='qtv_qlnhanvien_themnhanvien_tieude'>Thêm nhân viên mới
-                            <svg onClick={() => setShow(false)} xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 8 8"><path fill="" d="M1.41 0L0 1.41l.72.72L2.5 3.94L.72 5.72L0 6.41l1.41 1.44l.72-.72l1.81-1.81l1.78 1.81l.69.72l1.44-1.44l-.72-.69l-1.81-1.78l1.81-1.81l.72-.72L6.41 0l-.69.72L3.94 2.5L2.13.72L1.41 0z" /></svg>
-                        </div>
-                        <div className='qtv_qlnhanvien_themnhanvien_noidung'>
-                            <div className='qtv_qlnhanvien_themnhanvien_nhapdl'>
-                                <div className='qtv_qlnhanvien_themnhanvien_nhapdl_nhan'>Họ và tên</div>
-                                <input type="text" placeholder="Nhập họ và tên" />
-                            </div>
-                        </div>
+  const filteredData = listNhanVien.filter((item) =>
+    item.hoTen?.toLowerCase().includes(debouncedSearchText.toLowerCase())
+  );
 
-                        <div className='qtv_qlnhanvien_themnhanvien_noidung'>
-                            <div className='qtv_qlnhanvien_themnhanvien_nhapdl'>
-                                <div className='qtv_qlnhanvien_themnhanvien_nhapdl_nhan'>Số CCCD</div>
-                                <input type="text" placeholder="Nhập dữ liệu" />
-                            </div>
-                        </div>
+  return (
+    <>
+      <QTV_Nav />
+      <main className="qtv_qlnhanvien_main p-4 bg-gray-50 min-h-screen">
+        <div className="qtv_qlnhanvien_tieude mx-4 mt-4 rounded-lg flex items-center justify-between bg-white p-4 shadow-sm mb-4">
+          <div className="text-xl font-bold">Quản Lý Nhân Viên</div>
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            onClick={openCreateModal}
+          >
+            Thêm nhân viên
+          </Button>
+        </div>
 
-                        <div className='qtv_qlnhanvien_themnhanvien_noidung'>
-                            <div className='qtv_qlnhanvien_themnhanvien_nhapdl'>
-                                <div className='qtv_qlnhanvien_themnhanvien_nhapdl_nhan'>Tên đăng nhập</div>
-                                <input type="text" placeholder="Nhập dữ liệu" />
-                            </div>
-                        </div>
+        <div className="flex flex-col md:flex-row gap-4 p-4 mx-4 bg-white rounded-lg shadow-md my-4 items-center">
+          <Input
+            placeholder="Tìm kiếm theo tên..."
+            allowClear
+            enterButton
+            className="w-full md:w-96"
+            onChange={(e) => setSearchText(e.target.value)}
+            prefix={<SearchOutlined />}
+          />
+          <Button type="primary" icon={<SearchOutlined />}>
+            Tìm kiếm
+          </Button>
+        </div>
 
-                        <div className='qtv_qlnhanvien_themnhanvien_noidung'>
-                            <div className='qtv_qlnhanvien_themnhanvien_nhapdl'>
-                                <div className='qtv_qlnhanvien_themnhanvien_nhapdl_nhan'>Mật khẩu</div>
-                                <input type="text" placeholder="Nhập dữ liệu" />
-                            </div>
-                        </div>
+        <div className="bg-white p-4 mx-4 rounded-lg shadow-md">
+          <Table
+            columns={columns}
+            dataSource={filteredData}
+            pagination={{
+              pageSize: 10,
+              showSizeChanger: true,
+              showQuickJumper: true,
+            }}
+            className="overflow-x-auto"
+            rowKey="maNhanVien"
+          />
+        </div>
 
+        <ModalNhanVien
+          open={modalState.open}
+          type={modalState.type}
+          dataEdit={selectedNhanVien}
+          onCancel={closeModal}
+          onOk={handleCreateSuccess}
+        />
 
-                        <div className='qtv_qlnhanvien_themnhanvien_button'>
-                            <div className='qtv_qlnhanvien_themnhanvien_button_nhan'>Thêm nhân viên</div>
-                        </div>
-
-                    </div>
-                )}
-
-                {show1 && (
-                    <div className='qtv_qlnhanvien_suanhanvien' style={{ display: show1 ? 'block' : 'none' }}>
-                        <div className='qtv_qlnhanvien_suanhanvien_tieude'>Sửa thông tin nhân viên
-                            <svg onClick={() => setShow1(false)} xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 8 8"><path fill="" d="M1.41 0L0 1.41l.72.72L2.5 3.94L.72 5.72L0 6.41l1.41 1.44l.72-.72l1.81-1.81l1.78 1.81l.69.72l1.44-1.44l-.72-.69l-1.81-1.78l1.81-1.81l.72-.72L6.41 0l-.69.72L3.94 2.5L2.13.72L1.41 0z" /></svg>
-                        </div>
-                        <div className='qtv_qlnhanvien_suanhanvien_noidung'>
-                            <div className='qtv_qlnhanvien_suanhanvien_nhapdl'>
-                                <div className='qtv_qlnhanvien_suanhanvien_nhapdl_nhan'>Họ và tên</div>
-                                <input type="text" placeholder="Nhập họ và tên" />
-                            </div>
-                        </div>
-
-                        <div className='qtv_qlnhanvien_suanhanvien_noidung'>
-                            <div className='qtv_qlnhanvien_suanhanvien_nhapdl'>
-                                <div className='qtv_qlnhanvien_suanhanvien_nhapdl_nhan'>Số CCCD</div>
-                                <input type="text" placeholder="Nhập dữ liệu" />
-                            </div>
-                        </div>
-
-                        <div className='qtv_qlnhanvien_suanhanvien_noidung'>
-                            <div className='qtv_qlnhanvien_suanhanvien_nhapdl'>
-                                <div className='qtv_qlnhanvien_suanhanvien_nhapdl_nhan'>Tên đăng nhập</div>
-                                <input type="text" placeholder="Nhập dữ liệu" />
-                            </div>
-                        </div>
-
-                        <div className='qtv_qlnhanvien_suanhanvien_noidung'>
-                            <div className='qtv_qlnhanvien_suanhanvien_nhapdl'>
-                                <div className='qtv_qlnhanvien_suanhanvien_nhapdl_nhan'>Mật khẩu</div>
-                                <input type="text" placeholder="Nhập dữ liệu" />
-                            </div>
-                        </div>
-
-
-                        <div className='qtv_qlnhanvien_suanhanvien_button'>
-                            <div className='qtv_qlnhanvien_suanhanvien_button_nhan1'>Sửa thông tin</div>                        </div>
-
-                    </div>
-                )}
-            </main>
-
-
-
-        </>
-    )
+        <Modal
+          title="Xóa nhân viên"
+          open={showModalDelete}
+          onOk={() => deleteNV(selectedNhanVien?.maNhanVien)}
+          onCancel={() => setShowModalDelete(false)}
+        >
+          <p>
+            Bạn có chắc chắn muốn xóa nhân viên{" "}
+            <strong>{selectedNhanVien?.hoTen}</strong>?
+          </p>
+        </Modal>
+      </main>
+    </>
+  );
 }
