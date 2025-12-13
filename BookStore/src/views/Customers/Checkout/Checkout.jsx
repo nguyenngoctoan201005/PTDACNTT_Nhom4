@@ -21,7 +21,7 @@ import {
 import { useGlobalContext } from "../../../GlobalContext";
 import { insertDonHang } from "../../../api/donHangService";
 import { formatCurrency } from "../../../hooks/formatCurrentcy";
-import RequireLoginPage from "../../../components/RequireLoginPage";
+import RequireLoginPage from "../../../components/RequireLoginPage/RequireLoginPage";
 
 const { Option } = Select;
 
@@ -136,12 +136,12 @@ const Checkout = () => {
         tenNguoiNhan: values.hoTen,
         email: values.email,
         diaChiGiaoHang: `${values.address}, ${values.ward}, ${values.city}`,
-        phiGiaoHang: orderSummary.total,
+        phiGiaoHang: 0,
         trangThai: "CHO_XAC_NHAN",
         ngayDat: new Date().toISOString().split("T")[0],
         soDTNguoiNhan: values.soDT,
         maNV: 1,
-        maGiamGia: discount > 0 ? 1 : 1,
+        maGiamGia: Number(discountCode),
         maKH: user?.maKH,
         maPTTT: 1,
         maQuanHuyen: values.ward,

@@ -318,7 +318,7 @@ export default function QTV_Xemxoasach() {
             columns={columns}
             dataSource={listSach}
             pagination={{
-              pageSize: 10,
+              pageSize: 5,
               showSizeChanger: true,
               showQuickJumper: true,
             }}

@@ -32,7 +32,7 @@ import { useGlobalContext } from "../../GlobalContext";
 import ProtectedRoute from "../../routes/guard/ProtectedRoutes";
 import { useDebounce } from "../../hooks/useDebounce";
 import { useState, useEffect, useRef } from "react";
-import { suggestSach } from "../../api/sachService";
+import { getListTheLoai } from "../../api/theLoaiService";
 
 const { Header, Content, Footer } = Layout;
 const { Title, Text, Link } = Typography;
@@ -44,6 +44,23 @@ const CustomerLayout = ({ type }) => {
   const isLoginOrRegister =
     location.pathname === "/login" || location.pathname === "register";
   const searchRef = useRef(null);
+  const [listTheLoai, setListTheLoai] = useState([]);
+
+  const fetchTheLoai = async () => {
+    try {
+      const res = await getListTheLoai();
+      setListTheLoai(res.result || []);
+    } catch (error) {
+      console.error(error);
+      message.error("Lỗi khi lấy danh sách thể loại");
+    }
+  };
+
+  useEffect(() => {
+    fetchTheLoai();
+  }, []);
+
+  console.log("listTheLoai", listTheLoai);
 
   const genres = [
     {
@@ -115,7 +132,7 @@ const CustomerLayout = ({ type }) => {
   ];
 
   const handleMenuClick = (e) => {
-    navigate(`${e.key}`);
+    navigate(`/books?maLoai=${e.key}`);
   };
 
   // Suggest sách
@@ -303,7 +320,10 @@ const CustomerLayout = ({ type }) => {
           <Menu
             mode="horizontal"
             onClick={handleMenuClick}
-            items={genres}
+            items={listTheLoai.slice(0, 10).map((item) => ({
+              key: item.maLoai,
+              label: item.tenLoai,
+            }))}
             style={{
               flex: 1,
               minWidth: 0,

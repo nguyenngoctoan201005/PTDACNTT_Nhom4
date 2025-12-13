@@ -15,7 +15,7 @@ import { useState, useEffect } from "react";
 import { UnorderedListOutlined } from "@ant-design/icons";
 import { useGlobalContext } from "../../../GlobalContext";
 import { formatCurrency } from "../../../hooks/formatCurrentcy";
-import RequireLoginPage from "../../../components/RequireLoginPage";
+import RequireLoginPage from "../../../components/RequireLoginPage/RequireLoginPage";
 
 const Cart = () => {
   const { cart, fetchCart, token } = useGlobalContext();
