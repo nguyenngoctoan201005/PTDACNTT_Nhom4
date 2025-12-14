@@ -5,6 +5,7 @@ import { Navigate, Outlet } from "react-router-dom";
 import { profileRoutes } from "./modules/profile";
 import ProfileLayout from "../layout/ProfileLayout/ProfileLayout";
 import { adminRoutes } from "./modules/admin";
+import { staffRoutes } from "./modules/staff";
 import ProtectedRoute from "./guard/ProtectedRoutes";
 
 export const privateRoutes = [
@@ -27,6 +28,14 @@ export const privateRoutes = [
     children: [
       { index: true, element: <Navigate to="qtvbangdieukhien" replace /> },
       ...adminRoutes,
+    ],
+  },
+  {
+    path: "/nhanvien",
+    element: <ProtectedRoute allowedRoles={["STAFF"]} />,
+    children: [
+      { index: true, element: <Navigate to="bangdieukhien" replace /> },
+      ...staffRoutes,
     ],
   },
 ];

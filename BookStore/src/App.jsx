@@ -6,14 +6,14 @@ import { GlobalProvider } from "./GlobalContext";
 import { App as AntdApp } from "antd";
 import LoadingSpinner from "./components/LoadingSpinner";
 
-import { NV_Bangdieukhien } from "./page/nv_page/nv_bangdieukhien/NV_Bangdieukhien.jsx";
-import { NV_Quanlydonhang } from "./page/nv_page/nv_quanlydonhang/NV_Quanlydonhang.jsx";
-import { NV_Huyvatrahang } from "./page/nv_page/nv_huyvatrahang/NV_Huyvatrahang.jsx";
-import { NV_Baotrisach } from "./page/nv_page/nv_baotrisach/NV_Baotrisach.jsx";
-import { NV_Quanlydanhgia } from "./page/nv_page/nv_quanlydanhgia/NV_Quanlydanhgia.jsx";
-import { NV_Chitietdonhang } from "./page/nv_page/nv_chitietdonhang/NV_Chitietdonhang.jsx";
-import { NV_Thongke } from "./page/nv_page/nv_thongke/NV_Thongke.jsx";
-import { NV_Chinhsuasach } from "./page/nv_page/nv_chinhsuasach/NV_Chinhsuasach.jsx";
+// import { NV_Bangdieukhien } from "./page/nv_page/nv_bangdieukhien/NV_Bangdieukhien.jsx";
+// import { NV_Quanlydonhang } from "./page/nv_page/nv_quanlydonhang/NV_Quanlydonhang.jsx";
+// import { NV_Huyvatrahang } from "./page/nv_page/nv_huyvatrahang/NV_Huyvatrahang.jsx";
+// import { NV_Baotrisach } from "./page/nv_page/nv_baotrisach/NV_Baotrisach.jsx";
+// import { NV_Quanlydanhgia } from "./page/nv_page/nv_quanlydanhgia/NV_Quanlydanhgia.jsx";
+// import { NV_Chitietdonhang } from "./page/nv_page/nv_chitietdonhang/NV_Chitietdonhang.jsx";
+// import { NV_Thongke } from "./page/nv_page/nv_thongke/NV_Thongke.jsx";
+// import { NV_Chinhsuasach } from "./page/nv_page/nv_chinhsuasach/NV_Chinhsuasach.jsx";
 // import { QTV_Bangdieukhien } from "./page/qtv_page/qtv_bangdieukhien/QTV_Bangdieukhien.jsx";
 // import { QTV_Xemxoasach } from "./page/qtv_page/qtv_quanlysach/qtv_xemxoasach/QTV_Xemxoasach.jsx";
 // import { QTV_Quanlytheloai } from "./page/qtv_page/qtv_quanlytheloai/QTV_Quanlytheloai.jsx";
@@ -52,7 +52,7 @@ function App() {
                   ))}
               </Route>
             ))}
-
+            {/* 
             <Route path="/bangdieukhien" element={<NV_Bangdieukhien />}></Route>
             <Route path="/quanlydonhang" element={<NV_Quanlydonhang />}></Route>
             <Route path="/huyvatrahang" element={<NV_Huyvatrahang />}></Route>
@@ -63,7 +63,7 @@ function App() {
             <Route
               path="/chitietdonhang"
               element={<NV_Chitietdonhang />}
-            ></Route>
+            ></Route> */}
             {/* <Route
               path="/qtvbangdieukhien"
               element={<QTV_Bangdieukhien />}

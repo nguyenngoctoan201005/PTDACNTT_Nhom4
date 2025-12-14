@@ -14,6 +14,11 @@ export const getUserInfo = async (data) => {
   return res.data;
 };
 
+export const getNhanVienInfo = async () => {
+  const res = await axiosInstance.get("/nv/myInfo");
+  return res.data;
+};
+
 export const register = async (data) => {
   const response = await axiosInstance.post("/kh", { 
     hoTen: data.hoTen,

@@ -9,7 +9,11 @@ import {
   getRoles,
   removeRoles,
 } from "./auth/auth";
-import { login as handleLogin, getUserInfo } from "./api/authService";
+import {
+  login as handleLogin,
+  getUserInfo,
+  getNhanVienInfo,
+} from "./api/authService";
 import {
   insertGioHang,
   updateSoLuongGioHang,
@@ -42,7 +46,11 @@ export const GlobalProvider = ({ children }) => {
         if (storedRoles) {
           setRoles(storedRoles);
         }
-        await fetchUserInfo(storedToken);
+        if (storedRoles.includes("STAFF")) {
+          await fetchNhanVienInfo();
+        } else {
+          await fetchUserInfo(storedToken);
+        }
         await fetchCart();
       }
       setLoadingAuth(false);
@@ -60,6 +68,16 @@ export const GlobalProvider = ({ children }) => {
     }
   };
 
+  const fetchNhanVienInfo = async () => {
+    try {
+      const res = await getNhanVienInfo();
+      setUser(res.result);
+    } catch (error) {
+      console.error("Fetch nhan vien error:", error || "Unknown error");
+      handleLogout();
+    }
+  };
+
   const login = async (data) => {
     try {
       setIsLoading(true);
@@ -70,11 +88,17 @@ export const GlobalProvider = ({ children }) => {
       setToken(t);
       await saveRoles(roles);
       setRoles(roles);
-      await fetchUserInfo(t);
+      if (roles.includes("STAFF")) {
+        await fetchNhanVienInfo();
+      } else {
+        await fetchUserInfo(t);
+      }
       await fetchCart();
       message.success("Đăng nhập thành công!");
       if (roles.includes("ADMIN")) {
         navigate("/admin");
+      } else if (roles.includes("STAFF")) {
+        navigate("/nhanvien");
       } else {
         navigate("/");
       }
@@ -97,7 +121,7 @@ export const GlobalProvider = ({ children }) => {
   const fetchCart = async () => {
     try {
       const res = await getGioHang();
-      setCart(res.result || []);
+      setCart(res?.result || { chiTietGHResponses: [] });
 
       let total = 0;
       res.result.chiTietGHResponses.forEach((g) => {
@@ -148,7 +172,7 @@ export const GlobalProvider = ({ children }) => {
     }
   };
 
-  const isAuthenticated = !!user;
+  const isAuthenticated = !!token;
 
   return (
     <GlobalContext.Provider

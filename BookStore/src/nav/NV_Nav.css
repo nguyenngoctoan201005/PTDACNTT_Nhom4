@@ -50,6 +50,13 @@
     font-size: 20px;
 }
 
+.nav_chucnang_selected {
+    color: white !important;
+    background-color: #2d333b;
+    border-radius: 20px;
+    font-weight: 500;
+}
+
 .nav_chucnang svg{
     fill: currentColor; /* icon đổi màu theo chữ */
     width: 25px;
