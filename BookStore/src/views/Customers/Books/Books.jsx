@@ -15,156 +15,20 @@ import {
   message,
   Slider,
   Button,
+  Empty,
 } from "antd";
 import { useState, useEffect } from "react";
 import BookCard from "../../../components/BookCard";
 import { Link, useSearchParams } from "react-router";
-import { getListRequestSach, searchSach } from "../../../api/sachService";
+import {
+  getListRequestSach,
+  searchSach,
+  getSachByMaLoai,
+} from "../../../api/sachService";
+import { getListTheLoai } from "../../../api/theLoaiService";
 
 const Books = () => {
-  const genres = [
-    {
-      label: "Fiction",
-      value: "fiction",
-    },
-    {
-      label: "Mystery",
-      value: "mystery",
-    },
-    {
-      label: "Romance",
-      value: "romance",
-    },
-    {
-      label: "Sci-Fi",
-      value: "sci-fi",
-    },
-    {
-      label: "Biography",
-      value: "biography",
-    },
-    {
-      label: "Self-Help",
-      value: "self-help",
-    },
-  ];
-  const genreList = [
-    {
-      label: "All",
-      value: "",
-    },
-    ...genres,
-  ];
-  const premiumBooks = [
-    {
-      imageUrl: "https://via.placeholder.com/150x200?text=Midnight+Library",
-      type: "comedy",
-      discount: 17,
-      name: "The Midnight Library",
-      author: "Matt Haig",
-      price: 2.99,
-      id: 1,
-    },
-    {
-      imageUrl: "https://via.placeholder.com/150x200?text=Atomic+Habits",
-      type: "self-help",
-      discount: 10,
-      name: "Atomic Habits",
-      author: "James Clear",
-      price: 5.49,
-      id: 2,
-    },
-    {
-      imageUrl: "https://via.placeholder.com/150x200?text=1984",
-      type: "fiction",
-      discount: 20,
-      name: "1984",
-      author: "George Orwell",
-      price: 3.99,
-      id: 3,
-    },
-    {
-      imageUrl: "https://via.placeholder.com/150x200?text=Harry+Potter",
-      type: "fantasy",
-      discount: 15,
-      name: "Harry Potter and the Philosopher's Stone",
-      author: "J.K. Rowling",
-      price: 4.99,
-      id: 4,
-    },
-    {
-      imageUrl: "https://via.placeholder.com/150x200?text=Midnight+Library",
-      type: "comedy",
-      discount: 17,
-      name: "The Midnight Library",
-      author: "Matt Haig",
-      price: 2.99,
-      id: 1,
-    },
-    {
-      imageUrl: "https://via.placeholder.com/150x200?text=Atomic+Habits",
-      type: "self-help",
-      discount: 10,
-      name: "Atomic Habits",
-      author: "James Clear",
-      price: 5.49,
-      id: 2,
-    },
-    {
-      imageUrl: "https://via.placeholder.com/150x200?text=1984",
-      type: "fiction",
-      discount: 20,
-      name: "1984",
-      author: "George Orwell",
-      price: 3.99,
-      id: 3,
-    },
-    {
-      imageUrl: "https://via.placeholder.com/150x200?text=Harry+Potter",
-      type: "fantasy",
-      discount: 15,
-      name: "Harry Potter and the Philosopher's Stone",
-      author: "J.K. Rowling",
-      price: 4.99,
-      id: 4,
-    },
-    {
-      imageUrl: "https://via.placeholder.com/150x200?text=Midnight+Library",
-      type: "comedy",
-      discount: 17,
-      name: "The Midnight Library",
-      author: "Matt Haig",
-      price: 2.99,
-      id: 1,
-    },
-    {
-      imageUrl: "https://via.placeholder.com/150x200?text=Atomic+Habits",
-      type: "self-help",
-      discount: 10,
-      name: "Atomic Habits",
-      author: "James Clear",
-      price: 5.49,
-      id: 2,
-    },
-    {
-      imageUrl: "https://via.placeholder.com/150x200?text=1984",
-      type: "fiction",
-      discount: 20,
-      name: "1984",
-      author: "George Orwell",
-      price: 3.99,
-      id: 3,
-    },
-    {
-      imageUrl: "https://via.placeholder.com/150x200?text=Harry+Potter",
-      type: "fantasy",
-      discount: 15,
-      name: "Harry Potter and the Philosopher's Stone",
-      author: "J.K. Rowling",
-      price: 4.99,
-      id: 4,
-    },
-  ];
+  const [genreList, setGenreList] = useState([]);
 
   const [searchParams] = useSearchParams();
   const keyword = searchParams.get("keyword");
@@ -173,10 +37,27 @@ const Books = () => {
   const [listSach, setListSach] = useState([]);
   const [loadingSearch, setLoadingSearch] = useState(false);
 
+  // Fetch genres on component mount
+  useEffect(() => {
+    const fetchGenres = async () => {
+      try {
+        const res = await getListTheLoai();
+        const formattedGenres = res.result.map((genre) => ({
+          label: genre.tenLoai,
+          value: genre.maLoai,
+        }));
+        setGenreList(formattedGenres);
+      } catch (err) {
+        message.error("Lỗi khi tải danh sách thể loại");
+      }
+    };
+    fetchGenres();
+  }, []);
+
   useEffect(() => {
     form.setFieldsValue({
       name: keyword || "",
-      genres: [],
+      genres: undefined,
       price: [0, 5000000],
     });
 
@@ -195,10 +76,9 @@ const Books = () => {
     const isPriceChanged =
       price[0] !== DEFAULT_PRICE[0] || price[1] !== DEFAULT_PRICE[1];
 
-    const hasFilter = genres?.length > 0 || isPriceChanged;
+    const hasFilter = !!genres || isPriceChanged;
 
     const resetAfterFilter = () => {
-      // form.resetFields();
       setCurrentPage(1);
       setLoadingSearch(false);
     };
@@ -206,13 +86,12 @@ const Books = () => {
     try {
       if (!hasSearch && !hasFilter) {
         const res = await getListRequestSach({
-          // genres: genres || [],
           minPrice: 0,
           maxPrice: 5000000,
           orderBy: "donGia",
           order: "asc",
         });
-        setListSach(res);
+        setListSach(res.result);
         resetAfterFilter();
         return;
       }
@@ -225,39 +104,97 @@ const Books = () => {
       }
 
       if (!hasSearch && hasFilter) {
-        const res = await getListRequestSach({
-          // genres: genres || [],
-          minPrice: price?.[0] || 0,
-          maxPrice: price?.[1] || 5000000,
-          orderBy: "donGia",
-          order: "asc",
-        });
-        setListSach(res);
+        // If genre is selected, fetch books for that genre
+        if (genres) {
+          const genrePromise = getSachByMaLoai({ maLoai: genres });
+
+          const pricePromise = getListRequestSach({
+            minPrice: price?.[0] || 0,
+            maxPrice: price?.[1] || 5000000,
+            orderBy: "donGia",
+            order: "asc",
+          });
+
+          const [genreRes, priceRes] = await Promise.all([
+            genrePromise,
+            pricePromise,
+          ]);
+
+          // Ensure priceRes is an array
+          const priceArray = Array.isArray(priceRes)
+            ? priceRes
+            : priceRes?.result || [];
+
+          // Intersect results if price filter is applied
+          if (isPriceChanged) {
+            const intersect = genreRes.result.filter((item) =>
+              priceArray.some((f) => f.maSach === item.maSach)
+            );
+            setListSach(intersect);
+          } else {
+            setListSach(genreRes.result);
+          }
+        } else {
+          // Only price filter
+          const res = await getListRequestSach({
+            minPrice: price?.[0] || 0,
+            maxPrice: price?.[1] || 5000000,
+            orderBy: "donGia",
+            order: "asc",
+          });
+          setListSach(res.result);
+        }
         resetAfterFilter();
         return;
       }
 
       if (hasSearch && hasFilter) {
-        const [searchRes, filterRes] = await Promise.all([
+        const promises = [
           searchSach({ term: name }),
           getListRequestSach({
-            // genres: genres || [],
             minPrice: price?.[0] || 0,
             maxPrice: price?.[1] || 5000000,
             orderBy: "donGia",
             order: "asc",
           }),
-        ]);
+        ];
 
-        const intersect = searchRes.filter((item) =>
-          filterRes.some((f) => f.id === item.id)
+        // Fetch books for the selected genre
+        let genreRes = null;
+        if (genres) {
+          genreRes = await getSachByMaLoai({ maLoai: genres });
+        }
+
+        const results = await Promise.all(promises);
+        const searchRes = results[0].result;
+        const priceRes = results[1];
+
+        // Ensure priceRes is an array
+        const priceArray = Array.isArray(priceRes)
+          ? priceRes
+          : priceRes?.result || [];
+
+        let intersect = searchRes;
+
+        // Intersect with price filter
+        intersect = intersect.filter((item) =>
+          priceArray.some((f) => f.maSach === item.maSach)
         );
+
+        // Intersect with genre filter if applicable
+        if (genreRes) {
+          intersect = intersect.filter((item) =>
+            genreRes.result.some((f) => f.maSach === item.maSach)
+          );
+        }
 
         setListSach(intersect);
         resetAfterFilter();
         return;
       }
     } catch (err) {
+      setLoadingSearch(false);
+      console.error(err);
       message.error("Lỗi khi lọc / tìm kiếm sách");
     }
   };
@@ -269,9 +206,7 @@ const Books = () => {
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
 
-  const temptSach = typeof listSach === "object" ? listSach : premiumBooks;
-
-  const currentBooks = temptSach.slice(startIndex, endIndex);
+  const currentBooks = listSach.slice(startIndex, endIndex);
 
   return (
     <div className="bg-blue-50 py-6 px-[80px]">
@@ -319,10 +254,10 @@ const Books = () => {
                 >
                   <Select
                     showSearch
-                    mode="multiple"
                     placeholder="Chọn 1 thể loại"
                     optionFilterProp="label"
                     options={genreList}
+                    allowClear
                   />
                 </Form.Item>
                 <Form.Item
@@ -356,39 +291,47 @@ const Books = () => {
           </Card>
         </Col>
         <Col span={24}>
-          <Flex wrap gap={12} className="justify-center">
-            {currentBooks.map((book, index) => (
-              <div
-                key={index}
-                style={{
-                  flex: "1 1 240px",
-                  maxWidth: "240px",
-                }}
-              >
-                <BookCard
-                  imageUrl={book.imageUrl}
-                  type={book.type}
-                  discount={book.discount}
-                  name={book.tenSach}
-                  author={book.author}
-                  price={book.donGia}
-                  id={book.maSach}
-                  showButton={true}
-                  onAddToCart={() => console.log("added")}
-                  onAddToFavorite={() => console.log("added")}
-                />
-              </div>
-            ))}
-          </Flex>
-          <Pagination
-            align="center"
-            current={currentPage}
-            pageSize={pageSize}
-            total={premiumBooks.length}
-            onChange={(page) => setCurrentPage(page)}
-            style={{ marginTop: 16, textAlign: "center" }}
-            showQuickJumper
-          />
+          {currentBooks.length > 0 ? (
+            <>
+              <Flex wrap gap={12} className="justify-center">
+                {currentBooks.map((book, index) => (
+                  <div
+                    key={index}
+                    style={{
+                      flex: "1 1 240px",
+                      maxWidth: "240px",
+                    }}
+                  >
+                    <BookCard
+                      imageUrl={book.imageUrl}
+                      type={book.type}
+                      discount={book.discount}
+                      name={book.tenSach}
+                      author={book.author}
+                      price={book.donGia}
+                      id={book.maSach}
+                      showButton={true}
+                      onAddToCart={() => console.log("added")}
+                      onAddToFavorite={() => console.log("added")}
+                    />
+                  </div>
+                ))}
+              </Flex>
+              <Pagination
+                align="center"
+                current={currentPage}
+                pageSize={pageSize}
+                total={listSach.length}
+                onChange={(page) => setCurrentPage(page)}
+                style={{ marginTop: 16, textAlign: "center" }}
+                showQuickJumper
+              />
+            </>
+          ) : (
+            <div className="bg-white p-4">
+              <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+            </div>
+          )}
         </Col>
       </Row>
     </div>
