@@ -12,13 +12,16 @@ export const profileRoutes = [
   {
     path: "info",
     element: <Info />,
+    title: "Thông tin cá nhân - Readify",
   },
   {
     path: "update",
     element: <UpdateProfile />,
+    title: "Cập nhật hồ sơ - Readify",
   },
   {
     path: "change-password",
     element: <ChangePassword />,
+    title: "Đổi mật khẩu - Readify",
   },
 ];

@@ -15,17 +15,21 @@ export const customerRoutes = [
   {
     path: "cart",
     element: <Cart />,
+    title: "Giỏ hàng - Readify",
   },
   {
     path: "favorite",
     element: <Favorite />,
+    title: "Sách yêu thích - Readify",
   },
   {
     path: "order-list",
     element: <Order />,
+    title: "Đơn hàng của tôi - Readify",
   },
   {
     path: "checkout",
     element: <Checkout />,
+    title: "Thanh toán - Readify",
   },
 ];

@@ -31,33 +31,41 @@ export const adminRoutes = [
   {
     path: "qtvbangdieukhien",
     element: <QTV_Bangdieukhien />,
+    title: "Bảng điều khiển - Quản trị viên",
   },
   {
     path: "qtvquanlysach",
     element: <QTV_Xemxoasach />,
+    title: "Quản lý sách - Quản trị viên",
   },
   {
     path: "qtvquanlytheloai",
     element: <QTV_Quanlytheloai />,
+    title: "Quản lý thể loại - Quản trị viên",
   },
   {
     path: "qtvkhachhang",
     element: <QTV_KhachHang />,
+    title: "Quản lý khách hàng - Quản trị viên",
   },
   {
     path: "qtvquanlynhanvien",
     element: <QTV_Quanlynhanvien />,
+    title: "Quản lý nhân viên - Quản trị viên",
   },
   {
     path: "qtvquanlykhuyenmai",
     element: <QTV_Quanlykhuyenmai />,
+    title: "Quản lý khuyến mãi - Quản trị viên",
   },
   {
     path: "qtvlichsuchinhsua",
     element: <QTV_Lichsuchinhsua />,
+    title: "Lịch sử chỉnh sửa - Quản trị viên",
   },
   {
     path: "qtvthemsachmoi",
     element: <QTV_Themsachmoi />,
+    title: "Thêm sách mới - Quản trị viên",
   },
 ];

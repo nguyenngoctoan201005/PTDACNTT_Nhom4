@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import { GlobalProvider } from "./GlobalContext";
 import { App as AntdApp } from "antd";
 import LoadingSpinner from "./components/LoadingSpinner";
+import PageTitle from "./components/PageTitle";
 
 // import { NV_Bangdieukhien } from "./page/nv_page/nv_bangdieukhien/NV_Bangdieukhien.jsx";
 // import { NV_Quanlydonhang } from "./page/nv_page/nv_quanlydonhang/NV_Quanlydonhang.jsx";
@@ -30,14 +31,24 @@ function App() {
         <Suspense fallback={<LoadingSpinner />}>
           <Routes>
             {routes.map((route, index) => (
-              <Route key={index} path={route.path} element={route.element}>
+              <Route
+                key={index}
+                path={route.path}
+                element={
+                  <PageTitle title={route.title}>{route.element}</PageTitle>
+                }
+              >
                 {route.children &&
                   route.children.map((child, childIndex) => (
                     <Route
                       key={childIndex}
                       index={child.index}
                       path={child.path}
-                      element={child.element}
+                      element={
+                        <PageTitle title={child.title}>
+                          {child.element}
+                        </PageTitle>
+                      }
                     >
                       {child.children &&
                         child.children.map((childI, childIndexI) => (
@@ -45,7 +56,11 @@ function App() {
                             key={childIndexI}
                             index={childI.index}
                             path={childI.path}
-                            element={childI.element}
+                            element={
+                              <PageTitle title={childI.title}>
+                                {childI.element}
+                              </PageTitle>
+                            }
                           />
                         ))}
                     </Route>

@@ -29,33 +29,41 @@ export const staffRoutes = [
   {
     path: "bangdieukhien",
     element: <NV_Bangdieukhien />,
+    title: "Bảng điều khiển - Nhân viên",
   },
   {
     path: "quanlydonhang",
     element: <NV_Quanlydonhang />,
+    title: "Quản lý đơn hàng - Nhân viên",
   },
   {
     path: "huyvatrahang",
     element: <NV_Huyvatrahang />,
+    title: "Hủy và trả hàng - Nhân viên",
   },
   {
     path: "baotrisach",
     element: <NV_Baotrisach />,
+    title: "Bảo trì sách - Nhân viên",
   },
   {
     path: "quanlydanhgia",
     element: <NV_Quanlydanhgia />,
+    title: "Quản lý đánh giá - Nhân viên",
   },
   {
     path: "chitietdonhang",
     element: <NV_Chitietdonhang />,
+    title: "Chi tiết đơn hàng - Nhân viên",
   },
   {
     path: "thongke",
     element: <NV_Thongke />,
+    title: "Thống kê - Nhân viên",
   },
   {
     path: "chinhsuasach",
     element: <NV_Chinhsuasach />,
+    title: "Chỉnh sửa sách - Nhân viên",
   },
 ];
