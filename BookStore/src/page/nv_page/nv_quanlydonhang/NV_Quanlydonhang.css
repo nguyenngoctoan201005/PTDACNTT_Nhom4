@@ -1,180 +1,183 @@
-.nv_trangqldh_main {
-    background-color: #f3f4f6;
-    width: calc(100% - 280px);
+.qtv_khachhang_main {
+    margin: 0;
+    padding: 0;
+    width: 100%;
     height: 100vh;
-    border-radius: 0 10px 10px 0;
+    background-color: #F9FAFB;
+    width: calc(100vw - 300px);
+    margin-left: 300px;
     overflow-y: auto;
-    margin-left: 280px;
-
 }
 
-.nv_trangqldh_tieude {
-    font-size: 40px;
+.qtv_khachhang_tieude{
+    font-size: 30px;
     font-weight: bold;
-    margin: 20px;
-    color: #111827;
-}
-
-
-.nv_qldh_td {
-    text-align: center;
-    font-size: 16px;
-    color: #4e5765;
-    padding: 20px 0 20px 0;
-}
-
-
-
-.nv_qldh_th {
-    background-color: rgb(227, 226, 226);
-    color: #111827;
-    ;
-    font-size: 18px;
-    padding: 15px 0 15px 0;
-}
-
-.nv_trangqldh_trangthai {
-    display: inline-block;
-    background-color: rgba(254, 240, 138, 1);
-    padding: 5px 9px 5px 9px;
-    border-radius: 15px;
-    color: #92400e;
-    font-weight: 500;
-}
-
-.nv_trangqldh_button_xct,
-.nv_trangqldh_button_xn {
-    color: white;
-    font-size: 15px;
-    border: none;
-    padding: 10px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.nv_trangqldh_button_xct {
-    background-color: #3b82f6;
-    margin-right: 5px;
-    border-radius: 15px;
-}
-
-.nv_trangqldh_button_xn {
-    background-color: #10b981;
-    border-radius: 15px;
-}
-
-.nv_trangqldh_button:hover {
-    background-color: #2563eb;
-    transition: all 0.3s ease;
-}
-
-.ql_btn_xn:hover {
-    background-color: #0d9e6e;
-    transition: all 0.3s ease;
-}
-
-.nv_qldh_table {
-    border-collapse: collapse;
-    background-color: rgb(255, 255, 255);
-    margin-left: 70px;
-    border-radius: 20px;
-    width: 1100px;
-    margin-top: 40px;
-}
-
-.nv_qldh_ctdh {
-    width: 700px;
+    color: #333;
     background-color: white;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-    border-radius: 20px;
-    padding: 20px;
-    position: fixed;
-    top: 55%;
-    left: 850px;
-    transform: translate(-50%, -50%);
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
 }
 
-.nv_qldh_ctdh_tieude {
-    font-size: 25px;
-    font-weight: bold;
-    margin: 10px 0 20px 0;
+.qtv_khachhang_search{
+    background-color: white;
+    border-radius: 15px;
     display: flex;
-    justify-content: space-between;
-    color: #111827;
     align-items: center;
+    padding: 10px;
+    width: 1150px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px 0;
 }
 
-.nv_qldh_ctdh_tieude svg {
+.qtv_khachhang_search input{
+    width: 550px;
+    height: 40px;
+    border-radius: 10px;
+    padding-left: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-right: 30px;
+    margin-left: 20px;
+    border: 1px solid #c1bfbf;
+}
+
+.qtv_khachhang_search select{
+    width: 200px;
+    height: 45px;
+    border-radius: 10px;
+    padding-left: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-right: 20px;
+}
+
+.qtv_khachhang_search svg{
+    width: 60px;
+    height: 30px;
+    cursor: pointer;
+    background-color: rgb(206, 205, 205);
+    padding: 7px;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.qtv_khachhang_search svg:hover{
+    background-color: rgb(186, 185, 185);
+    transition: background-color 0.3s ease;
+}
+
+.qtv_khachhang_noidung{
+    width: 100%;
+    max-width: 1150px;
+    padding: 10px;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-left: 35px;
+}
+
+.qtv_khachhang_noidung_table_th1{
+    width: 50px;
+    border-radius: 8px 0 0 8px;
+}
+
+.qtv_khachhang_noidung_table_th2{
+    width: 260px;
+}
+
+.qtv_khachhang_noidung_table_th3{
+    width: 280px;
+}
+
+.qtv_khachhang_noidung_table_th4{
+    width: 80px;
+}
+
+.qtv_khachhang_noidung_table_th5{
+    width: 230px;
+}
+
+.qtv_khachhang_noidung_table_th6{
+    width: 95px;
+    border-radius: 0 8px 8px 0;
+}
+.qtv_khachhang_noidung_table_td6 svg{
     width: 20px;
     height: 20px;
     cursor: pointer;
 }
 
-.nv_qldh_ctdh_noidung_tieude {
-    font-size: 20px;
+.qtv_kh_th{
+    font-size: 16px;
     font-weight: bold;
-    color: #5b5f69;
+    color: #333;
+    padding: 15px 10px;
+    text-align: center;
+    background-color: #f3f4f6;
+}
+
+.qtv_kh_td{
+    padding: 20px 0;
+    text-align: center;
+    border-bottom: 1px solid #e3e3e3;
+    font-size: 15px;
+    color: #4B5563;
+}
+
+.qtv_khachhang_xemchitiet{
+    width: 600px;
+    padding: 20px 25px;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-left: 35px;
+    position: fixed;
+    top: 400px;
+    left: 55%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+.qtv_khachhang_xemchitiet_tieude{
+    font-size: 25px;
+    font-weight: bold;
+    color: #333;
+    padding: 10px 0;
     margin-bottom: 10px;
 }
 
-.nv_qldh_ctdh_noidung_ct {
-    font-size: 15px;
-    font-weight: 400;
+.qtv_xct_nhan{
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
 }
 
-
-.nv_qldh_ctdh_noidung_right_ct select {
-    width: 150px;
-    height: 30px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+.qtv_xct_giatri{
+    font-size: 18px;
+    color: #484d55;
 }
 
-.nv_qldh_ctdh_noidung_right_ct button {
-    width: 90px;
-    height: 30px;
-    border-radius: 5px;
-    border: none;
-    background-color: #3b82f6;
-    color: white;
-    cursor: pointer;
-    margin-left: 10px;
+.qtv_kh_xct_thongtin{
+    margin-bottom: 10px;
 }
 
-.nv_qldh_ctdh_noidung {
+.qtv_khachhang_xemchitiet_tieude{
     display: flex;
+    align-items: center;
     justify-content: space-between;
 }
 
-.nv_qldh_ctdh_table {
-    width: 650px;
-    border: 1;
-    margin-top: 20px;
+.qtv_khachhang_xemchitiet_tieude svg{
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
 }
 
-.nv_qldh_ctdh_table_th1,
-.nv_qldh_ctdh_table_th2,
-.nv_qldh_ctdh_table_th3,
-.nv_qldh_ctdh_table_th4 {
-    padding: 5px;
-    text-align: center;
-    background-color: #ccc;
+table.qtv_khachhang_noidung_table {
+    width: 100%;
 }
 
-.nv_qldh_ctdh_table_th1 {
-    width: 300px;
-}
-
-.nv_qldh_ctdh_table_th2 {
-    width: 60px;
-}
-
-.nv_qldh_ctdh_table_td {
-    text-align: center;
-    font-size: 15px;
-    padding: 10px;
-}
-
-.nv_qldh_ctdh_table_tr {
-    border-bottom: 1px solid #ccc;
+.qtv_kh_td.qtv_khachhang_noidung_table_td6{
+    display: flex;
+    justify-content: center;
 }

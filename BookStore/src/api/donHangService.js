@@ -1,17 +1,23 @@
 import axiosInstance from "../auth/axiosInstance";
 
 export const insertDonHang = async (data) => {
-  const res = await axiosInstance.post("/don-hang/createDH", { ...data });
+    const res = await axiosInstance.post("/don-hang/createDH", { ...data });
 
-  return res.data;
+    return res.data;
 };
 
-export const getDetailDonHang = async (data) => {
-  const res = await axiosInstance.get(`/don-hang/getDH/${data.id}`, { ...data });
+// export const getDetailDonHang = async (data) => {
+//   const res = await axiosInstance.get(`/don-hang/getDH/${data.id}`, { ...data });
 
-  return res.data;
+//   return res.data;
+// };
+
+export const getDetailDonHang = async (maDonHang) => { // <<< Thay đổi tham số
+    // Dùng trực tiếp maDonHang trong URL, bỏ cái object config {...data} thừa thãi đi
+    const res = await axiosInstance.get(`/don-hang/getDH/${maDonHang}`);
+    return res.data;
 };
-import axiosInstance from "../auth/axiosInstance";
+
 
 export const createDonHang = async (data) => {
     // data structure matches DonHangCreate body in backend

@@ -18,6 +18,30 @@
     margin: 20px;
 }
 
+.nv_huyvatrahang_main {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: #F9FAFB;
+    width: calc(100vw - 300px);
+    margin-left: 300px;
+    overflow-y: auto;
+}
+
+.nv_huyvatrahang_tieude {
+    font-size: 30px;
+    font-weight: bold;
+    color: #333;
+    background-color: white;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .nv_huyvatrahang_td {
     text-align: center;
     font-size: 16px;
