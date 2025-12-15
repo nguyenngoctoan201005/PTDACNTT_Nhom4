@@ -1,31 +1,31 @@
 import axiosInstance from "../auth/axiosInstance";
 
 export const getListKhuyenMai = async (data) => {
-  const res = await axiosInstance.get("/khuyen-mai", { ...data });
+  const res = await axiosInstance.get("/giam-gia", { ...data });
 
   return res.data;
 };
 
 export const getDetailKhuyenMai = async (data) => {
-  const res = await axiosInstance.get(`/khuyen-mai/${data.maKhuyenMai}`, { ...data });
+  const res = await axiosInstance.get(`/giam-gia/${data.maGiamGia}`, { ...data });
 
   return res.data;
 };
 
 export const insertKhuyenMai = async (data) => {
-  const res = await axiosInstance.post("/khuyen-mai", { ...data });
+  const res = await axiosInstance.post("/giam-gia", { ...data });
 
   return res.data;
 };
 
 export const updateKhuyenMai = async (data) => {
-  const res = await axiosInstance.put(`/khuyen-mai/${data.maKhuyenMai}`, { ...data });
+  const res = await axiosInstance.put(`/giam-gia/${data.maGiamGia}`, { ...data });
 
   return res.data;
 };
 
-export const deleteKhuyenMai = async (maKhuyenMai) => {
-  const res = await axiosInstance.delete(`/khuyen-mai/${maKhuyenMai}`);
+export const deleteKhuyenMai = async (maGiamGia) => {
+  const res = await axiosInstance.delete(`/giam-gia/${maGiamGia}`);
 
   return res.data;
 };

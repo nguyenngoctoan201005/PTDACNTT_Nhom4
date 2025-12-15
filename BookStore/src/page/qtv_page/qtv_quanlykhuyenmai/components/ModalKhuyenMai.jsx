@@ -24,7 +24,7 @@ const ModalKhuyenMai = ({
           try {
             setIsLoading(true);
             const res = await getDetailKhuyenMai({
-              maKhuyenMai: dataEdit.maKhuyenMai,
+              maGiamGia: dataEdit.maGiamGia,
             });
             if (res && res.result) {
               const promotion = res.result;
@@ -81,6 +81,7 @@ const ModalKhuyenMai = ({
       // Convert dayjs objects to ISO strings for API
       const payload = {
         ...values,
+        maGiamGia: Number(values.maGiamGia),
         ngayBatDau: values.ngayBatDau
           ? values.ngayBatDau.format("YYYY-MM-DD")
           : null,
@@ -129,7 +130,7 @@ const ModalKhuyenMai = ({
           label="Mã giảm giá"
           rules={[
             { required: true, message: "Vui lòng nhập mã giảm giá" },
-            { min: 3, message: "Mã giảm giá phải có ít nhất 3 ký tự" },
+            // { min: 1, message: "Mã giảm giá phải có ít nhất 1 ký tự" },
           ]}
         >
           <Input placeholder="Nhập mã giảm giá" disabled={type === "update"} />

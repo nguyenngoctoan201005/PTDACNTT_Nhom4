@@ -43,7 +43,7 @@ export default function QTV_Quanlykhuyenmai() {
 
   const handleDelete = async () => {
     try {
-      await deleteKhuyenMai(selectedKhuyenMai.maKhuyenMai);
+      await deleteKhuyenMai(selectedKhuyenMai.maGiamGia);
       message.success("Xóa khuyến mãi thành công");
       fetchKhuyenMai();
       setShowModalDelete(false);
@@ -74,7 +74,9 @@ export default function QTV_Quanlykhuyenmai() {
   };
 
   const filteredData = listKhuyenMai.filter((item) =>
-    item.maGiamGia?.toLowerCase().includes(debouncedSearchText.toLowerCase())
+    String(item.maGiamGia)
+      .toLowerCase()
+      .includes(debouncedSearchText.toLowerCase())
   );
 
   const columns = [
