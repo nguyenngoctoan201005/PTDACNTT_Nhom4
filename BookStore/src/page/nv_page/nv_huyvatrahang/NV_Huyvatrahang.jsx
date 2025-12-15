@@ -204,7 +204,7 @@ import { getAllDonHang } from "../../../api/donHangService";
 import ModalChiTietDonHang from "../nv_quanlydonhang/components/ModalChiTietDonHang";
 import { useDebounce } from "../../../hooks/useDebounce";
 
-export function NV_Huyvatrahang() {
+export default function NV_Huyvatrahang() {
     const [listDonHang, setListDonHang] = useState([]);
     const [loading, setLoading] = useState(false);
     const [searchText, setSearchText] = useState("");

@@ -1,77 +1,32 @@
-
+/* Cleaned up for new Dashboard design using Tailwind/AntD */
 .nv_trangthongke_main {
+    margin-left: 300px;
+    width: calc(100vw - 300px);
+    transition: all 0.2s;
     background-color: #f3f4f6;
-    width: calc(100% - 280px);
-    height: 100vh;
-    border-radius: 0 10px 10px 0;
-    overflow-y: auto;
-    margin-left: 280px;
-
+    /* bg-gray-100 */
 }
 
-.nv_trangthongke_tieude{
-    font-size: 40px;
-    font-weight: bold;
-    margin: 20px;
-    color: #111827;
+/* Ensure Charts fit well */
+.recharts-wrapper {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
-.nv_trangthongke_noidung{
-    margin: 20px;
-    background-color: white;
-    padding: 10px;
-    border-radius: 20px;
+/* Customize Scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
 }
 
-.nv_trangthongke_noidung_tieude{
-    font-size: 25px;
-    font-weight: bold;
-    margin: 20px;
-    color: #111827;
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
 }
 
-.nv_trangthongke_noidung_tong_nhan{
-    font-size: 20px;
-    font-weight: 500;
-    color: #111827;
-}
-.nv_trangthongke_noidung_tong_dl{
-    font-size: 25px;
-    font-weight: 700;
-    margin: 20px 0 20px 0px;
-    color: #4a71c5;
+::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
 }
 
-
-.nv_trangthongke_noidung_tong{
-    background-color: #eff1f4;
-    width: 1100px;
-    margin-left: 30px;
-    border-radius: 20px;
-    padding: 15px;
-
+::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
 }
-
-.nv_tk_table {
-    width: 1100px;
-    margin-left: 45px;
-    border-collapse: collapse;
-    margin-top: 30px;
-}
-.nv_tk_th{
-    font-size: 18px;
-    background-color: #eff1f4;
-    padding: 15px;
-}
-
-.nv_tk_tr {
-    border-bottom: 1px solid #ddd;
-}
-
-.nv_tk_td{
-    text-align: center;
-    font-size: 16px;
-    color: #4e5765;
-    padding: 20px 0 20px 0;
-}
- 

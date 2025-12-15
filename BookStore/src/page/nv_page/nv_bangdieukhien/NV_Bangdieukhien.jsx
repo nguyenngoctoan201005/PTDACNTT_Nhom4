@@ -1,444 +1,616 @@
-import "./NV_Bangdieukhien.css";
+import React, { useState, useEffect } from "react";
 import { NV_Nav } from "../../../nav/NV_Nav";
+import {
+  Card,
+  Row,
+  Col,
+  Statistic,
+  Table,
+  Tag,
+  Avatar,
+  List,
+  DatePicker,
+  Space,
+  Button,
+  message,
+} from "antd";
+import dayjs from "dayjs";
+import {
+  ArrowUpOutlined,
+  ArrowDownOutlined,
+  DollarCircleOutlined,
+  ShoppingCartOutlined,
+  WarningOutlined,
+  StarOutlined,
+  UndoOutlined,
+} from "@ant-design/icons";
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+  Legend,
+} from "recharts";
+import "./NV_Bangdieukhien.css";
+
+// IMPORT SERVICE DỮ LIỆU THẬT
+import { getAllDonHang } from "../../../api/donHangService";
+import { getListDanhGia } from "../../../api/danhGiaService";
+import { getAllSachs } from "../../../api/sachService";
+
+const { RangePicker } = DatePicker;
+
+// --- Dữ liệu Mock (Giữ lại cho biểu đồ nếu chưa có API) ---
+const revenueData = [
+  { name: "Jan", revenue: 4000, profit: 2400 },
+  { name: "Feb", revenue: 3000, profit: 1398 },
+  { name: "Mar", revenue: 2000, profit: 9800 },
+  { name: "Apr", revenue: 2780, profit: 3908 },
+  { name: "May", revenue: 1890, profit: 4800 },
+  { name: "Jun", revenue: 2390, profit: 3800 },
+  { name: "Jul", revenue: 3490, profit: 4300 },
+];
+
+const categoryData = [
+  { name: "Tiểu Thuyết", value: 400 },
+  { name: "Kinh Tế", value: 300 },
+  { name: "Khoa Học", value: 300 },
+  { name: "Thiếu Nhi", value: 200 },
+];
+
+const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884d8"];
+
+// --- Hàm chuyển trạng thái từ VN sang EN để dùng chung Tag màu ---
+const mapStatusToEnglish = (statusVN) => {
+  switch (statusVN) {
+    case "Đã giao":
+      return "Đã giao";
+    case "Chờ xác nhận":
+      return "Chờ xác nhận";
+    case "Đang giao":
+      return "Đang giao";
+    case "Đã hủy":
+      return "Đã hủy";
+    case "Trả hàng":
+      return "Trả hàng";
+    default:
+      return "Default";
+  }
+};
+
 
 export default function NV_Bangdieukhien() {
-  console.log("NV_Bangdieukhien");
+  const [dateRange, setDateRange] = useState([
+    dayjs().startOf("month"),
+    dayjs(),
+  ]);
+
+  // STATE MỚI CHO DỮ LIỆU THẬT
+  const [orders, setOrders] = useState([]);
+  const [reviews, setReviews] = useState([]);
+  const [lowStock, setLowStock] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [totalRevenue, setTotalRevenue] = useState(0); // <<< STATE MỚI CHO DOANH THU
+
+  // USE EFFECT GỌI API
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+
+        // 1. Lấy tất cả đơn hàng (cho Tổng doanh thu, Đơn hàng gần đây, Trả hàng)
+        const ordersRes = await getAllDonHang();
+        if (ordersRes.code === 0 && ordersRes.result) {
+          const allOrders = ordersRes.result;
+
+          // Tính Tổng Doanh Thu (chỉ tính các đơn "Đã giao")
+          const revenue = allOrders
+            .filter(order => order.trangThai === "Đã giao")
+            .reduce((sum, order) => sum + order.tongTien, 0);
+
+          setTotalRevenue(revenue); // <<< SET DOANH THU THẬT
+
+          // Sắp xếp đơn hàng theo maDonHang giảm dần (ID cao nhất = mới nhất)
+          const sortedOrders = allOrders.sort((a, b) =>
+            b.maDonHang - a.maDonHang
+          );
+          setOrders(sortedOrders);
+        }
+
+        // 2. Lấy danh sách đánh giá mới
+        const reviewsRes = await getListDanhGia();
+        if (reviewsRes.code === 0 && reviewsRes.result) {
+          setReviews(reviewsRes.result.slice(0, 5));
+        }
+
+        // 3. Lấy sách tồn kho thấp
+        const lowStockRes = await getAllSachs({});
+        if (lowStockRes.code === 0 && lowStockRes.result && lowStockRes.result.data) {
+          const filteredLowStock = lowStockRes.result.data
+            .filter(sach => sach.soLuongCo < 10)
+            .map(sach => ({
+              key: sach.maSach,
+              name: sach.tenSach,
+              code: `S${sach.maSach}`,
+              stock: sach.soLuongCo,
+            }))
+            .slice(0, 5);
+          setLowStock(filteredLowStock);
+        }
+
+      } catch (error) {
+        console.error("Error fetching dashboard data:", error);
+        message.error("Lỗi khi tải dữ liệu tổng quan. Vui lòng kiểm tra console.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const onDateChange = (dates) => {
+    if (dates) {
+      setDateRange(dates);
+    }
+  };
+
+  const renderStatusTag = (status) => {
+    let color = "";
+    switch (status) {
+      case "Đã giao":
+        color = "green";
+        break;
+      case "Chờ xác nhận":
+        color = "orange";
+        break;
+      case "Đang giao":
+        color = "blue";
+        break;
+      case "Đã hủy":
+        color = "red";
+        break;
+      case "Trả hàng":
+        color = "gold";
+        break;
+      default:
+        color = "default";
+    }
+    return <Tag color={color}>{status}</Tag>;
+  };
+
+  // CHUẨN BỊ DỮ LIỆU THẬT CHO CÁC MỤC
+
+  // 1. Đơn hàng gần đây
+  const recentOrdersData = orders
+    .slice(0, 5)
+    .map((order) => ({
+      key: order.maDonHang,
+      id: `#ORD-${order.maDonHang}`,
+      customer: order.tenNguoiNhan,
+      date: dayjs(order.ngayDat).format('DD/MM/YYYY'),
+      amount: new Intl.NumberFormat("vi-VN").format(order.tongTien) + " đ",
+      status: mapStatusToEnglish(order.trangThai),
+    }));
+
+  // 2. Yêu cầu trả hàng
+  const returnRequestsData = orders
+    .filter(order => order.trangThai === "Trả hàng")
+    .map(order => ({
+      key: order.maDonHang,
+      orderId: `DH${order.maDonHang}`,
+      reason: order.ghiChu || "Yêu cầu trả hàng không có lý do cụ thể",
+      customer: order.tenNguoiNhan,
+      date: dayjs(order.ngayDat).format('DD/MM/YYYY'),
+    }));
+
+  // 3. Đánh giá mới
+  const newReviewsData = reviews.map(review => ({
+    key: review.maDanhGia,
+    orderId: `DG${review.maDanhGia}`,
+    stars: review.soSao,
+    customer: review.hoTen || "Khách ẩn danh",
+    comment: review.binhLuan,
+  }));
+
+  // Dữ liệu Statistic Cards
+  const totalReturnRequests = returnRequestsData.length;
+  const totalNewReviews = newReviewsData.length;
+
+
+  const orderColumns = [
+    { title: "Mã ĐH", dataIndex: "id", key: "id" },
+    { title: "Khách hàng", dataIndex: "customer", key: "customer" },
+    { title: "Ngày đặt", dataIndex: "date", key: "date" },
+    {
+      title: "Tổng tiền",
+      dataIndex: "amount",
+      key: "amount",
+      render: (text) => <span className="font-semibold">{text}</span>,
+    },
+    {
+      title: "Trạng thái",
+      dataIndex: "status",
+      key: "status",
+      render: (status) => renderStatusTag(status),
+    },
+  ];
+
+  const lowStockColumns = [
+    { title: "Sản phẩm", dataIndex: "name", key: "name" },
+    { title: "Mã SP", dataIndex: "code", key: "code" },
+    {
+      title: "Tồn kho",
+      dataIndex: "stock",
+      key: "stock",
+      render: (text) => <span className="text-red-600 font-bold">{text}</span>,
+    },
+    {
+      title: "Hành động",
+      key: "action",
+      render: () => <Button type="link" size="small">Nhập hàng</Button>,
+    },
+  ];
+
   return (
     <>
       <NV_Nav />
-      <main className="nv_trangbdk_main">
-        <div className="nv_trangbdk_tieude">Bảng điều khiển</div>
-        <hr
-          style={{
-            border: "1px solid rgb(210, 206, 206)",
-            width: "1200px",
-            marginLeft: "25px",
-            marginTop: "25px",
-          }}
-        />
-        <div className="nv_trangbdk_noidung">
-          <div className="nv_trangbdk_noidung_tang1">
-            <div className="nv_trangbdk_noidung_tang1_lf nv_trangbdk_noidung_tang1_ov">
-              <div className="nv_trangbdk_noidung_tang1_lf_tieude nv_trangbdk_noidung_tang1_tieude">
-                <div className="nv_trangbdk_noidung_tang1_lf_tieude_nd nv_trangbdk_noidung_tang1_tieude_nd">
-                  Thống kê tổng quan
-                </div>
-                <div className="nv_trangbdk_noidung_tang1_lf_tieude_ico">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="200"
-                    height="200"
-                    viewBox="0 0 24 24"
-                    fill="#000000"
-                  >
-                    <g fill="none" stroke="#000000" stroke-width="1.5">
-                      <path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z" />
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="m7 14l2.293-2.293a1 1 0 0 1 1.414 0l1.586 1.586a1 1 0 0 0 1.414 0L17 10m0 0v2.5m0-2.5h-2.5"
-                      />
-                    </g>
-                  </svg>
-                </div>
-              </div>
-
-              <div className="nv_trangbdk_noidung_tang1_lf_cond">
-                <div className="nv_trangbdk_noidung_tang1_lf_cond_1">
-                  <div className="nv_trangbdk_noidung_tang1_lf_cond_1_ico">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="45"
-                      height="45"
-                      viewBox="0 0 24 24"
-                      fill="rgb(37 99 235)"
-                    >
-                      <g fill="rgb(37 99 235)">
-                        <path
-                          d="M2.084 2.751a.75.75 0 0 1 .956-.459l.301.106c.617.217 1.14.401 1.553.603c.44.217.818.483 1.102.899c.282.412.399.865.452 1.362c.024.222.037.468.044.738H17.13c1.685 0 3.202 0 3.646.577c.444.577.27 1.447-.077 3.186l-.5 2.425c-.315 1.528-.472 2.293-1.024 2.742c-.552.45-1.332.45-2.893.45h-5.303c-2.79 0-4.184 0-5.05-.914c-.866-.914-.93-1.884-.93-4.826V7.038c0-.74 0-1.235-.042-1.615c-.04-.363-.109-.545-.2-.677c-.087-.129-.22-.25-.524-.398c-.323-.158-.762-.314-1.43-.549l-.26-.091a.75.75 0 0 1-.46-.957Z"
-                          opacity=".5"
-                        />
-                        <path d="M7.5 18a1.5 1.5 0 1 1 0 3a1.5 1.5 0 0 1 0-3Zm9 0a1.5 1.5 0 1 1 0 3a1.5 1.5 0 0 1 0-3Zm-.958-8.483a.75.75 0 1 0-1.086-1.034l-2.314 2.43l-.6-.63a.75.75 0 1 0-1.086 1.034l1.143 1.2a.75.75 0 0 0 1.086 0l2.857-3Z" />
-                      </g>
-                    </svg>
-                  </div>
-                  <div className="nv_trangbdk_noidung_tang1_lf_cond_1_nd">
-                    <div className="nv_trangbdk_noidung_tang1_lf_cond_1_nd_tieude">
-                      Tổng đơn hàng
-                    </div>
-                    <div className="nv_trangbdk_noidung_tang1_lf_cond_1_nd_dulieu">
-                      1,200
-                    </div>
-                  </div>
-                </div>
-
-                <div className="nv_trangbdk_noidung_tang1_lf_cond_1">
-                  <div className="nv_trangbdk_noidung_tang1_lf_cond_2_ico">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="45"
-                      height="45"
-                      viewBox="0 0 24 24"
-                      fill="#16a34a"
-                    >
-                      <g fill="#16a34a">
-                        <path d="M11.25 7.847c-.936.256-1.5.975-1.5 1.653s.564 1.397 1.5 1.652V7.848Zm1.5 5.001v3.304c.936-.255 1.5-.974 1.5-1.652c0-.678-.564-1.397-1.5-1.652Z" />
-                        <path
-                          fill-rule="evenodd"
-                          d="M22 12c0 5.523-4.477 10-10 10S2 17.523 2 12S6.477 2 12 2s10 4.477 10 10ZM12 5.25a.75.75 0 0 1 .75.75v.317c1.63.292 3 1.517 3 3.183a.75.75 0 0 1-1.5 0c0-.678-.564-1.397-1.5-1.653v3.47c1.63.292 3 1.517 3 3.183s-1.37 2.891-3 3.183V18a.75.75 0 0 1-1.5 0v-.317c-1.63-.292-3-1.517-3-3.183a.75.75 0 0 1 1.5 0c0 .678.564 1.397 1.5 1.652v-3.469c-1.63-.292-3-1.517-3-3.183s1.37-2.891 3-3.183V6a.75.75 0 0 1 .75-.75Z"
-                          clip-rule="evenodd"
-                        />
-                      </g>
-                    </svg>
-                  </div>
-                  <div className="nv_trangbdk_noidung_tang1_lf_cond_1_nd">
-                    <div className="nv_trangbdk_noidung_tang1_lf_cond_1_nd_tieude">
-                      Tổng doanh thu
-                    </div>
-                    <div className="nv_trangbdk_noidung_tang1_lf_cond_1_nd_dulieu">
-                      150.000.000
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="nv_trangbdk_noidung_tang1_rg nv_trangbdk_noidung_tang1_ov">
-              <div className="nv_trangbdk_noidung_tang1_rg_tieude nv_trangbdk_noidung_tang1_tieude">
-                <div className="nv_trangbdk_noidung_tang1_rg_tieude_nd nv_trangbdk_noidung_tang1_tieude_nd">
-                  Thông báo đơn hàng mới
-                </div>
-                <div className="nv_trangbdk_noidung_tang1_rg_tieude_thbao">
-                  3 mới
-                </div>
-              </div>
-
-              <div className="nv_trangbdk_noidung_tang1_rg_donhang">
-                <div className="nv_trangbdk_noidung_tang1_rg_donhang_dulieu">
-                  <div className="nv_trangbdk_noidung_tang1_rg_donhang_dulieu_madh">
-                    Đơn hàng DH001
-                  </div>
-                  <div className="nv_trangbdk_noidung_tang1_rg_donhang_dulieu_thongtin">
-                    Nguyễn Văn A - 2 sản phẩm
-                  </div>
-                </div>
-                <div className="nv_trangbdk_noidung_tang1_rg_donhang_dulieu_tongtien">
-                  1.250.000đ
-                </div>
-              </div>
-
-              <div className="nv_trangbdk_noidung_tang1_rg_donhang">
-                <div className="nv_trangbdk_noidung_tang1_rg_donhang_dulieu">
-                  <div className="nv_trangbdk_noidung_tang1_rg_donhang_dulieu_madh">
-                    Đơn hàng DH001
-                  </div>
-                  <div className="nv_trangbdk_noidung_tang1_rg_donhang_dulieu_thongtin">
-                    Nguyễn Văn A - 2 sản phẩm
-                  </div>
-                </div>
-                <div className="nv_trangbdk_noidung_tang1_rg_donhang_dulieu_tongtien">
-                  1.250.000đ
-                </div>
-              </div>
-
-              <div className="nv_trangbdk_noidung_tang1_rg_tbdonhang_ft">
-                Xem tất cả đơn hàng
-              </div>
-            </div>
-          </div>
-
-          <div className="nv_trangbdk_noidung_tang2">
-            <div className="nv_trangbdk_noidung_tang2_header">
-              <div className="nv_trangbdk_noidung_tang2_header_tieude">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="30"
-                  height="30"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    fill="#B91C1C"
-                    fill-rule="evenodd"
-                    d="M3 10.417c0-3.198 0-4.797.378-5.335c.377-.537 1.88-1.052 4.887-2.081l.573-.196C10.405 2.268 11.188 2 12 2c.811 0 1.595.268 3.162.805l.573.196c3.007 1.029 4.51 1.544 4.887 2.081C21 5.62 21 7.22 21 10.417v1.574c0 5.638-4.239 8.375-6.899 9.536C13.38 21.842 13.02 22 12 22s-1.38-.158-2.101-.473C7.239 20.365 3 17.63 3 11.991v-1.574Zm9-3.167a.75.75 0 0 1 .75.75v4a.75.75 0 0 1-1.5 0V8a.75.75 0 0 1 .75-.75ZM12 16a1 1 0 1 0 0-2a1 1 0 0 0 0 2Z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-                Cảnh báo tồn kho thấp
-              </div>
-              <div className="nv_trangbdk_noidung_tang2_header_tb">
-                9 sản phẩm
-              </div>
-            </div>
-
-            <div className="nv_trangbdk_noidung_tang2_table">
-              <table>
-                <tr className="nv_trangbdk_noidung_tang2_tr">
-                  <th className="cbtk_th cbtk_th1">Sản phẩm</th>
-                  <th className="cbtk_th cbtk_th2">Mã sản phẩm </th>
-                  <th className="cbtk_th cbtk_th3">Số lượng còn lại</th>
-                  <th className="cbtk_th cbtk_th4">Hành động</th>
-                </tr>
-
-                <tr className="nv_trangbdk_noidung_tang2_tr">
-                  <td className="cbtk_td cbtk_td1">Đắc nhân tâm</td>
-                  <td className="cbtk_td cbtk_td2">S001</td>
-                  <td className="cbtk_td cbtk_td3">3</td>
-                  <td className="cbtk_td cbtk_td4">Chỉnh sửa</td>
-                </tr>
-
-                <tr className="nv_trangbdk_noidung_tang2_tr">
-                  <td className="cbtk_td cbtk_td1">Đắc nhân tâm</td>
-                  <td className="cbtk_td cbtk_td2">S001</td>
-                  <td className="cbtk_td cbtk_td3">3</td>
-                  <td className="cbtk_td cbtk_td4">Chỉnh sửa</td>
-                </tr>
-
-                <tr className="nv_trangbdk_noidung_tang2_tr">
-                  <td className="cbtk_td cbtk_td1">Đắc nhân tâm</td>
-                  <td className="cbtk_td cbtk_td2">S001</td>
-                  <td className="cbtk_td cbtk_td3">3</td>
-                  <td className="cbtk_td cbtk_td4">Chỉnh sửa</td>
-                </tr>
-              </table>
-            </div>
-          </div>
-
-          <div className="nv_trangbdk_noidung_tang3">
-            <div className="nv_trangbdk_noidung_tang3_lf">
-              <div className="nv_trangbdk_noidung_tang3_lf_tieude">
-                <div className="nv_trangbdk_noidung_tang3_lf_tieude_ndtt">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="30"
-                    height="30"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      fill="none"
-                      stroke="rgb(194 65 12) "
-                      stroke-linecap="round"
-                      stroke-width="1.5"
-                      d="m13 15.232l6.097 4.46c1.302.897 2.903-.27 2.903-2.118V15m-9-6.232l6.097-4.46C20.399 3.411 22 4.578 22 6.426V11M6.63 7.708l3.71-2.438c1.193-.785 2.66.237 2.66 1.853v9.754c0 1.616-1.467 2.638-2.661 1.853L2.92 13.853c-1.228-.807-1.228-2.899 0-3.706l.928-.61"
-                    />
-                  </svg>
-                  Yêu cầu trả hàng
-                </div>
-                <div className="nv_trangbdk_noidung_tang3_lf_tieude_thbao">
-                  9 yêu cầu
-                </div>
-              </div>
-              <div className="nv_trangbdk_noidung_tang3_lf_noidung">
-                <div className="nv_trangbdk_noidung_tang3_lf_noidung_caco">
-                  <div className="nv_trangbdk_noidung_tang3_lf_noidung_caco_dulieu1">
-                    Đơn hàng : DH001
-                  </div>
-                  <div className="nv_trangbdk_noidung_tang3_lf_noidung_caco_dulieu2">
-                    Lý do : Sách bị hư hỏng
-                  </div>
-                  <div className="nv_trangbdk_noidung_tang3_lf_noidung_caco_dulieu2">
-                    Khách hàng : Nguyễn Thị A
-                  </div>
-                </div>
-
-                <div className="nv_trangbdk_noidung_tang3_lf_noidung_caco">
-                  <div className="nv_trangbdk_noidung_tang3_lf_noidung_caco_dulieu1">
-                    Đơn hàng : DH001
-                  </div>
-                  <div className="nv_trangbdk_noidung_tang3_lf_noidung_caco_dulieu2">
-                    Lý do : Sách bị hư hỏng
-                  </div>
-                  <div className="nv_trangbdk_noidung_tang3_lf_noidung_caco_dulieu2">
-                    Khách hàng : Nguyễn Thị A
-                  </div>
-                </div>
-
-                <div className="nv_trangbdk_noidung_tang3_lf_noidung_caco_ft">
-                  Xem tất cả
-                </div>
-              </div>
-            </div>
-
-            <div className="nv_trangbdk_noidung_tang3_rg">
-              <div className="nv_trangbdk_noidung_tang3_rg_tieude">
-                <div className="nv_trangbdk_noidung_tang3_rg_tieude_ndtt">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="30"
-                    height="30"
-                    viewBox="0 0 24 24"
-                  >
-                    <g fill="none">
-                      <g clip-path="url(#solarSmartphoneUpdateBroken0)">
-                        <path
-                          stroke="#A16207"
-                          stroke-linecap="round"
-                          stroke-width="1.5"
-                          d="M20 10c0-3.771 0-5.657-1.172-6.828C17.765 2.109 16.114 2.01 13 2m7 12c0 3.771 0 5.657-1.172 6.828C17.657 22 15.771 22 12 22c-3.771 0-5.657 0-6.828-1.172C4 19.657 4 17.771 4 14v-2.999"
-                        />
-                        <path
-                          fill="#A16207"
-                          d="M2.73 4h-.75h.75Zm0 .8l-.554.506a.75.75 0 0 0 1.108 0L2.73 4.8Zm1.284-.294a.75.75 0 1 0-1.108-1.012l1.108 1.012Zm-1.46-1.012a.75.75 0 0 0-1.108 1.012l1.108-1.012ZM10.27 3.2l.554-.506a.75.75 0 0 0-1.108 0l.554.506Zm-1.284.294a.75.75 0 0 0 1.108 1.012L8.986 3.494Zm1.46 1.012a.75.75 0 0 0 1.108-1.012l-1.108 1.012Zm-5.87 1.8A.75.75 0 0 0 3.461 7.31l1.115-1.003ZM8.54 1.83A.75.75 0 0 0 9.71.892l-1.17.938ZM6.38-.75c-2.494 0-4.4 2.193-4.4 4.75h1.5c0-1.86 1.36-3.25 2.9-3.25v-1.5ZM1.981 4v.8h1.5V4h-1.5Zm1.303 1.306l.73-.8l-1.108-1.012l-.73.8l1.108 1.012Zm0-1.012l-.73-.8l-1.108 1.012l.73.8l1.108-1.012ZM6.62 8.75c2.494 0 4.4-2.193 4.4-4.75h-1.5c0 1.86-1.36 3.25-2.9 3.25v1.5ZM11.02 4v-.8h-1.5V4h1.5ZM9.717 2.694l-.73.8l1.108 1.012l.73-.8l-1.108-1.012Zm0 1.012l.73.8l1.108-1.012l-.73-.8l-1.108 1.012ZM3.46 7.309c.79.879 1.908 1.441 3.158 1.441v-1.5c-.785 0-1.509-.35-2.043-.944L3.461 7.31ZM9.71.892C8.914-.1 7.726-.75 6.381-.75v1.5c.843 0 1.617.404 2.159 1.08L9.71.892Z"
-                        />
-                        <path
-                          stroke="#A16207"
-                          stroke-linecap="round"
-                          stroke-width="1.5"
-                          d="M15 19H9"
-                        />
-                      </g>
-                      <defs>
-                        <clipPath id="solarSmartphoneUpdateBroken0">
-                          <path fill="#A16207" d="M0 0h24v24H0z" />
-                        </clipPath>
-                      </defs>
-                    </g>
-                  </svg>
-                  Đơn hàng cần cập nhật trạng thái
-                </div>
-                <div className="nv_trangbdk_noidung_tang3_rg_tieude_thbao">
-                  9 đơn hàng
-                </div>
-              </div>
-              <div className="nv_trangbdk_noidung_tang3_rg_noidung">
-                <div className="nv_trangbdk_noidung_tang3_rg_noidung_caco">
-                  <div className="nv_trangbdk_noidung_tang3_rg_noidung_caco_dulieu1">
-                    Đơn hàng : DH001
-                  </div>
-                  <div className="nv_trangbdk_noidung_tang3_rg_noidung_caco_dulieu2">
-                    Trạng thái : Chờ xác nhận
-                  </div>
-                  <div className="nv_trangbdk_noidung_tang3_rg_noidung_caco_dulieu2">
-                    Khách hàng : Nguyễn Thị A
-                  </div>
-                </div>
-
-                <div className="nv_trangbdk_noidung_tang3_rg_noidung_caco">
-                  <div className="nv_trangbdk_noidung_tang3_rg_noidung_caco_dulieu1">
-                    Đơn hàng : DH001
-                  </div>
-                  <div className="nv_trangbdk_noidung_tang3_rg_noidung_caco_dulieu2">
-                    Trạng thái : Chờ xác nhận
-                  </div>
-                  <div className="nv_trangbdk_noidung_tang3_rg_noidung_caco_dulieu2">
-                    Khách hàng : Nguyễn Thị A
-                  </div>
-                </div>
-                <div className="nv_trangbdk_noidung_tang3_lf_noidung_caco_ft">
-                  Xem tất cả
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="nv_trangbdk_noidung_tang4">
-            <div className="nv_trangbdk_noidung_tang4_lf">
-              <div className="nv_trangbdk_noidung_tang4_lf_tieude">
-                <div className="nv_trangbdk_noidung_tang4_lf_tieude_ndtt">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="35"
-                    height="35"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      fill="#374151"
-                      d="M9.153 5.408C10.42 3.136 11.053 2 12 2c.947 0 1.58 1.136 2.847 3.408l.328.588c.36.646.54.969.82 1.182c.28.213.63.292 1.33.45l.636.144c2.46.557 3.689.835 3.982 1.776c.292.94-.546 1.921-2.223 3.882l-.434.507c-.476.557-.715.836-.822 1.18c-.107.345-.071.717.001 1.46l.066.677c.253 2.617.38 3.925-.386 4.506c-.766.582-1.918.051-4.22-1.009l-.597-.274c-.654-.302-.981-.452-1.328-.452c-.347 0-.674.15-1.329.452l-.595.274c-2.303 1.06-3.455 1.59-4.22 1.01c-.767-.582-.64-1.89-.387-4.507l.066-.676c.072-.744.108-1.116 0-1.46c-.106-.345-.345-.624-.821-1.18l-.434-.508c-1.677-1.96-2.515-2.941-2.223-3.882c.293-.941 1.523-1.22 3.983-1.776l.636-.144c.699-.158 1.048-.237 1.329-.45c.28-.213.46-.536.82-1.182l.328-.588Z"
-                    />
-                  </svg>
-                  Đánh giá mới
-                </div>
-                <div className="nv_trangbdk_noidung_tang4_lf_tieude_thbao">
-                  9 đánh giá
-                </div>
-              </div>
-
-              <div className="nv_trangbdk_noidung_tang4_lf_noidung">
-                <div className="nv_trangbdk_noidung_tang4_lf_noidung_caco">
-                  <div className="nv_trangbdk_noidung_tang4_lf_noidung_caco_dulieu1">
-                    Đơn hàng : DH001
-                  </div>
-                  <div className="nv_trangbdk_noidung_tang4_lf_noidung_caco_dulieu2">
-                    Số sao : 5 sao
-                  </div>
-                  <div className="nv_trangbdk_noidung_tang4_lf_noidung_caco_dulieu2">
-                    Khách hàng : Nguyễn Thị A
-                  </div>
-                </div>
-
-                <div className="nv_trangbdk_noidung_tang4_lf_noidung_caco">
-                  <div className="nv_trangbdk_noidung_tang4_lf_noidung_caco_dulieu1">
-                    Đơn hàng : DH001
-                  </div>
-                  <div className="nv_trangbdk_noidung_tang4_lf_noidung_caco_dulieu2">
-                    Số sao : 5 sao
-                  </div>
-                  <div className="nv_trangbdk_noidung_tang4_lf_noidung_caco_dulieu2">
-                    Khách hàng : Nguyễn Thị A
-                  </div>
-                </div>
-                <div className="nv_trangbdk_noidung_tang4_lf_noidung_caco_ft">
-                  Xem tất cả
-                </div>
-              </div>
-            </div>
-
-            <div className="nv_trangbdk_noidung_tang4_rg">
-              <div className="nv_trangbdk_noidung_tang4_rg_tieude">
-                <div className="nv_trangbdk_noidung_tang4_rg_tieude_ndtt">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="30"
-                    height="30"
-                    viewBox="0 0 24 24"
-                    fill="#000000"
-                  >
-                    <g fill="#000000">
-                      <path
-                        fill-rule="evenodd"
-                        d="M4.727 2.712c.306-.299.734-.494 1.544-.6C7.105 2.002 8.209 2 9.793 2h4.414c1.584 0 2.688.002 3.522.112c.81.106 1.238.301 1.544.6c.305.3.504.72.613 1.513c.112.817.114 1.899.114 3.45v7.839H7.346c-.903 0-1.519-.001-2.047.138c-.472.124-.91.326-1.299.592V7.676c0-1.552.002-2.634.114-3.451c.109-.793.308-1.213.613-1.513Zm2.86 3.072a.82.82 0 0 0-.828.81c0 .448.37.811.827.811h8.828a.82.82 0 0 0 .827-.81a.82.82 0 0 0-.827-.811H7.586Zm-.828 4.594c0-.447.37-.81.827-.81h5.517a.82.82 0 0 1 .828.81a.82.82 0 0 1-.828.811H7.586a.82.82 0 0 1-.827-.81Z"
-                        clip-rule="evenodd"
-                      />
-                      <path d="M7.473 17.135c-1.079 0-1.456.007-1.746.083a2.464 2.464 0 0 0-1.697 1.538c.016.382.043.719.084 1.019c.109.793.308 1.213.613 1.513c.306.299.734.494 1.544.6c.834.11 1.938.112 3.522.112h4.414c1.584 0 2.688-.002 3.522-.111c.81-.107 1.238-.302 1.544-.601c.216-.213.38-.486.495-.91H7.586a.82.82 0 0 1-.827-.81c0-.448.37-.811.827-.811H19.97c.02-.466.027-1 .03-1.622H7.472Z" />
-                    </g>
-                  </svg>{" "}
-                  Sách mới thêm gần đây
-                </div>
-                <div className="nv_trangbdk_noidung_tang4_rg_tieude_thbao">
-                  9 sách mới
-                </div>
-              </div>
-
-              <div className="nv_trangbdk_noidung_tang4_rg_noidung">
-                <div className="nv_trangbdk_noidung_tang4_rg_noidung_caco">
-                  <div className="nv_trangbdk_noidung_tang4_rg_noidung_caco_dulieu1">
-                    Mã sách : DH001
-                  </div>
-                  <div className="nv_trangbdk_noidung_tang4_rg_noidung_caco_dulieu2">
-                    Thể loại : Văn học
-                  </div>
-                  <div className="nv_trangbdk_noidung_tang4_rg_noidung_caco_dulieu2">
-                    Số lượng : 50
-                  </div>
-                </div>
-
-                <div className="nv_trangbdk_noidung_tang4_rg_noidung_caco">
-                  <div className="nv_trangbdk_noidung_tang4_rg_noidung_caco_dulieu1">
-                    Mã sách : DH001
-                  </div>
-                  <div className="nv_trangbdk_noidung_tang4_rg_noidung_caco_dulieu2">
-                    Thể loại : Văn học
-                  </div>
-                  <div className="nv_trangbdk_noidung_tang4_rg_noidung_caco_dulieu2">
-                    Số lượng : 50
-                  </div>
-                </div>
-                <div className="nv_trangbdk_noidung_tang4_lf_noidung_caco_ft">
-                  Xem tất cả
-                </div>
-              </div>
-            </div>
-          </div>
+      {/* Container chính */}
+      <main className="nv_trangbdk_main bg-gray-50 min-h-screen p-6">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold text-gray-800 m-0">
+            Tổng quan hệ thống
+          </h2>
         </div>
+
+        {/* Row 1: Statistic Cards */}
+        <Row gutter={[16, 16]} className="mb-6">
+          <Col xs={24} sm={12} lg={6}>
+            <Card
+              bordered={false}
+              className="shadow-sm hover:shadow-md transition-shadow"
+            >
+              <Statistic
+                title="Tổng doanh thu"
+                value={totalRevenue} // <<< DỮ LIỆU THẬT
+                precision={0}
+                valueStyle={{ color: "#3f8600", fontWeight: "bold" }}
+                prefix={<DollarCircleOutlined />}
+                suffix="đ"
+                formatter={(value) =>
+                  new Intl.NumberFormat("vi-VN").format(value)
+                }
+              />
+              <div className="flex items-center mt-2 text-green-600 text-sm">
+                <ArrowUpOutlined />{" "}
+                {/* Giữ lại mock data so sánh nếu chưa có logic lọc theo thời gian */}
+                <span className="ml-1">10% so với tháng trước</span>
+              </div>
+            </Card>
+          </Col>
+          <Col xs={24} sm={12} lg={6}>
+            <Card
+              bordered={false}
+              className="shadow-sm hover:shadow-md transition-shadow"
+            >
+              <Statistic
+                title="Tổng đơn hàng"
+                value={orders.length || 0}
+                precision={0}
+                valueStyle={{ color: "#1677ff", fontWeight: "bold" }}
+                prefix={<ShoppingCartOutlined />}
+              />
+              <div className="flex items-center mt-2 text-green-600 text-sm">
+                <ArrowUpOutlined />{" "}
+                <span className="ml-1">5% so với tháng trước</span>
+              </div>
+            </Card>
+          </Col>
+          <Col xs={24} sm={12} lg={6}>
+            <Card
+              bordered={false}
+              className="shadow-sm hover:shadow-md transition-shadow"
+            >
+              <Statistic
+                title="Yêu cầu trả hàng"
+                value={totalReturnRequests}
+                precision={0}
+                valueStyle={{ color: "#cf1322", fontWeight: "bold" }}
+                prefix={<UndoOutlined />}
+              />
+              <div className="flex items-center mt-2 text-red-500 text-sm">
+                {totalReturnRequests > 0 ? <ArrowDownOutlined /> : <span className="ml-1">Không có yêu cầu</span>}{" "}
+                <span className="ml-1">{totalReturnRequests > 0 ? "Cần xử lý ngay" : ""}</span>
+              </div>
+            </Card>
+          </Col>
+          <Col xs={24} sm={12} lg={6}>
+            <Card
+              bordered={false}
+              className="shadow-sm hover:shadow-md transition-shadow"
+            >
+              <Statistic
+                title="Đánh giá mới"
+                value={totalNewReviews}
+                precision={0}
+                valueStyle={{ color: "#faad14", fontWeight: "bold" }}
+                prefix={<StarOutlined />}
+              />
+              <div className="flex items-center mt-2 text-gray-500 text-sm">
+                <span>Trong 7 ngày qua</span>
+              </div>
+            </Card>
+          </Col>
+        </Row>
+
+        {/* Row 2: Charts (Dữ liệu Mock) */}
+        <Row gutter={[16, 16]} className="mb-6">
+          <Col xs={24} lg={16}>
+            <Card
+              title="Biểu đồ doanh thu"
+              extra={
+                <Space>
+                  <span className="text-gray-600 font-medium">Lọc:</span>
+                  <RangePicker
+                    defaultValue={[dayjs().startOf("month"), dayjs()]}
+                    format="DD/MM/YYYY"
+                    onChange={onDateChange}
+                  />
+                </Space>
+              }
+              bordered={false}
+              className="shadow-sm h-full"
+            >
+              <div style={{ width: "100%", height: 300 }}>
+                <ResponsiveContainer>
+                  <AreaChart
+                    data={revenueData}
+                    margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+                  >
+                    <defs>
+                      <linearGradient
+                        id="colorRevenue"
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="1"
+                      >
+                        <stop
+                          offset="5%"
+                          stopColor="#8884d8"
+                          stopOpacity={0.8}
+                        />
+                        <stop
+                          offset="95%"
+                          stopColor="#8884d8"
+                          stopOpacity={0}
+                        />
+                      </linearGradient>
+                      <linearGradient
+                        id="colorProfit"
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="1"
+                      >
+                        <stop
+                          offset="5%"
+                          stopColor="#82ca9d"
+                          stopOpacity={0.8}
+                        />
+                        <stop
+                          offset="95%"
+                          stopColor="#82ca9d"
+                          stopOpacity={0}
+                        />
+                      </linearGradient>
+                    </defs>
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <Tooltip
+                      formatter={(value) =>
+                        new Intl.NumberFormat("en-US").format(value) + " $"
+                      }
+                    />
+                    <Legend />
+                    <Area
+                      type="monotone"
+                      dataKey="revenue"
+                      name="Doanh thu"
+                      stroke="#8884d8"
+                      fillOpacity={1}
+                      fill="url(#colorRevenue)"
+                    />
+                    <Area
+                      type="monotone"
+                      dataKey="profit"
+                      name="Lợi nhuận"
+                      stroke="#82ca9d"
+                      fillOpacity={1}
+                      fill="url(#colorProfit)"
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </div>
+            </Card>
+          </Col>
+          <Col xs={24} lg={8}>
+            <Card
+              title="Tỷ lệ danh mục"
+              bordered={false}
+              className="shadow-sm h-full"
+            >
+              <div style={{ width: "100%", height: 300 }}>
+                <ResponsiveContainer>
+                  <PieChart>
+                    <Pie
+                      data={categoryData}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={60}
+                      outerRadius={80}
+                      fill="#8884d8"
+                      paddingAngle={5}
+                      dataKey="value"
+                      label
+                    >
+                      {categoryData.map((entry, index) => (
+                        <Cell
+                          key={`cell-${index}`}
+                          fill={COLORS[index % COLORS.length]}
+                        />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                    <Legend />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+            </Card>
+          </Col>
+        </Row>
+
+        {/* Row 3: Recent Orders and Low Stock */}
+        <Row gutter={[16, 16]} className="mb-6">
+          <Col xs={24} lg={14}>
+            <Card
+              title="Đơn hàng gần đây"
+              bordered={false}
+              className="shadow-sm h-full"
+              extra={<a href="#">Xem tất cả</a>}
+            >
+              <Table
+                columns={orderColumns}
+                dataSource={recentOrdersData}
+                pagination={false}
+                loading={loading}
+                size="small"
+              />
+            </Card>
+          </Col>
+          <Col xs={24} lg={10}>
+            <Card
+              title={
+                <Space>
+                  <WarningOutlined style={{ color: "red" }} />
+                  <span className="text-red-600">Cảnh báo tồn kho thấp</span>
+                </Space>
+              }
+              bordered={false}
+              className="shadow-sm h-full"
+              extra={<Tag color="red">{lowStock.length} sản phẩm</Tag>}
+            >
+              <Table
+                columns={lowStockColumns}
+                dataSource={lowStock}
+                pagination={false}
+                loading={loading}
+                size="small"
+              />
+            </Card>
+          </Col>
+        </Row>
+
+        {/* Row 4: Return Requests and Reviews */}
+        <Row gutter={[16, 16]}>
+          <Col xs={24} lg={12}>
+            <Card
+              title={
+                <Space>
+                  <UndoOutlined style={{ color: "#fa8c16" }} />
+                  <span>Yêu cầu trả hàng</span>
+                </Space>
+              }
+              bordered={false}
+              className="shadow-sm h-full"
+              extra={<Tag color="orange">{totalReturnRequests} yêu cầu</Tag>}
+            >
+              <List
+                itemLayout="horizontal"
+                dataSource={returnRequestsData}
+                loading={loading}
+                renderItem={(item) => (
+                  <List.Item>
+                    <List.Item.Meta
+                      avatar={
+                        <Avatar
+                          style={{ backgroundColor: "#fa8c16" }}
+                          icon={<UndoOutlined />}
+                        />
+                      }
+                      title={
+                        <div className="flex justify-between">
+                          <span className="font-semibold">{item.orderId}</span>
+                          <span className="text-gray-400 text-xs">
+                            {item.date}
+                          </span>
+                        </div>
+                      }
+                      description={
+                        <div>
+                          <div className="text-gray-800">{item.reason}</div>
+                          <div className="text-gray-500 text-xs">
+                            Khách: {item.customer}
+                          </div>
+                        </div>
+                      }
+                    />
+                    <Button size="small">Xử lý</Button>
+                  </List.Item>
+                )}
+              />
+            </Card>
+          </Col>
+          <Col xs={24} lg={12}>
+            <Card
+              title={
+                <Space>
+                  <StarOutlined style={{ color: "#fadb14" }} />
+                  <span>Đánh giá mới</span>
+                </Space>
+              }
+              bordered={false}
+              className="shadow-sm h-full"
+              extra={<Tag color="gold">{totalNewReviews} đánh giá</Tag>}
+            >
+              <List
+                itemLayout="horizontal"
+                dataSource={newReviewsData}
+                loading={loading}
+                renderItem={(item) => (
+                  <List.Item>
+                    <List.Item.Meta
+                      avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
+                      title={
+                        <div className="flex justify-between">
+                          <span className="font-semibold">{item.customer}</span>
+                          <span className="text-yellow-500">
+                            {item.stars} <StarOutlined />
+                          </span>
+                        </div>
+                      }
+                      description={
+                        <div>
+                          <div>"{item.comment}"</div>
+                          <div className="text-gray-400 text-xs">
+                            Đơn hàng: {item.orderId}
+                          </div>
+                        </div>
+                      }
+                    />
+                  </List.Item>
+                )}
+              />
+            </Card>
+          </Col>
+        </Row>
       </main>
     </>
   );

@@ -8,7 +8,7 @@ import { useDebounce } from "../../../hooks/useDebounce";
 import ModalChiTietDonHang from "./components/ModalChiTietDonHang";
 import { getDetailDonHang } from "../../../api/donHangService";
 
-export function NV_Quanlydonhang() {
+export default function NV_Quanlydonhang() {
     const [listDonHang, setListDonHang] = useState([]);
     const [loading, setLoading] = useState(false);
     const [searchText, setSearchText] = useState("");
