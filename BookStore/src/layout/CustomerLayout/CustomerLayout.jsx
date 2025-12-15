@@ -60,8 +60,6 @@ const CustomerLayout = ({ type }) => {
     fetchTheLoai();
   }, []);
 
-  console.log("listTheLoai", listTheLoai);
-
   const genres = [
     {
       label: "Fiction",
@@ -109,7 +107,7 @@ const CustomerLayout = ({ type }) => {
       key: 2,
       label: (
         <a onClick={() => navigate("/profile")}>
-          <UserOutlined /> Profile
+          <UserOutlined /> Hồ sơ
         </a>
       ),
     },
@@ -117,7 +115,7 @@ const CustomerLayout = ({ type }) => {
       key: 3,
       label: (
         <a onClick={() => navigate("/change-password")}>
-          <KeyOutlined /> Change password
+          <KeyOutlined /> Đổi mật khẩu
         </a>
       ),
     },
@@ -125,7 +123,7 @@ const CustomerLayout = ({ type }) => {
       key: 4,
       label: (
         <div onClick={handleLogout} className="text-red-600">
-          <LogoutOutlined /> Log out
+          <LogoutOutlined /> Đăng xuất
         </div>
       ),
     },
@@ -245,7 +243,7 @@ const CustomerLayout = ({ type }) => {
                 }}
               >
                 {loadingSuggest ? (
-                  <div className="px-4 py-2 text-gray-500">Loading...</div>
+                  <div className="px-4 py-2 text-gray-500">Đang tải...</div>
                 ) : (
                   suggestions.slice(0, 4).map((book) => (
                     <div
@@ -297,9 +295,9 @@ const CustomerLayout = ({ type }) => {
               {!user ? (
                 <>
                   <Button type="primary" onClick={() => navigate("/login")}>
-                    Sign in
+                    Đăng nhập
                   </Button>
-                  <Button>Sign up</Button>
+                  <Button>Đăng ký</Button>
                 </>
               ) : (
                 <Dropdown
@@ -347,11 +345,11 @@ const CustomerLayout = ({ type }) => {
               <Title level={4} style={{ marginBottom: 0 }}>
                 <span style={{ color: "#1890ff" }}>Readify</span>
               </Title>
-              <Text type="secondary">Premium Bookstore</Text>
+              <Text type="secondary">Nhà sách cao cấp</Text>
               <Text style={{ display: "block", maxWidth: 400 }}>
-                Your trusted partner in literary discovery. We curate the finest
-                collection of books from around the world, bringing you closer
-                to the stories that matter.
+                Đối tác tin cậy của bạn trong hành trình khám phá văn học. Chúng
+                tôi tuyển chọn những cuốn sách hay nhất từ khắp nơi trên thế
+                giới, đưa bạn đến gần hơn với những câu chuyện ý nghĩa.
               </Text>
             </Space>
 
@@ -361,7 +359,7 @@ const CustomerLayout = ({ type }) => {
               style={{ marginTop: 16, color: "#555" }}
             >
               <Text>
-                <EnvironmentOutlined /> 123 Literary Lane, Book City, BC 12345
+                <EnvironmentOutlined /> 123 Đường Văn Học, Quận Sách, TP.HCM
               </Text>
               <Text>
                 <PhoneOutlined /> Hotline: 1900-1234 (24/7)
@@ -373,34 +371,34 @@ const CustomerLayout = ({ type }) => {
 
             <div style={{ marginTop: 24 }}>
               <Title level={5} style={{ marginBottom: 8 }}>
-                Support
+                Hỗ trợ
               </Title>
               <Space direction="vertical">
-                <Link>Contact Us</Link>
-                <Link>Shipping Info</Link>
-                <Link>Returns</Link>
-                <Link>FAQ</Link>
+                <Link>Liên hệ</Link>
+                <Link>Thông tin vận chuyển</Link>
+                <Link>Đổi trả hàng</Link>
+                <Link>Câu hỏi thường gặp</Link>
               </Space>
             </div>
           </Col>
 
           <Col xs={12} sm={8} md={6} lg={6}>
-            <Title level={5}>Quick Links</Title>
+            <Title level={5}>Liên kết nhanh</Title>
             <Space direction="vertical">
-              <Link>All Books</Link>
-              <Link>Bestsellers</Link>
-              <Link>New Releases</Link>
-              <Link>Special Deals</Link>
+              <Link>Tất cả sách</Link>
+              <Link>Sách bán chạy</Link>
+              <Link>Sách mới</Link>
+              <Link>Ưu đãi đặc biệt</Link>
             </Space>
           </Col>
 
           <Col xs={12} sm={8} md={6} lg={4}>
-            <Title level={5}>Genres</Title>
+            <Title level={5}>Thể loại</Title>
             <Space direction="vertical">
-              <Link>Fiction</Link>
-              <Link>Mystery</Link>
-              <Link>Romance</Link>
-              <Link>Science Fiction</Link>
+              <Link>Tiểu thuyết</Link>
+              <Link>Trinh thám</Link>
+              <Link>Lãng mạn</Link>
+              <Link>Khoa học viễn tưởng</Link>
             </Space>
           </Col>
         </Row>
@@ -414,12 +412,12 @@ const CustomerLayout = ({ type }) => {
           }}
         >
           <Text type="secondary">
-            © 2025 Readify Premium Bookstore. All rights reserved.
+            © 2025 Readify - Nhà sách cao cấp. Bản quyền thuộc về chúng tôi.
           </Text>
           <br />
           <Text type="secondary">
-            Crafted with <HeartFilled style={{ color: "red" }} /> for book
-            lovers worldwide
+            Được tạo ra với <HeartFilled style={{ color: "red" }} /> dành cho
+            những người yêu sách trên toàn thế giới
           </Text>
         </div>
       </Footer>

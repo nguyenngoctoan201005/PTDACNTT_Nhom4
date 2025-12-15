@@ -9,19 +9,22 @@ const HomeBookCollection = ({
   description,
   buttons = [],
   items = [],
-  bg = "linear-gradient(to right, #f9fcff, #fff6f6)",
 }) => {
   return (
     <div
       style={{
-        background: bg,
-        padding: "60px 80px",
+        padding: "60px 80px 0 80px",
         marginBottom: 40,
-        minHeight: "500px",
+        minHeight: "calc(100vh - 160px)",
         height: "auto",
       }}
     >
-      <Row gutter={48} align="middle" className="h-full">
+      <Row
+        gutter={48}
+        align="middle"
+        className="h-full"
+        style={{ minHeight: 500 }}
+      >
         <Col xs={24} md={12}>
           {tag && (
             <Tag color="red" style={{ fontSize: 14, padding: "4px 10px" }}>
@@ -43,22 +46,6 @@ const HomeBookCollection = ({
             <Text type="secondary" style={{ fontSize: 16 }}>
               {description}
             </Text>
-          )}
-          <br />
-          {buttons.length > 0 && (
-            <Space style={{ marginTop: 24 }}>
-              {buttons.map((btn, index) => (
-                <Button
-                  key={index}
-                  type={btn.type || "default"}
-                  size="large"
-                  style={{ borderRadius: 8 }}
-                  onClick={btn.onClick}
-                >
-                  {btn.label}
-                </Button>
-              ))}
-            </Space>
           )}
         </Col>
 
@@ -93,7 +80,7 @@ const HomeBookCollection = ({
                           }}
                           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                       </div>
                     )
                   }
@@ -103,11 +90,13 @@ const HomeBookCollection = ({
                     textAlign: "center",
                   }}
                 >
-                  <Text strong>{item.title}</Text>
-                  <br />
-                  <Text type="secondary" style={{ fontSize: 13 }}>
-                    {item.subtitle}
-                  </Text>
+                  <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <Text strong>{item.title}</Text>
+                    <br />
+                    <Text type="secondary" style={{ fontSize: 13 }}>
+                      {item.subtitle}
+                    </Text>
+                  </div>
                 </Card>
               </Col>
             ))}

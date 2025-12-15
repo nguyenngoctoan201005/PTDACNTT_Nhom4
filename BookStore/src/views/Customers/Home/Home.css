@@ -5,3 +5,29 @@
 .custom-dots li.slick-active::after {
   background: red !important;
 }
+
+.custom-carousel .slick-arrow {
+  color: black !important;
+  border: 1px solid black;
+  padding: 16px;
+  border-radius: 50%;
+}
+
+.custom-carousel button {
+  opacity: 0 !important;
+}
+
+.custom-carousel:hover button {
+  opacity: 1 !important;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.custom-carousel .ant-carousel .slick-prev::after {
+  transform: translate(80%, 60%) rotate(-45deg);
+}
+
+.custom-carousel .ant-carousel .slick-next::after {
+  transform: translate(40%, 60%) rotate(135deg);
+}
+
+

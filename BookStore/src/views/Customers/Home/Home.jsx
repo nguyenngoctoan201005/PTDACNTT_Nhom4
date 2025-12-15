@@ -1,4 +1,4 @@
-import { Carousel, Row, Col, Typography, Card } from "antd";
+import { Carousel, Row, Col, Typography, Card, Spin } from "antd";
 import {
   BookOutlined,
   SearchOutlined,
@@ -14,10 +14,61 @@ import BookCard from "../../../components/BookCard";
 import { Link } from "react-router";
 import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../../../GlobalContext";
+import { getSachByMaLoai } from "../../../api/sachService";
+import { getListTheLoai } from "../../../api/theLoaiService";
+import { useState, useEffect } from "react";
+import { getCategoryIcon } from "../../../hooks/formatIconTheLoai";
 
 const Home = () => {
   const navigate = useNavigate();
   const { addToCart } = useGlobalContext();
+
+  const [genres, setGenres] = useState([]);
+  const [genre1Books, setGenre1Books] = useState([]);
+  const [genre2Books, setGenre2Books] = useState([]);
+  const [genre1Name, setGenre1Name] = useState("Thể loại 1");
+  const [genre2Name, setGenre2Name] = useState("Thể loại 2");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchGenreBooks = async () => {
+      try {
+        setLoading(true);
+        // Fetch books for genre 1 and 2
+        const [genre1Data, genre2Data, genresData] = await Promise.all([
+          getSachByMaLoai({ maLoai: 1 }),
+          getSachByMaLoai({ maLoai: 2 }),
+          getListTheLoai(),
+        ]);
+
+        console.log("genre1Data", genre1Data);
+        console.log("genre2Data", genre2Data);
+        console.log("genresData", genresData);
+
+        setGenre1Books(genre1Data.result);
+        setGenre2Books(genre2Data.result);
+        setGenres(
+          genresData.result.map((g) => ({
+            ...g,
+            icon: getCategoryIcon(g.maLoai),
+          }))
+        );
+
+        // Find genre names
+        const genre1 = genresData.result.find((g) => g.maLoai === 1);
+        const genre2 = genresData.result.find((g) => g.maLoai === 2);
+
+        if (genre1) setGenre1Name(genre1.tenLoai);
+        if (genre2) setGenre2Name(genre2.tenLoai);
+      } catch (error) {
+        console.error("Error fetching genre books:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchGenreBooks();
+  }, []);
 
   const books = [
     {
@@ -36,90 +87,26 @@ const Home = () => {
       cover: "https://via.placeholder.com/150x200?text=Midnight+Library",
     },
   ];
-  const premiumBooks = [
-    {
-      imageUrl: "https://via.placeholder.com/150x200?text=Midnight+Library",
-      type: "comedy",
-      discount: 17,
-      name: "The Midnight Library",
-      author: "Matt Haig",
-      price: 2.99,
-      id: 1,
-    },
-    {
-      imageUrl: "https://via.placeholder.com/150x200?text=Atomic+Habits",
-      type: "self-help",
-      discount: 10,
-      name: "Atomic Habits",
-      author: "James Clear",
-      price: 5.49,
-      id: 2,
-    },
-    {
-      imageUrl: "https://via.placeholder.com/150x200?text=1984",
-      type: "fiction",
-      discount: 20,
-      name: "1984",
-      author: "George Orwell",
-      price: 3.99,
-      id: 3,
-    },
-    {
-      imageUrl: "https://via.placeholder.com/150x200?text=Harry+Potter",
-      type: "fantasy",
-      discount: 15,
-      name: "Harry Potter and the Philosopher's Stone",
-      author: "J.K. Rowling",
-      price: 4.99,
-      id: 4,
-    },
-  ];
-  const genres = [
-    {
-      icon: <BookOutlined style={{ fontSize: 32, color: "#1677ff" }} />,
-      name: "Fiction",
-      count: 1247,
-    },
-    {
-      icon: <SearchOutlined style={{ fontSize: 32, color: "#1677ff" }} />,
-      name: "Mystery",
-      count: 892,
-    },
-    {
-      icon: <StarOutlined style={{ fontSize: 32, color: "#1677ff" }} />,
-      name: "Romance",
-      count: 1156,
-    },
-    {
-      icon: <RiseOutlined style={{ fontSize: 32, color: "#1677ff" }} />,
-      name: "Sci-Fi",
-      count: 743,
-    },
-    {
-      icon: <TeamOutlined style={{ fontSize: 32, color: "#1677ff" }} />,
-      name: "Biography",
-      count: 634,
-    },
-    {
-      icon: <UserOutlined style={{ fontSize: 32, color: "#1677ff" }} />,
-      name: "Self-Help",
-      count: 987,
-    },
-  ];
+
   const genresList = [
     ...genres.slice(0, 5),
     {
       icon: <EllipsisOutlined style={{ fontSize: 32, color: "#1677ff" }} />,
-      name: "More",
+      tenLoai: "Xem thêm",
       onClick: () => navigate("/genres"),
     },
   ];
 
+  console.log("genre1Books", genre1Books);
+  console.log("genre2Books", genre2Books);
+  console.log("genres", genresList);
+
   return (
     <div>
-      <div>
+      <div className="-mx-[80px] -mt-6 custom-carousel">
         <Carousel
-          autoplay
+          autoplay={{ dotDuration: true }}
+          autoplaySpeed={5000}
           arrows
           style={{
             backgroundColor: "white",
@@ -132,132 +119,116 @@ const Home = () => {
           }}
         >
           <HomeBookCollection
-            tag="Limited Edition"
-            title="Premium Collection"
-            subtitle="Curated Selection"
-            description="Handpicked premium books with exclusive author signatures available"
-            buttons={[
-              {
-                label: "Shop Now",
-                type: "primary",
-                onClick: () => console.log("Shop"),
-              },
-              { label: "View Collection", onClick: () => console.log("View") },
-            ]}
+            tag="Bộ sưu tập đặc biệt"
+            title="Sách Bán Chạy Nhất"
+            subtitle="Được yêu thích nhất"
+            description="Khám phá những cuốn sách được độc giả tin tưởng và lựa chọn nhiều nhất"
             items={books}
           />
           <HomeBookCollection
-            tag="Limited Edition"
-            title="Premium Collection"
-            subtitle="Curated Selection"
-            description="Handpicked premium books with exclusive author signatures available"
-            buttons={[
-              {
-                label: "Shop Now",
-                type: "primary",
-                onClick: () => console.log("Shop"),
-              },
-              { label: "View Collection", onClick: () => console.log("View") },
-            ]}
+            tag="Sách mới"
+            title="Ra Mắt Tuần Này"
+            subtitle="Cập nhật liên tục"
+            description="Những cuốn sách mới nhất vừa được phát hành, đừng bỏ lỡ"
             items={books}
           />
           <HomeBookCollection
-            tag="Limited Edition"
-            title="Premium Collection"
-            subtitle="Curated Selection"
-            description="Handpicked premium books with exclusive author signatures available"
-            buttons={[
-              {
-                label: "Shop Now",
-                type: "primary",
-                onClick: () => console.log("Shop"),
-              },
-              { label: "View Collection", onClick: () => console.log("View") },
-            ]}
+            tag="Ưu đãi hấp dẫn"
+            title="Giảm Giá Đặc Biệt"
+            subtitle="Tiết kiệm đến 50%"
+            description="Cơ hội sở hữu sách yêu thích với mức giá tốt nhất"
             items={books}
           />
           <HomeBookCollection
-            tag="Limited Edition"
-            title="Premium Collection"
-            subtitle="Curated Selection"
-            description="Handpicked premium books with exclusive author signatures available"
-            buttons={[
-              {
-                label: "Shop Now",
-                type: "primary",
-                onClick: () => console.log("Shop"),
-              },
-              { label: "View Collection", onClick: () => console.log("View") },
-            ]}
+            tag="Độc quyền"
+            title="Bộ Sưu Tập Cao Cấp"
+            subtitle="Phiên bản giới hạn"
+            description="Sách cao cấp với chữ ký tác giả và bìa đặc biệt"
             items={books}
           />
         </Carousel>
       </div>
       <div className="px-[80px] pt-10 bg-white">
         <div className="flex">
-          <Typography.Title level={3}>Thể loại 1</Typography.Title>
+          <Typography.Title level={3}>{genre1Name}</Typography.Title>
           <div className="flex-1" />
-          <Link to={"/#"}>Xem tất cả</Link>
+          <Link to={`/books?genre=1`}>Xem tất cả</Link>
         </div>
-        <div className="flex">
-          {premiumBooks.map((book, index) => (
-            <div
-              key={index}
-              style={{
-                flex: "1 1 240px",
-                maxWidth: "240px",
-                margin: "8px",
-              }}
-            >
-              <BookCard
-                imageUrl={book.imageUrl}
-                type={book.type}
-                discount={book.discount}
-                name={book.name}
-                author={book.author}
-                price={book.price}
-                id={book.id}
-                onAddToCart={() => addToCart({ maSach: book.id, soLuong: 1 })}
-                onAddToFavorite={() => console.log("added")}
-              />
-            </div>
-          ))}
-        </div>
+        {loading ? (
+          <div className="flex justify-center py-10">
+            <Spin size="large" />
+          </div>
+        ) : (
+          <div className="flex">
+            {genre1Books.slice(0, 5).map((book, index) => (
+              <div
+                key={index}
+                style={{
+                  flex: "1 1 240px",
+                  maxWidth: "240px",
+                  margin: "8px",
+                }}
+              >
+                <BookCard
+                  imageUrl={book.imageUrl}
+                  type={book.type}
+                  discount={book.discount}
+                  name={book.tenSach}
+                  author={book.author}
+                  price={book.donGia}
+                  id={book.maSach}
+                  onAddToCart={() =>
+                    addToCart({ maSach: book.maSach, soLuong: 1 })
+                  }
+                  onAddToFavorite={() => console.log("added")}
+                />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
       <div className="px-[80px] pt-10 bg-white">
         <div className="flex">
-          <Typography.Title level={3}>Thể loại 2</Typography.Title>
+          <Typography.Title level={3}>{genre2Name}</Typography.Title>
           <div className="flex-1" />
-          <Link to={"/#"}>Xem tất cả</Link>
+          <Link to={`/books?genre=2`}>Xem tất cả</Link>
         </div>
-        <div className="flex">
-          {premiumBooks.map((book, index) => (
-            <div
-              key={index}
-              style={{
-                flex: "1 1 240px",
-                maxWidth: "240px",
-                margin: "8px",
-              }}
-            >
-              <BookCard
-                imageUrl={book.imageUrl}
-                type={book.type}
-                discount={book.discount}
-                name={book.name}
-                author={book.author}
-                price={book.price}
-                id={book.id}
-                onAddToCart={() => console.log("added")}
-                onAddToFavorite={() => console.log("added")}
-              />
-            </div>
-          ))}
-        </div>
+        {loading ? (
+          <div className="flex justify-center py-10">
+            <Spin size="large" />
+          </div>
+        ) : (
+          <div className="flex">
+            {genre2Books.slice(0, 5).map((book, index) => (
+              <div
+                key={index}
+                style={{
+                  flex: "1 1 240px",
+                  maxWidth: "240px",
+                  margin: "8px",
+                }}
+              >
+                <BookCard
+                  imageUrl={book.imageUrl}
+                  type={book.type}
+                  discount={book.discount}
+                  name={book.tenSach}
+                  author={book.author}
+                  price={book.donGia}
+                  id={book.maSach}
+                  onAddToCart={() =>
+                    addToCart({ maSach: book.maSach, soLuong: 1 })
+                  }
+                  onAddToFavorite={() => console.log("added")}
+                />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
       <div className="px-[80px] py-10 bg-blue-50">
         <Typography.Title level={2} className="text-center">
-          Browse by genres
+          Khám phá theo thể loại
         </Typography.Title>
         <Row gutter={[16, 16]} justify="center">
           {genresList.map((genre, index) => (
@@ -267,12 +238,15 @@ const Home = () => {
                 style={{
                   textAlign: "center",
                   borderRadius: 12,
+                  height: "100%",
                 }}
                 onClick={genre.onClick}
               >
-                {genre.icon}
-                <h3 style={{ marginTop: 12 }}>{genre.name}</h3>
-                <p style={{ color: "#888" }}>{genre.count} books</p>
+                <div className="text-2xl text-blue-500">{genre.icon}</div>
+                <h3 style={{ marginTop: 12 }}>{genre.tenLoai}</h3>
+                <p style={{ color: "#888" }}>
+                  {Math.round(Math.random() * 100)} cuốn sách
+                </p>
               </Card>
             </Col>
           ))}

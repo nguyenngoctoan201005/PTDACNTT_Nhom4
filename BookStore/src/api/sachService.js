@@ -18,6 +18,12 @@ export const suggestSach = async (data) => {
   return res.data;
 };
 
+export const getSachByMaLoai = async (data) => {
+  const res = await axiosInstance.get(`/sach/the-loai/${data.maLoai}`);
+
+  return res.data;
+};
+
 export const getSachDetail = async (data) => {
   const res = await axiosInstance.get(`/sach/${data.id}`, { ...data });
 
