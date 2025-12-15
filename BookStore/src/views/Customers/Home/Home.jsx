@@ -1,4 +1,4 @@
-import { Carousel, Row, Col, Typography, Card, Spin } from "antd";
+import { Carousel, Row, Col, Typography, Card, Spin, message } from "antd";
 import {
   BookOutlined,
   SearchOutlined,
@@ -180,7 +180,31 @@ const Home = () => {
                   onAddToCart={() =>
                     addToCart({ maSach: book.maSach, soLuong: 1 })
                   }
-                  onAddToFavorite={() => console.log("added")}
+                  onAddToFavorite={() => {
+                    const favoriteBooks =
+                      JSON.parse(localStorage.getItem("favoriteBooks")) || [];
+                    const exists = favoriteBooks.some(
+                      (b) => b.id === book.maSach
+                    );
+                    if (!exists) {
+                      const newBook = {
+                        id: book.maSach,
+                        name: book.tenSach,
+                        imageUrl: book.imageUrl,
+                        price: book.donGia,
+                        author: book.author,
+                        type: book.type,
+                        discount: book.discount,
+                      };
+                      localStorage.setItem(
+                        "favoriteBooks",
+                        JSON.stringify([...favoriteBooks, newBook])
+                      );
+                      message.success("Đã thêm vào yêu thích");
+                    } else {
+                      message.info("Sách đã có trong danh sách yêu thích");
+                    }
+                  }}
                 />
               </div>
             ))}
@@ -219,7 +243,31 @@ const Home = () => {
                   onAddToCart={() =>
                     addToCart({ maSach: book.maSach, soLuong: 1 })
                   }
-                  onAddToFavorite={() => console.log("added")}
+                  onAddToFavorite={() => {
+                    const favoriteBooks =
+                      JSON.parse(localStorage.getItem("favoriteBooks")) || [];
+                    const exists = favoriteBooks.some(
+                      (b) => b.id === book.maSach
+                    );
+                    if (!exists) {
+                      const newBook = {
+                        id: book.maSach,
+                        name: book.tenSach,
+                        imageUrl: book.imageUrl,
+                        price: book.donGia,
+                        author: book.author,
+                        type: book.type,
+                        discount: book.discount,
+                      };
+                      localStorage.setItem(
+                        "favoriteBooks",
+                        JSON.stringify([...favoriteBooks, newBook])
+                      );
+                      message.success("Đã thêm vào yêu thích");
+                    } else {
+                      message.info("Sách đã có trong danh sách yêu thích");
+                    }
+                  }}
                 />
               </div>
             ))}

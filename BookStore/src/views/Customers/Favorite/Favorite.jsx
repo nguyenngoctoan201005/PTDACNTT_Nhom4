@@ -1,73 +1,24 @@
-import { Breadcrumb, Card, Flex, Typography } from "antd";
+import { Breadcrumb, Card, Flex, Typography, message, Empty } from "antd";
 import { Link } from "react-router";
 import BookCard from "../../../components/BookCard";
-import { useState } from "react";
-import RequireLoginPage from "../../../components/RequireLoginPage";
+import { useState, useEffect } from "react";
+import RequireLoginPage from "../../../components/RequireLoginPage/RequireLoginPage";
 import { useGlobalContext } from "../../../GlobalContext";
 
 const Favorite = () => {
   const { token } = useGlobalContext();
-  const favoriteBooks = [
-    {
-      imageUrl: "https://via.placeholder.com/150x200?text=Midnight+Library",
-      type: "comedy",
-      discount: 17,
-      name: "The Midnight Library",
-      author: "Matt Haig",
-      price: 2.99,
-      id: 1,
-    },
-    {
-      imageUrl: "https://via.placeholder.com/150x200?text=Atomic+Habits",
-      type: "self-help",
-      discount: 10,
-      name: "Atomic Habits",
-      author: "James Clear",
-      price: 5.49,
-      id: 2,
-    },
-    {
-      imageUrl: "https://via.placeholder.com/150x200?text=1984",
-      type: "fiction",
-      discount: 20,
-      name: "1984",
-      author: "George Orwell",
-      price: 3.99,
-      id: 3,
-    },
-    {
-      imageUrl: "https://via.placeholder.com/150x200?text=Harry+Potter",
-      type: "fantasy",
-      discount: 15,
-      name: "Harry Potter and the Philosopher's Stone",
-      author: "J.K. Rowling",
-      price: 4.99,
-      id: 4,
-    },
-    {
-      imageUrl: "https://via.placeholder.com/150x200?text=Harry+Potter",
-      type: "fantasy",
-      discount: 15,
-      name: "Harry Potter and the Philosopher's Stone",
-      author: "J.K. Rowling",
-      price: 4.99,
-      id: 5,
-    },
-    {
-      imageUrl: "https://via.placeholder.com/150x200?text=Harry+Potter",
-      type: "fantasy",
-      discount: 15,
-      name: "Harry Potter and the Philosopher's Stone",
-      author: "J.K. Rowling",
-      price: 4.99,
-      id: 6,
-    },
-  ];
+  const [books, setBooks] = useState([]);
 
-  const [books, setBooks] = useState(favoriteBooks);
+  useEffect(() => {
+    const storedBooks = JSON.parse(localStorage.getItem("favoriteBooks")) || [];
+    setBooks(storedBooks);
+  }, []);
 
   const handleRemove = (id) => {
-    setBooks((prevBooks) => prevBooks.filter((book) => book.id !== id));
+    const updatedBooks = books.filter((book) => book.id !== id);
+    setBooks(updatedBooks);
+    localStorage.setItem("favoriteBooks", JSON.stringify(updatedBooks));
+    message.success("Đã xóa khỏi danh sách yêu thích");
   };
 
   const handleAddToCart = (id) => {
@@ -120,7 +71,7 @@ const Favorite = () => {
             ))}
           </Flex>
         ) : (
-          <div>Not available</div>
+          <Empty description="Chưa có sách yêu thích" />
         )}
       </Card>
     </div>

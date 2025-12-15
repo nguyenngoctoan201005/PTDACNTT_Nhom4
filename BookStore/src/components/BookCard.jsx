@@ -100,9 +100,9 @@ const BookCard = ({
         {!!author && <Text type="secondary">by {author}</Text>}
 
         <Row align="middle" style={{ marginTop: 8 }}>
-          <Rate disabled defaultValue={4} style={{ fontSize: 14 }} />
+          <Rate disabled defaultValue={4.8} style={{ fontSize: 14 }} />
           <Text style={{ marginLeft: 8 }}>
-            <b>4.8</b> (2,847)
+            <b>4.8</b>
           </Text>
         </Row>
 

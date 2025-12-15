@@ -30,7 +30,7 @@ const formatReviewDate = (isoString) => {
 
 const BookReview = () => {
   const { user } = useGlobalContext();
-  const [rating, setRating] = useState(0);
+  const [rating, setRating] = useState(5);
   const [review, setReview] = useState("");
   const { bookId } = useParams();
 
@@ -66,7 +66,7 @@ const BookReview = () => {
 
       await fetchDanhGia();
 
-      setRating(0);
+      setRating(5);
       setReview("");
     } catch (err) {
       console.log("error >>>", err);
@@ -80,7 +80,7 @@ const BookReview = () => {
     fetchDanhGia();
   }, []);
 
-  console.log("listDanhGia", listDanhGia);
+  console.log("rating", listDanhGia);
 
   return (
     <Card
@@ -95,9 +95,12 @@ const BookReview = () => {
       <div>
         <Title level={5}>Đánh giá của khách hàng</Title>
         <Text type="secondary">
-          2,847 lượt đánh giá với trung bình{" "}
+          {listDanhGia.length} lượt đánh giá với trung bình{" "}
           <Text strong style={{ color: "#faad14" }}>
-            4.8
+            {Math.round(
+              listDanhGia.reduce((total, review) => total + review.soSao, 0) /
+                listDanhGia.length
+            )}
           </Text>{" "}
           sao
         </Text>
@@ -118,7 +121,7 @@ const BookReview = () => {
                 <Text type="secondary" style={{ marginRight: 10 }}>
                   - {review.hoTen} -
                 </Text>
-                <Rate disabled defaultValue={review.soSao} />
+                <Rate disabled value={review.soSao} />
                 <Paragraph style={{ margin: "8px 8px 4px" }}>
                   {review.binhLuan}
                 </Paragraph>
@@ -136,7 +139,7 @@ const BookReview = () => {
         <div style={{ marginBottom: 12 }}>
           <Text strong>Rating</Text>
           <br />
-          <Rate value={rating} onChange={setRating} />
+          <Rate value={rating} onChange={(value) => setRating(value)} />
         </div>
 
         <div style={{ marginBottom: 16 }}>

@@ -28,67 +28,14 @@ import BookReview from "./BookReview";
 import BookCard from "../../../components/BookCard";
 import { useParams } from "react-router";
 import { useGlobalContext } from "../../../GlobalContext";
-import { getSachDetail } from "../../../api/sachService";
+import { getSachDetail, getSachByMaLoai } from "../../../api/sachService";
 import { formatCurrency } from "../../../hooks/formatCurrentcy";
 import LoadingSpinner from "../../../components/LoadingSpinner";
 
 const { Title, Text, Paragraph } = Typography;
 
 const BookDetail = () => {
-  const book = {
-    title: "The Midnight Library",
-    author: "Matt Haig",
-    category: "Fiction",
-    price: 24.99,
-    oldPrice: 29.99,
-    discount: 17,
-    rating: 4.8,
-    reviews: 2847,
-    introduction:
-      "Between life and death there is a library, and within that library, the shelves go on forever. Every book provides a chance to try another life you could have lived. To see how things would be if you had made other choices...",
-    stock: 47,
-    cover: "https://via.placeholder.com/300x400?text=The+Midnight+Library",
-    description:
-      "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolores ab voluptates officia consequatur similique iusto odit culpa sunt ratione rerum, eveniet delectus ea ipsam obcaecati voluptate recusandae eum dicta magni",
-  };
-  const premiumBooks = [
-    {
-      imageUrl: "https://via.placeholder.com/150x200?text=Midnight+Library",
-      type: "comedy",
-      discount: 17,
-      name: "The Midnight Library",
-      author: "Matt Haig",
-      price: 2.99,
-      id: 1,
-    },
-    {
-      imageUrl: "https://via.placeholder.com/150x200?text=Atomic+Habits",
-      type: "self-help",
-      discount: 10,
-      name: "Atomic Habits",
-      author: "James Clear",
-      price: 5.49,
-      id: 2,
-    },
-    {
-      imageUrl: "https://via.placeholder.com/150x200?text=1984",
-      type: "fiction",
-      discount: 20,
-      name: "1984",
-      author: "George Orwell",
-      price: 3.99,
-      id: 3,
-    },
-    {
-      imageUrl: "https://via.placeholder.com/150x200?text=Harry+Potter",
-      type: "fantasy",
-      discount: 15,
-      name: "Harry Potter and the Philosopher's Stone",
-      author: "J.K. Rowling",
-      price: 4.99,
-      id: 4,
-    },
-  ];
+  const [relatedBooks, setRelatedBooks] = useState([]);
 
   const [bookDetail, setBookDetail] = useState();
   const [value, setValue] = useState(1);
@@ -166,7 +113,18 @@ const BookDetail = () => {
         id: bookId,
       });
       setBookDetail(response.result);
+
+      // Fetch related books
+      if (response.result?.loaiSach?.maLoai) {
+        const relatedRes = await getSachByMaLoai({
+          maLoai: response.result.loaiSach.maLoai,
+        });
+        setRelatedBooks(
+          relatedRes.result.filter((b) => b.maSach !== response.result.maSach)
+        );
+      }
     } catch (error) {
+      console.log(error);
       message.error("Lỗi khi lấy chi tiết sách");
     } finally {
       setLoading(false);
@@ -342,7 +300,7 @@ const BookDetail = () => {
                 }}
               >
                 <div className="sm:grid sm:grid-cols-2 lg:grid-cols-1">
-                  {premiumBooks.map((book, index) => (
+                  {relatedBooks.map((book, index) => (
                     <div
                       key={index}
                       style={{
@@ -355,10 +313,10 @@ const BookDetail = () => {
                         imageUrl={book.imageUrl}
                         type={book.type}
                         discount={book.discount}
-                        name={book.name}
+                        name={book.tenSach}
                         author={book.author}
-                        price={book.price}
-                        id={book.id}
+                        price={book.donGia}
+                        id={book.maSach}
                         showButton={false}
                       />
                     </div>

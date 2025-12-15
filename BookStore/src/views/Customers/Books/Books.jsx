@@ -32,6 +32,7 @@ const Books = () => {
 
   const [searchParams] = useSearchParams();
   const keyword = searchParams.get("keyword");
+  const loaiSach = searchParams.get("maLoai");
 
   const [form] = Form.useForm();
   const [listSach, setListSach] = useState([]);
@@ -57,12 +58,12 @@ const Books = () => {
   useEffect(() => {
     form.setFieldsValue({
       name: keyword || "",
-      genres: undefined,
+      genres: loaiSach || undefined,
       price: [0, 5000000],
     });
 
     form.submit();
-  }, [keyword]);
+  }, [keyword, loaiSach]);
 
   const handleSubmitFilter = async (values) => {
     setCurrentPage(1);
@@ -201,7 +202,7 @@ const Books = () => {
 
   //Book list pagination
   const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 8;
+  const pageSize = 10;
 
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
@@ -312,7 +313,32 @@ const Books = () => {
                       id={book.maSach}
                       showButton={true}
                       onAddToCart={() => console.log("added")}
-                      onAddToFavorite={() => console.log("added")}
+                      onAddToFavorite={() => {
+                        const favoriteBooks =
+                          JSON.parse(localStorage.getItem("favoriteBooks")) ||
+                          [];
+                        const exists = favoriteBooks.some(
+                          (b) => b.id === book.maSach
+                        );
+                        if (!exists) {
+                          const newBook = {
+                            id: book.maSach,
+                            name: book.tenSach,
+                            imageUrl: book.imageUrl,
+                            price: book.donGia,
+                            author: book.author,
+                            type: book.type,
+                            discount: book.discount,
+                          };
+                          localStorage.setItem(
+                            "favoriteBooks",
+                            JSON.stringify([...favoriteBooks, newBook])
+                          );
+                          message.success("Đã thêm vào yêu thích");
+                        } else {
+                          message.info("Sách đã có trong danh sách yêu thích");
+                        }
+                      }}
                     />
                   </div>
                 ))}

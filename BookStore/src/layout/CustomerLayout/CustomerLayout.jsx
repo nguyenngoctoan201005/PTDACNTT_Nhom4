@@ -297,7 +297,7 @@ const CustomerLayout = ({ type }) => {
                   <Button type="primary" onClick={() => navigate("/login")}>
                     Đăng nhập
                   </Button>
-                  <Button>Đăng ký</Button>
+                  <Button onClick={() => navigate("/register")}>Đăng ký</Button>
                 </>
               ) : (
                 <Dropdown
@@ -374,10 +374,8 @@ const CustomerLayout = ({ type }) => {
                 Hỗ trợ
               </Title>
               <Space direction="vertical">
-                <Link>Liên hệ</Link>
-                <Link>Thông tin vận chuyển</Link>
-                <Link>Đổi trả hàng</Link>
-                <Link>Câu hỏi thường gặp</Link>
+                <Link onClick={() => navigate("/about")}>Liên hệ</Link>
+                <Link onClick={() => navigate("/about")}>Về chúng tôi</Link>
               </Space>
             </div>
           </Col>
@@ -385,20 +383,23 @@ const CustomerLayout = ({ type }) => {
           <Col xs={12} sm={8} md={6} lg={6}>
             <Title level={5}>Liên kết nhanh</Title>
             <Space direction="vertical">
-              <Link>Tất cả sách</Link>
-              <Link>Sách bán chạy</Link>
-              <Link>Sách mới</Link>
-              <Link>Ưu đãi đặc biệt</Link>
+              <Link onClick={() => navigate("/books")}>Tất cả sách</Link>
+              <Link onClick={() => navigate("/books")}>Sách bán chạy</Link>
+              <Link onClick={() => navigate("/books")}>Sách mới</Link>
             </Space>
           </Col>
 
           <Col xs={12} sm={8} md={6} lg={4}>
             <Title level={5}>Thể loại</Title>
             <Space direction="vertical">
-              <Link>Tiểu thuyết</Link>
-              <Link>Trinh thám</Link>
-              <Link>Lãng mạn</Link>
-              <Link>Khoa học viễn tưởng</Link>
+              {listTheLoai.slice(0, 5).map((category) => (
+                <Link
+                  key={category.maLoai}
+                  onClick={() => navigate(`/books?maLoai=${category.maLoai}`)}
+                >
+                  {category.tenLoai}
+                </Link>
+              ))}
             </Space>
           </Col>
         </Row>
