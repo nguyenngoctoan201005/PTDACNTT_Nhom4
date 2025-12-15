@@ -1,6 +1,24 @@
 import "./NV_Chinhsuasach.css";
 import { NV_Nav } from "../../../nav/NV_Nav";
+import { useState, useEffect } from "react";
+import { getSach } from "../../../api/sachService";
+
 export default function NV_Chinhsuasach() {
+
+  const [sach, setSach] = useState({});
+  useEffect(() => {
+    const fetchSach = async () => {
+      try {
+        const sach = await getSach();
+        setSach(sach);
+      } catch (error) {
+        console.error("Error fetching sach:", error);
+      }
+    };
+    fetchSach();
+  }, []);
+
+
   return (
     <>
       <NV_Nav />

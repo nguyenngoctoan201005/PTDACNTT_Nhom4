@@ -1,9 +1,9 @@
 import axiosInstance from "../auth/axiosInstance";
 
 export const insertDonHang = async (data) => {
-  const res = await axiosInstance.post("/don-hang/createDH", { ...data });
+    const res = await axiosInstance.post("/don-hang/createDH", { ...data });
 
-  return res.data;
+    return res.data;
 };
 
 export const getDetailDonHang = async (data) => {

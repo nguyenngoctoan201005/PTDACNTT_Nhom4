@@ -8,11 +8,158 @@
     overflow-y: auto;
 }
 
-.qtv_quanlykhuyenmai_header {
+.qtv_qlkhuyenmai_tieude {
+    background-color: white;
+    padding: 20px 10px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: space-between;
+    width: 1150px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    margin-left: 25px;
+    margin-top: 50px;
+}
+
+.qtv_qlkhuyenmai_tieude_btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #2563eb;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+}
+
+.qtv_qlkhuyenmai_tieude_btn svg {
+    fill: white;
+    width: 25px;
+    height: 25px;
+}
+
+.qtv_qlkhuyenmai_noidung {
+    width: 100%;
+    max-width: 1150px;
+    background-color: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    margin-top: 50px;
+    margin-left: 25px;
+}
+
+.qtv_qlkhuyenmai_tieude_tt {
     font-size: 30px;
     font-weight: bold;
     color: #333;
+}
+
+.qtv_qlnv_th {
+    padding: 8px;
+    text-align: center;
+    background-color: #ccc;
+    font-size: 16px;
+    color: #333;
+}
+
+.qtv_qlkhuyenmai_table {
+    width: 100%;
+}
+
+.qtv_qlkhuyenmai_table_th1 {
+    width: 260px;
+    border-radius: 10px 0 0 10px;
+}
+
+.qtv_qlkhuyenmai_table_th2 {
+    width: 420px;
+}
+
+.qtv_qlkhuyenmai_table_th3 {
+    width: 150px;
+}
+
+.qtv_qlkhuyenmai_table_th4 {
+    width: 100px;
+}
+
+.qtv_qlkhuyenmai_table_th5 {
+    width: 100px;
+    border-radius: 0 10px 10px 0;
+}
+
+.qtv_qlkhuyenmai_table_td5 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.qtv_qlkhuyenmai_table_td5 svg {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.qtv_qlnv_td {
+    padding: 20px;
+    border-bottom: 1px solid #ccc;
+    text-align: center;
+    font-size: 16px;
+    color: #646262;
+}
+
+
+
+
+.qtv_qlkhuyenmai_themkhuyenmai {
+    width: 700px;
     background-color: white;
+    padding: 10px;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    margin-top: 50px;
+    margin-left: 25px;
+    position: fixed;
+    top: -30px;
+    left: 500px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+.qtv_qlkhuyenmai_themkhuyenmai_tieude {
+    font-size: 30px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+}
+
+.qtv_qlkhuyenmai_themkhuyenmai_nhapdl_nhan {
+    font-size: 18px;
+    color: #333;
+}
+
+.qtv_qlkhuyenmai_themkhuyenmai_nhapdl input {
+    width: 650px;
+    padding: 25px 25px 25px 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    height: 25px;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.qtv_qlkhuyenmai_themkhuyenmai_noidung {
+    margin-top: 20px;
+    margin-left: 16px;
+}
+
+.qtv_qlkhuyenmai_themkhuyenmai_button_nhan1 {
+    text-align: center;
+    width: 300px;
     padding: 15px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;

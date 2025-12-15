@@ -1,140 +1,20 @@
- 
-.nv_trangdgbl_main{
-    width: calc(100% - 280px);
+.nv_quanlydanhgia_main {
+    margin: 0;
+    padding: 0;
+    width: 100%;
     height: 100vh;
-    border-radius: 0 10px 10px 0;
-    overflow: auto;
-    background-color: #f3f4f6;
-    margin-left: 280px;
+    background-color: #F9FAFB;
+    width: calc(100vw - 300px);
+    margin-left: 300px;
+    overflow-y: auto;
 }
 
-
-.nv_trangdgbl_tieude{
-    font-size: 40px;
+.nv_quanlydanhgia_tieude {
+    font-size: 30px;
     font-weight: bold;
-    margin: 20px;
-    color: #111827;
-}
-
-.nv_trangdgbl_noidung{
+    color: #333;
     background-color: white;
-    margin: 20px;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-
-.nv_trangdgbl_noidung_tieude{
-    font-size: 25px;
-    font-weight: bold;
-    color: #111827;
-}
-
-.nv_qldg_th{
-    background-color: #eaedef;
-    color: #111827;
-    font-weight: 600;
-    padding: 12px 15px;
-    font-size: 20px;
-    text-align: center;
-}
-
-.nv_qldg_tr:hover{
-    background-color: #eef0f3;
-    cursor: pointer;
-}
-
-.nv_qldg_td{
-    padding: 20px 15px;
-    border-bottom: 1px solid #e5e7eb;
-    font-size: 16px;
-    color: #374151;
-    text-align: center;
-}
-
-.nv_qldg_table{
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-.nv_trangdgbl_noidung_btnxoa{
-    background-color: #ef4444;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
-}
-
-.nv_trangdgbl_noidung_btnxoa:hover{
-    background-color: #dc2626;
-}
-.nv_trangdgbl_noidung_btnan{
-    background-color: #6b7280;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
-}
-
-.nv_trangdgbl_noidung_btnan:hover{
-    background-color: #4b5563;
-}
-
-.nv_trangdgbl_noidung_btnhien{
-    background-color: #10b981;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
-}
-
-.nv_trangdgbl_noidung_btnhien:hover{
-    background-color: #059669;
-}
-.nv_trangdgbl_chitietdanhgia{
-    margin-top: 20px;
-    padding: 20px;
-    background-color: #ffffff;
-    width: 800px;
-    border-radius: 15px;
-}
-
-.nv_trangdgbl_chitietdanhgia_tieude{
-    font-size: 25px;
-    font-weight: bold;
-    color: #111827;
-}
-
-.nv_trangdgbl_chitietdanhgia_tensach{
-    font-size: 20px;
-    font-weight: 500;
-    color: #374151;
-    margin-top: 10px;
-}
-
-.nv_trangdgbl_chitietdanhgia_nhan{
-    font-size: 18px;
-    color: #374151;
-    margin-top: 15px;
-    margin-left: 20px;
-}
-.nv_trangdgbl_chitietdanhgia_binhluan{
-    font-size: 18px;
-    color: #4b5563;
-    margin-top: 10px;
-    margin-bottom: 20px;
-    margin-left: 20px;
-    background-color: #eaedef;
     padding: 15px;
-    border-radius: 10px;
-} 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+}

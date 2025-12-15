@@ -1,12 +1,11 @@
-
-.nv_trangbts_tieude{
+.nv_trangbts_tieude {
     font-size: 40px;
     font-weight: bold;
     margin: 25px;
     color: #111827;
 }
 
-.nv_trangbts_main{
+.nv_trangbts_main {
     background-color: #f3f4f6;
     width: calc(100% - 280px);
     height: 100vh;
@@ -15,38 +14,41 @@
     margin-left: 280px;
 }
 
-.nv_trangbts_noidung{
+.nv_trangbts_noidung {
     margin: 20px;
     background-color: white;
     border-radius: 15px;
 }
 
-.nv_trangbts_noidung_tieude{
+.nv_trangbts_noidung_tieude {
     font-size: 30px;
     font-weight: bold;
     color: #111827;
     padding: 20px;
 }
 
-.nv_trangbts_noidung_thongtinsach{
+.nv_trangbts_noidung_thongtinsach {
     background-color: #f1f0f0;
 }
 
-.trangbts_th{
+.trangbts_th {
     text-align: center;
     padding: 5px;
-    font-size: 18px;
+    font-size: 16px;
     color: #111827;
 }
 
-.trangbts_td{
+.trangbts_td {
     text-align: center;
     padding: 20px;
     font-size: 16px;
     color: #4E5765;
+    border-bottom: 1px solid #e3e6ed;
 }
 
-.nv_trangbts_noidung_button{
+
+
+.nv_trangbts_noidung_button {
     background-color: #2563EB;
     color: white;
     border: none;
@@ -58,12 +60,11 @@
     font-weight: 400;
 }
 
-.nv_trangbts_noidung_button:hover{
+.nv_trangbts_noidung_button:hover {
     background-color: #1D4ED8;
 }
 
-.nv_trangbts_noidung_table{
+.nv_trangbts_noidung_table {
     width: 95%;
     margin-left: 30px;
-} 
-
+}
