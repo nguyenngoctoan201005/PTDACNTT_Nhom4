@@ -76,11 +76,11 @@ const Login = () => {
               </Space>
               <div className="-mt-30">
                 <h2 className="text-5xl font-bold leading-tight">
-                  Welcome to Your Literary Journey
+                  Chào mừng đến với hành trình văn học
                 </h2>
                 <p className="text-lg text-white/90">
-                  Discover thousands of books, connect with fellow readers, and
-                  explore new worlds through literature.
+                  Khám phá hàng ngàn cuốn sách, kết nối với cộng đồng và trải
+                  nghiệm những thế giới mới.
                 </p>
               </div>
             </div>
@@ -89,26 +89,28 @@ const Login = () => {
               <div className="flex items-start gap-4">
                 <ReadOutlined className="text-xl mt-1" />
                 <div>
-                  <h3 className="font-semibold text-lg">Curated Collections</h3>
+                  <h3 className="font-semibold text-lg">
+                    Bộ Sưu Tập Tuyển Chọn
+                  </h3>
                   <p className="text-white/80">
-                    Handpicked books across all genres
+                    Sách được tuyển chọn kỹ lưỡng theo mọi thể loại
                   </p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
                 <GiftOutlined className="text-xl mt-1" />
                 <div>
-                  <h3 className="font-semibold text-lg">Exclusive Deals</h3>
-                  <p className="text-white/80">Special discounts for members</p>
+                  <h3 className="font-semibold text-lg">Ưu Đãi Đặc Quyền</h3>
+                  <p className="text-white/80">
+                    Giảm giá dành riêng cho thành viên
+                  </p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
                 <ThunderboltOutlined className="text-xl mt-1" />
                 <div>
-                  <h3 className="font-semibold text-lg">Fast Delivery</h3>
-                  <p className="text-white/80">
-                    Get your books delivered quickly
-                  </p>
+                  <h3 className="font-semibold text-lg">Giao Hàng Nhanh</h3>
+                  <p className="text-white/80">Giao sách nhanh chóng tận tay</p>
                 </div>
               </div>
             </div>
@@ -116,8 +118,8 @@ const Login = () => {
 
           <div className="relative z-10 border-t border-white/20 pt-6">
             <p className="text-white/80 italic">
-              "A reader lives a thousand lives before he dies. The man who never
-              reads lives only one." — George R.R. Martin
+              "Người đọc sách sống ngàn cuộc đời trước khi chết. Người không bao
+              giờ đọc chỉ sống một cuộc đời." — George R.R. Martin
             </p>
           </div>
         </div>
@@ -127,25 +129,25 @@ const Login = () => {
             <div className="space-y-8">
               <div className="text-center lg:text-left space-y-1">
                 <Title level={2} className="!mb-0">
-                  Welcome Back
+                  Chào Mừng Trở Lại
                 </Title>
-                <Text type="secondary">
-                  Sign in to your account to continue shopping
-                </Text>
+                <Text type="secondary">Đăng nhập để tiếp tục mua sắm</Text>
               </div>
 
               <Form layout="vertical" onFinish={onFinish} className="space-y-4">
                 <Form.Item
                   label={
-                    <span className="font-medium text-gray-700">Username</span>
+                    <span className="font-medium text-gray-700">
+                      Tên đăng nhập
+                    </span>
                   }
                   name="username"
                   rules={[
-                    { required: true, message: "Please enter your username!" },
+                    { required: true, message: "Vui lòng nhập tên đăng nhập!" },
                   ]}
                 >
                   <Input
-                    placeholder="you@example.com"
+                    placeholder="Nhập tên đăng nhập"
                     size="large"
                     className="rounded-md border-gray-300 hover:border-blue-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   />
@@ -153,15 +155,15 @@ const Login = () => {
 
                 <Form.Item
                   label={
-                    <span className="font-medium text-gray-700">Password</span>
+                    <span className="font-medium text-gray-700">Mật khẩu</span>
                   }
                   name="password"
                   rules={[
-                    { required: true, message: "Please enter your password!" },
+                    { required: true, message: "Vui lòng nhập mật khẩu!" },
                   ]}
                 >
                   <Input.Password
-                    placeholder="Enter your password"
+                    placeholder="Nhập mật khẩu"
                     size="large"
                     iconRender={(visible) =>
                       visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
@@ -174,14 +176,14 @@ const Login = () => {
                   type="primary"
                   htmlType="submit"
                   loading={loading}
-                  className="w-full h-11 font-semibold text-base bg-blue-600 hover:bg-blue-500"
+                  className="w-full h-11 font-semibold text-base bg-blue-600 hover:bg-blue-50"
                 >
-                  Sign In
+                  Đăng Nhập
                 </Button>
               </Form>
 
               <Divider plain className="text-gray-400">
-                New to BookHaven?
+                Chưa có tài khoản?
               </Divider>
 
               <Button
@@ -189,11 +191,12 @@ const Login = () => {
                 className="w-full h-11 border-2 border-blue-600 text-blue-600 font-semibold hover:bg-blue-50"
                 onClick={() => navigate("/register")}
               >
-                Create an Account
+                Đăng Ký Ngay
               </Button>
 
               <p className="text-center text-sm text-gray-500">
-                By signing in, you agree to our Terms of Service
+                Bằng cách đăng nhập, bạn đồng ý với Điều khoản dịch vụ của chúng
+                tôi
               </p>
             </div>
           </div>
