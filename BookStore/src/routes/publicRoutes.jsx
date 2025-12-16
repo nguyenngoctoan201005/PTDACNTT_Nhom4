@@ -19,14 +19,14 @@ export const publicRoutes = [
     element: <CustomerLayout type={1} />,
     children: [
       { index: true, element: <Navigate to="home" replace /> },
-      { path: "home", element: <Home />, title: "Trang chủ - Readify" },
-      { path: "books", element: <Books />, title: "Tất cả sách - Readify" },
+      { path: "home", element: <Home />, title: "Trang chủ - Bookstore" },
+      { path: "books", element: <Books />, title: "Tất cả sách - Bookstore" },
       {
         path: "books/:bookId",
         element: <BookDetail />,
-        title: "Chi tiết sách - Readify",
+        title: "Chi tiết sách - Bookstore",
       },
-      { path: "about", element: <About />, title: "Về chúng tôi - Readify" },
+      { path: "about", element: <About />, title: "Về chúng tôi - Bookstore" },
       { path: "*", element: <NotFound />, title: "404 - Không tìm thấy trang" },
     ],
   },
@@ -34,8 +34,8 @@ export const publicRoutes = [
     path: "/",
     element: <AuthLayout />,
     children: [
-      { path: "login", element: <Login />, title: "Đăng nhập - Readify" },
-      { path: "register", element: <Register />, title: "Đăng ký - Readify" },
+      { path: "login", element: <Login />, title: "Đăng nhập - Bookstore" },
+      { path: "register", element: <Register />, title: "Đăng ký - Bookstore" },
     ],
   },
 ];

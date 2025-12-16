@@ -13,7 +13,7 @@ import {
   Dropdown,
   Avatar,
 } from "antd";
-import { HorizontalLogo } from "../../assets";
+import { Logo } from "../../assets";
 import {
   SearchOutlined,
   ShoppingCartOutlined,
@@ -114,7 +114,7 @@ const CustomerLayout = ({ type }) => {
     {
       key: 3,
       label: (
-        <a onClick={() => navigate("/change-password")}>
+        <a onClick={() => navigate("/profile/change-password")}>
           <KeyOutlined /> Đổi mật khẩu
         </a>
       ),
@@ -208,10 +208,10 @@ const CustomerLayout = ({ type }) => {
           >
             <div className="my-1">
               <img
-                src={HorizontalLogo}
+                src={Logo}
                 alt="Logo"
                 style={{
-                  height: "60px",
+                  height: "300px",
                   width: "auto",
                   minWidth: "125px",
                   backgroundColor: "transparent",
@@ -343,7 +343,7 @@ const CustomerLayout = ({ type }) => {
           <Col xs={24} md={12} lg={12}>
             <Space direction="vertical" size="small">
               <Title level={4} style={{ marginBottom: 0 }}>
-                <span style={{ color: "#1890ff" }}>Readify</span>
+                <span style={{ color: "#1890ff" }}>Bookstore</span>
               </Title>
               <Text type="secondary">Nhà sách cao cấp</Text>
               <Text style={{ display: "block", maxWidth: 400 }}>
@@ -365,7 +365,7 @@ const CustomerLayout = ({ type }) => {
                 <PhoneOutlined /> Hotline: 1900-1234 (24/7)
               </Text>
               <Text>
-                <MailOutlined /> support@Readify.com
+                <MailOutlined /> support@Bookstore.com
               </Text>
             </Space>
 
@@ -413,7 +413,7 @@ const CustomerLayout = ({ type }) => {
           }}
         >
           <Text type="secondary">
-            © 2025 Readify - Nhà sách cao cấp. Bản quyền thuộc về chúng tôi.
+            © 2025 Bookstore - Nhà sách cao cấp. Bản quyền thuộc về chúng tôi.
           </Text>
           <br />
           <Text type="secondary">

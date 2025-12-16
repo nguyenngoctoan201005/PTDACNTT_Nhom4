@@ -20,7 +20,7 @@ import {
   ThunderboltOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router";
-import { HorizontalLogo } from "../../../assets";
+import { Logo } from "../../../assets";
 import { useGlobalContext } from "../../../GlobalContext";
 
 const { Title, Text, Paragraph } = Typography;
@@ -61,12 +61,12 @@ const Login = () => {
                 onClick={() => navigate("/home")}
                 className="cursor-pointer"
               >
-                <div className="my-1">
+                <div className="my-1 -mt-20">
                   <img
-                    src={HorizontalLogo}
+                    src={Logo}
                     alt="Logo"
                     style={{
-                      height: "60px",
+                      height: "300px",
                       width: "auto",
                       minWidth: "125px",
                       backgroundColor: "transparent",
@@ -74,13 +74,15 @@ const Login = () => {
                   />
                 </div>
               </Space>
-              <h2 className="text-5xl font-bold leading-tight">
-                Welcome to Your Literary Journey
-              </h2>
-              <p className="text-lg text-white/90">
-                Discover thousands of books, connect with fellow readers, and
-                explore new worlds through literature.
-              </p>
+              <div className="-mt-30">
+                <h2 className="text-5xl font-bold leading-tight">
+                  Welcome to Your Literary Journey
+                </h2>
+                <p className="text-lg text-white/90">
+                  Discover thousands of books, connect with fellow readers, and
+                  explore new worlds through literature.
+                </p>
+              </div>
             </div>
 
             <div className="space-y-4 pt-4">

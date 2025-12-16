@@ -13,8 +13,9 @@ import {
   Dropdown,
   Avatar,
   Card,
+  message,
 } from "antd";
-import { HorizontalLogo } from "../../assets";
+import { Logo } from "../../assets";
 import {
   SearchOutlined,
   ShoppingCartOutlined,
@@ -27,12 +28,16 @@ import {
   KeyOutlined,
   LogoutOutlined,
   SettingOutlined,
+  ReadOutlined,
 } from "@ant-design/icons";
 import "./ProfileLayout.css";
 import { useGlobalContext } from "../../GlobalContext";
 import ProtectedRoute from "../../routes/guard/ProtectedRoutes";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import RequireLoginPage from "../../components/RequireLoginPage/RequireLoginPage";
+import { getListTheLoai } from "../../api/theLoaiService";
+import { suggestSach } from "../../api/sachService";
+import { useDebounce } from "../../hooks/useDebounce";
 
 const { Header, Content, Footer } = Layout;
 const { Title, Text, Link } = Typography;
@@ -40,40 +45,79 @@ const { Title, Text, Link } = Typography;
 const ProfileLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, handleLogout, token } = useGlobalContext();
+  const { user, handleLogout, token, cartAmount } = useGlobalContext();
+  const searchRef = useRef(null);
+  const [listTheLoai, setListTheLoai] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const debouncedSearch = useDebounce(searchTerm, 400);
+  const [suggestions, setSuggestions] = useState([]);
+  const [loadingSuggest, setLoadingSuggest] = useState(false);
+
+  const fetchTheLoai = async () => {
+    try {
+      const res = await getListTheLoai();
+      setListTheLoai(res.result || []);
+    } catch (error) {
+      console.error(error);
+      message.error("Lỗi khi lấy danh sách thể loại");
+    }
+  };
+
+  useEffect(() => {
+    fetchTheLoai();
+  }, []);
+
+  useEffect(() => {
+    const fetchSuggestions = async () => {
+      if (!debouncedSearch.trim()) {
+        setSuggestions([]);
+        return;
+      }
+
+      try {
+        setLoadingSuggest(true);
+        const res = await suggestSach({ term: debouncedSearch });
+        setSuggestions(res.result || []);
+      } catch (e) {
+        console.error("Error fetching suggestions:", e);
+      } finally {
+        setLoadingSuggest(false);
+      }
+    };
+
+    fetchSuggestions();
+  }, [debouncedSearch]);
+
+  const handleInputFocus = async () => {
+    if (searchTerm.trim()) {
+      const res = await suggestSach({ term: searchTerm });
+      setSuggestions(res.result || []);
+    }
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setSuggestions([]);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const handleEnterSearch = () => {
+    navigate(`/books?keyword=${searchTerm}`);
+  };
 
   const [selectedKey, setSelectedKey] = useState("info");
 
   useEffect(() => {
     setSelectedKey(location.pathname.replace("/profile/", ""));
   }, [location.pathname]);
-
-  const genres = [
-    {
-      label: "Fiction",
-      key: "fiction",
-    },
-    {
-      label: "Mystery",
-      key: "mystery",
-    },
-    {
-      label: "Romance",
-      key: "romance",
-    },
-    {
-      label: "Sci-Fi",
-      key: "sci-fi",
-    },
-    {
-      label: "Biography",
-      key: "biography",
-    },
-    {
-      label: "Self-Help",
-      key: "self-help",
-    },
-  ];
 
   const userItem = [
     {
@@ -118,6 +162,12 @@ const ProfileLayout = () => {
   ];
 
   const handleMenuClick = (e) => {
+    // If it's a genre click from header menu
+    if (!isNaN(e.key)) {
+      navigate(`/books?maLoai=${e.key}`);
+      return;
+    }
+    // Profile menu clicks
     setSelectedKey(e.key);
     navigate(`/profile/${e.key}`);
   };
@@ -145,10 +195,10 @@ const ProfileLayout = () => {
           >
             <div className="my-1">
               <img
-                src={HorizontalLogo}
+                src={Logo}
                 alt="Logo"
                 style={{
-                  height: "60px",
+                  height: "300px",
                   width: "auto",
                   minWidth: "125px",
                   backgroundColor: "transparent",
@@ -156,11 +206,59 @@ const ProfileLayout = () => {
               />
             </div>
           </Space>
-          <Input
-            prefix={<SearchOutlined />}
-            placeholder="Search books, authors, ..."
-            style={{ flex: 1, marginTop: 10 }}
-          />
+          <div style={{ position: "relative", flex: 1 }} ref={searchRef}>
+            <Input
+              prefix={<SearchOutlined />}
+              placeholder="Nhập tên sách bạn muốn tìm tại đây"
+              style={{ flex: 1, marginTop: 10 }}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onPressEnter={handleEnterSearch}
+              onFocus={handleInputFocus}
+            />
+            {suggestions.length > 0 && (
+              <div
+                style={{
+                  position: "absolute",
+                  top: 55,
+                  left: 0,
+                  right: 0,
+                  background: "white",
+                  borderRadius: 6,
+                  boxShadow: "0px 3px 8px rgba(0,0,0,0.15)",
+                  zIndex: 2000,
+                }}
+              >
+                {loadingSuggest ? (
+                  <div className="px-4 py-2 text-gray-500">Đang tải...</div>
+                ) : (
+                  suggestions.slice(0, 4).map((book) => (
+                    <div
+                      key={book.maSach}
+                      className="px-4 py-2 hover:bg-blue-100 cursor-pointer leading-tight flex items-center gap-3"
+                      onClick={() => {
+                        navigate(`/books/${book.maSach}`);
+                        setSearchTerm("");
+                        setSuggestions([]);
+                      }}
+                    >
+                      <Avatar
+                        icon={<ReadOutlined />}
+                        shape="square"
+                        size={54}
+                      />
+                      <div>
+                        <p style={{ marginBottom: 1 }}>{book.tenSach}</p>
+                        <Typography.Text type="secondary">
+                          Đơn giá: {book.donGia}
+                        </Typography.Text>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            )}
+          </div>
           <Space align="end" style={{ marginTop: 10 }}>
             <Flex gap={20} align="center">
               <Button
@@ -170,7 +268,7 @@ const ProfileLayout = () => {
                 }
                 onClick={() => navigate("/favorite")}
               />
-              <Badge count={3}>
+              <Badge count={cartAmount}>
                 <Button
                   type="link"
                   icon={
@@ -184,9 +282,9 @@ const ProfileLayout = () => {
               {!user ? (
                 <>
                   <Button type="primary" onClick={() => navigate("/login")}>
-                    Sign in
+                    Đăng nhập
                   </Button>
-                  <Button>Sign up</Button>
+                  <Button onClick={() => navigate("/register")}>Đăng ký</Button>
                 </>
               ) : (
                 <Dropdown
@@ -207,7 +305,10 @@ const ProfileLayout = () => {
           <Menu
             mode="horizontal"
             onClick={handleMenuClick}
-            items={genres}
+            items={listTheLoai.slice(0, 10).map((item) => ({
+              key: item.maLoai,
+              label: item.tenLoai,
+            }))}
             style={{
               flex: 1,
               minWidth: 0,
@@ -274,13 +375,13 @@ const ProfileLayout = () => {
           <Col xs={24} md={12} lg={12}>
             <Space direction="vertical" size="small">
               <Title level={4} style={{ marginBottom: 0 }}>
-                <span style={{ color: "#1890ff" }}>Readify</span>
+                <span style={{ color: "#1890ff" }}>Bookstore</span>
               </Title>
-              <Text type="secondary">Premium Bookstore</Text>
+              <Text type="secondary">Nhà sách cao cấp</Text>
               <Text style={{ display: "block", maxWidth: 400 }}>
-                Your trusted partner in literary discovery. We curate the finest
-                collection of books from around the world, bringing you closer
-                to the stories that matter.
+                Đối tác tin cậy của bạn trong hành trình khám phá văn học. Chúng
+                tôi tuyển chọn những cuốn sách hay nhất từ khắp nơi trên thế
+                giới, đưa bạn đến gần hơn với những câu chuyện ý nghĩa.
               </Text>
             </Space>
 
@@ -290,46 +391,47 @@ const ProfileLayout = () => {
               style={{ marginTop: 16, color: "#555" }}
             >
               <Text>
-                <EnvironmentOutlined /> 123 Literary Lane, Book City, BC 12345
+                <EnvironmentOutlined /> 123 Đường Văn Học, Quận Sách, TP.HCM
               </Text>
               <Text>
                 <PhoneOutlined /> Hotline: 1900-1234 (24/7)
               </Text>
               <Text>
-                <MailOutlined /> support@Readify.com
+                <MailOutlined /> support@Bookstore.com
               </Text>
             </Space>
 
             <div style={{ marginTop: 24 }}>
               <Title level={5} style={{ marginBottom: 8 }}>
-                Support
+                Hỗ trợ
               </Title>
               <Space direction="vertical">
-                <Link>Contact Us</Link>
-                <Link>Shipping Info</Link>
-                <Link>Returns</Link>
-                <Link>FAQ</Link>
+                <Link onClick={() => navigate("/about")}>Liên hệ</Link>
+                <Link onClick={() => navigate("/about")}>Về chúng tôi</Link>
               </Space>
             </div>
           </Col>
 
           <Col xs={12} sm={8} md={6} lg={6}>
-            <Title level={5}>Quick Links</Title>
+            <Title level={5}>Liên kết nhanh</Title>
             <Space direction="vertical">
-              <Link>All Books</Link>
-              <Link>Bestsellers</Link>
-              <Link>New Releases</Link>
-              <Link>Special Deals</Link>
+              <Link onClick={() => navigate("/books")}>Tất cả sách</Link>
+              <Link onClick={() => navigate("/books")}>Sách bán chạy</Link>
+              <Link onClick={() => navigate("/books")}>Sách mới</Link>
             </Space>
           </Col>
 
           <Col xs={12} sm={8} md={6} lg={4}>
-            <Title level={5}>Genres</Title>
+            <Title level={5}>Thể loại</Title>
             <Space direction="vertical">
-              <Link>Fiction</Link>
-              <Link>Mystery</Link>
-              <Link>Romance</Link>
-              <Link>Science Fiction</Link>
+              {listTheLoai.slice(0, 5).map((category) => (
+                <Link
+                  key={category.maLoai}
+                  onClick={() => navigate(`/books?maLoai=${category.maLoai}`)}
+                >
+                  {category.tenLoai}
+                </Link>
+              ))}
             </Space>
           </Col>
         </Row>
@@ -343,12 +445,12 @@ const ProfileLayout = () => {
           }}
         >
           <Text type="secondary">
-            © 2025 Readify Premium Bookstore. All rights reserved.
+            © 2025 Bookstore - Nhà sách cao cấp. Bản quyền thuộc về chúng tôi.
           </Text>
           <br />
           <Text type="secondary">
-            Crafted with <HeartFilled style={{ color: "red" }} /> for book
-            lovers worldwide
+            Được tạo ra với <HeartFilled style={{ color: "red" }} /> dành cho
+            những người yêu sách trên toàn thế giới
           </Text>
         </div>
       </Footer>

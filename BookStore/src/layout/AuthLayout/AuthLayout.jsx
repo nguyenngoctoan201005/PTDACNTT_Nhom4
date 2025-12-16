@@ -11,7 +11,7 @@ import {
   Col,
   Typography,
 } from "antd";
-import { HorizontalLogo } from "../../assets";
+import { Logo } from "../../assets";
 import {
   SearchOutlined,
   ShoppingCartOutlined,
@@ -85,10 +85,10 @@ const AuthLayout = () => {
             >
               <div className="my-1">
                 <img
-                  src={HorizontalLogo}
+                  src={Logo}
                   alt="Logo"
                   style={{
-                    height: "60px",
+                    height: "300px",
                     width: "auto",
                     minWidth: "125px",
                     backgroundColor: "transparent",
@@ -162,7 +162,7 @@ const AuthLayout = () => {
           <Col xs={24} md={12} lg={12}>
             <Space direction="vertical" size="small">
               <Title level={4} style={{ marginBottom: 0 }}>
-                <span style={{ color: "#1890ff" }}>Readify</span>
+                <span style={{ color: "#1890ff" }}>Bookstore</span>
               </Title>
               <Text type="secondary">Premium Bookstore</Text>
               <Text style={{ display: "block", maxWidth: 400 }}>
@@ -184,7 +184,7 @@ const AuthLayout = () => {
                 <PhoneOutlined /> Hotline: 1900-1234 (24/7)
               </Text>
               <Text>
-                <MailOutlined /> support@Readify.com
+                <MailOutlined /> support@Bookstore.com
               </Text>
             </Space>
 
@@ -230,7 +230,7 @@ const AuthLayout = () => {
           }}
         >
           <Text type="secondary">
-            © 2025 Readify Premium Bookstore. All rights reserved.
+            © 2025 Bookstore Premium Bookstore. All rights reserved.
           </Text>
           <br />
           <Text type="secondary">
