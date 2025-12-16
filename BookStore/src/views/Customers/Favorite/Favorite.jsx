@@ -57,12 +57,16 @@ const Favorite = () => {
                 }}
               >
                 <BookCard
-                  imageUrl={book.imageUrl}
+                  imageUrl={
+                    `https://covers.openlibrary.org/b/id/${book.hinhAnhs[0]}-L.jpg` ||
+                    ""
+                  }
                   type={book.type}
                   discount={book.discount}
                   name={book.name}
                   author={book.author}
                   price={book.price}
+                  soSao={book.soSao}
                   id={book.id}
                   onAddToCart={handleAddToCart}
                   onRemove={handleRemove}

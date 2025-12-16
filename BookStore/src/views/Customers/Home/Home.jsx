@@ -170,13 +170,14 @@ const Home = () => {
                 }}
               >
                 <BookCard
-                  imageUrl={book.imageUrl}
+                  imageUrl={`https://covers.openlibrary.org/b/id/${book.hinhAnhs[0]}-L.jpg`}
                   type={book.type}
                   discount={book.discount}
                   name={book.tenSach}
-                  author={book.author}
+                  author={book.tacGiaSet?.[0]?.tenTG}
                   price={book.donGia}
                   id={book.maSach}
+                  soSao={book.avgSao}
                   onAddToCart={() =>
                     addToCart({ maSach: book.maSach, soLuong: 1 })
                   }
@@ -190,9 +191,9 @@ const Home = () => {
                       const newBook = {
                         id: book.maSach,
                         name: book.tenSach,
-                        imageUrl: book.imageUrl,
+                        imageUrl: `https://covers.openlibrary.org/b/id/${book.hinhAnhs[0]}-L.jpg`,
                         price: book.donGia,
-                        author: book.author,
+                        author: book.tacGiaSet?.[0]?.tenTG,
                         type: book.type,
                         discount: book.discount,
                       };
@@ -233,13 +234,14 @@ const Home = () => {
                 }}
               >
                 <BookCard
-                  imageUrl={book.imageUrl}
+                  imageUrl={`https://covers.openlibrary.org/b/id/${book.hinhAnhs[0]}-L.jpg`}
                   type={book.type}
                   discount={book.discount}
                   name={book.tenSach}
-                  author={book.author}
+                  author={book.tacGiaSet?.[0]?.tenTG}
                   price={book.donGia}
                   id={book.maSach}
+                  soSao={book.avgSao}
                   onAddToCart={() =>
                     addToCart({ maSach: book.maSach, soLuong: 1 })
                   }
@@ -253,9 +255,9 @@ const Home = () => {
                       const newBook = {
                         id: book.maSach,
                         name: book.tenSach,
-                        imageUrl: book.imageUrl,
+                        imageUrl: `https://covers.openlibrary.org/b/id/${book.hinhAnhs[0]}-L.jpg`,
                         price: book.donGia,
-                        author: book.author,
+                        author: book.tacGiaSet?.[0]?.tenTG,
                         type: book.type,
                         discount: book.discount,
                       };

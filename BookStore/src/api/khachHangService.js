@@ -24,6 +24,12 @@ export const updateKhachHang = async (data) => {
   return res.data;
 };
 
+export const updateMatKhauKhachHang = async (data) => {
+  const res = await axiosInstance.put(`/kh/password/${data.maKhachHang}`, { ...data });
+
+  return res.data;
+};
+
 export const deleteKhachHang = async (maKhachHang) => {
   const res = await axiosInstance.delete(`/kh/${maKhachHang}`);
 

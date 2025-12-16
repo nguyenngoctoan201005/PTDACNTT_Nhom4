@@ -135,6 +135,17 @@ const BookDetail = () => {
     fetchSachDetail();
   }, [bookId]);
 
+  useEffect(() => {
+    if (bookDetail) {
+      const storedBooks =
+        JSON.parse(localStorage.getItem("favoriteBooks")) || [];
+      const isFavorite = storedBooks.some(
+        (item) => item.id === bookDetail.maSach
+      );
+      setAddFavorite(isFavorite);
+    }
+  }, [bookDetail]);
+
   const handleAddToCart = async () => {
     try {
       setCartLoading(true);
@@ -180,12 +191,14 @@ const BookDetail = () => {
         <Row gutter={[40, 40]} align="middle">
           <Col xs={24} md={12} lg={12}>
             <img
-              src={"https://via.placeholder.com/150x200?text=Midnight+Library"}
+              src={`https://covers.openlibrary.org/b/id/${bookDetail?.hinhAnhs[0]}-L.jpg`}
               alt={bookDetail?.tenSach}
               style={{
                 width: "100%",
                 borderRadius: 8,
                 boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
+                maxHeight: 600,
+                maxWidth: 500,
               }}
             />
           </Col>
@@ -197,12 +210,16 @@ const BookDetail = () => {
               <Title level={2} style={{ margin: 0 }}>
                 {bookDetail?.tenSach}
               </Title>
-              <Text type="secondary">Tác giả: {1}</Text>
+              <Text type="secondary">
+                Tác giả: {bookDetail?.tacGiaSet[0]?.tenTG}
+              </Text>
 
               <Space align="center" size="small">
-                <Rate disabled defaultValue={4} />
-                <Text strong>{5}</Text>
-                <Text type="secondary">(5 lượt đánh giá)</Text>
+                <Rate disabled value={bookDetail?.avgSao || 5} />
+                <Text strong>{bookDetail?.avgSao || 5}</Text>
+                <Text type="secondary">
+                  ({bookDetail?.soLuotDG || 0} lượt đánh giá)
+                </Text>
               </Space>
 
               <Space align="baseline" size="middle">
@@ -257,12 +274,41 @@ const BookDetail = () => {
                 <Button
                   icon={
                     addFavorite ? (
-                      <HeartOutlined />
-                    ) : (
                       <HeartFilled style={{ color: "red" }} />
+                    ) : (
+                      <HeartOutlined />
                     )
                   }
-                  onClick={() => setAddFavorite(!addFavorite)}
+                  onClick={() => {
+                    const storedBooks =
+                      JSON.parse(localStorage.getItem("favoriteBooks")) || [];
+                    if (addFavorite) {
+                      const newBooks = storedBooks.filter(
+                        (item) => item.id !== bookDetail.maSach
+                      );
+                      localStorage.setItem(
+                        "favoriteBooks",
+                        JSON.stringify(newBooks)
+                      );
+                      setAddFavorite(false);
+                      message.success("Đã xóa khỏi danh sách yêu thích");
+                    } else {
+                      const newBook = {
+                        id: bookDetail.maSach,
+                        name: bookDetail.tenSach,
+                        price: bookDetail.donGia,
+                        hinhAnhs: bookDetail.hinhAnhs,
+                        soSao: bookDetail.avgSao,
+                        tacGia: bookDetail.tacGiaSet?.[0]?.tenTG,
+                      };
+                      localStorage.setItem(
+                        "favoriteBooks",
+                        JSON.stringify([...storedBooks, newBook])
+                      );
+                      setAddFavorite(true);
+                      message.success("Đã thêm vào danh sách yêu thích");
+                    }
+                  }}
                   size="large"
                   type="text"
                 />
@@ -310,13 +356,14 @@ const BookDetail = () => {
                       }}
                     >
                       <BookCard
-                        imageUrl={book.imageUrl}
+                        imageUrl={`https://covers.openlibrary.org/b/id/${book.hinhAnhs[0]}-L.jpg`}
                         type={book.type}
                         discount={book.discount}
                         name={book.tenSach}
-                        author={book.author}
+                        author={book.tacGiaSet?.[0]?.tenTG}
                         price={book.donGia}
                         id={book.maSach}
+                        soSao={book.avgSao}
                         showButton={false}
                       />
                     </div>

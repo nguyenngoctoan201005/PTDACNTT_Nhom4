@@ -304,12 +304,13 @@ const Books = () => {
                     }}
                   >
                     <BookCard
-                      imageUrl={book.imageUrl}
+                      imageUrl={`https://covers.openlibrary.org/b/id/${book.hinhAnhs[0]}-L.jpg`}
                       type={book.type}
                       discount={book.discount}
                       name={book.tenSach}
-                      author={book.author}
+                      author={book.tacGiaSet?.[0]?.tenTG}
                       price={book.donGia}
+                      soSao={book.avgSao}
                       id={book.maSach}
                       showButton={true}
                       onAddToCart={() => console.log("added")}
@@ -324,9 +325,9 @@ const Books = () => {
                           const newBook = {
                             id: book.maSach,
                             name: book.tenSach,
-                            imageUrl: book.imageUrl,
+                            imageUrl: `https://covers.openlibrary.org/b/id/${book.hinhAnhs[0]}-L.jpg`,
                             price: book.donGia,
-                            author: book.author,
+                            author: book.tacGiaSet?.[0]?.tenTG,
                             type: book.type,
                             discount: book.discount,
                           };

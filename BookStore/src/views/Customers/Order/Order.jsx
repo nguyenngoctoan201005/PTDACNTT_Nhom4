@@ -14,7 +14,7 @@ import { useState, useEffect } from "react";
 import RequireLoginPage from "../../../components/RequireLoginPage/RequireLoginPage";
 import { useGlobalContext } from "../../../GlobalContext";
 import {
-  getDonHangOfUser,
+  getDonHangOfKhachHang,
   getDetailDonHang,
 } from "../../../api/donHangService";
 import { formatCurrency } from "../../../hooks/formatCurrentcy";
@@ -37,7 +37,7 @@ const Order = () => {
   const fetchOrders = async () => {
     setLoading(true);
     try {
-      const data = await getDonHangOfUser();
+      const data = await getDonHangOfKhachHang();
       setOrders(data.result || []);
     } catch (error) {
       console.error("Failed to fetch orders:", error);
