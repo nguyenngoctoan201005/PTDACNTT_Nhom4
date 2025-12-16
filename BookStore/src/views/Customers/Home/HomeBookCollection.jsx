@@ -66,38 +66,43 @@ const HomeBookCollection = ({
                 <Card
                   hoverable
                   className="bg-card/80 backdrop-blur-sm rounded-xl shadow-2xl overflow-hidden border border-border/50"
+                  bodyStyle={{ padding: 0, display: "none" }}
                   cover={
                     item.cover && (
-                      <div>
+                      <div className="relative h-[320px] w-full">
                         <img
                           alt={item.title}
                           src={item.cover}
-                          style={{
-                            borderTopLeftRadius: 12,
-                            borderTopRightRadius: 12,
-                            height: 200,
-                            objectFit: "cover",
-                          }}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                         />
-                        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-center">
+                          <Text
+                            strong
+                            style={{
+                              color: "white",
+                              fontSize: 16,
+                              marginBottom: 4,
+                            }}
+                          >
+                            {item.title}
+                          </Text>
+                          <Text
+                            style={{
+                              color: "rgba(255,255,255,0.8)",
+                              fontSize: 13,
+                            }}
+                          >
+                            {item.subtitle}
+                          </Text>
+                        </div>
                       </div>
                     )
                   }
                   style={{
                     borderRadius: 12,
                     boxShadow: "0 4px 16px rgba(0,0,0,0.1)",
-                    textAlign: "center",
                   }}
-                >
-                  <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <Text strong>{item.title}</Text>
-                    <br />
-                    <Text type="secondary" style={{ fontSize: 13 }}>
-                      {item.subtitle}
-                    </Text>
-                  </div>
-                </Card>
+                />
               </Col>
             ))}
           </Row>

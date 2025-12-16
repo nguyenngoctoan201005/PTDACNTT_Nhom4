@@ -37,13 +37,9 @@ const Home = () => {
         // Fetch books for genre 1 and 2
         const [genre1Data, genre2Data, genresData] = await Promise.all([
           getSachByMaLoai({ maLoai: 1 }),
-          getSachByMaLoai({ maLoai: 2 }),
+          getSachByMaLoai({ maLoai: 21 }),
           getListTheLoai(),
         ]);
-
-        console.log("genre1Data", genre1Data);
-        console.log("genre2Data", genre2Data);
-        console.log("genresData", genresData);
 
         setGenre1Books(genre1Data.result);
         setGenre2Books(genre2Data.result);
@@ -56,7 +52,7 @@ const Home = () => {
 
         // Find genre names
         const genre1 = genresData.result.find((g) => g.maLoai === 1);
-        const genre2 = genresData.result.find((g) => g.maLoai === 2);
+        const genre2 = genresData.result.find((g) => g.maLoai === 21);
 
         if (genre1) setGenre1Name(genre1.tenLoai);
         if (genre2) setGenre2Name(genre2.tenLoai);
@@ -70,21 +66,75 @@ const Home = () => {
     fetchGenreBooks();
   }, []);
 
-  const books = [
+  const bestSellerBooks = [
     {
-      title: "The Seven Husbands",
-      subtitle: "Taylor Jenkins Reid",
-      cover: "https://via.placeholder.com/150x200?text=Seven+Husbands",
+      title: "Nhà Giả Kim",
+      subtitle: "Paulo Coelho",
+      cover: "https://covers.openlibrary.org/b/isbn/9780062315007-L.jpg",
     },
     {
-      title: "Dune",
+      title: "Nghĩ Giàu Làm Giàu",
+      subtitle: "Napoleon Hill",
+      cover: "https://covers.openlibrary.org/b/isbn/9780449214923-L.jpg",
+    },
+    {
+      title: "Đại Gia Gatsby",
+      subtitle: "F. Scott Fitzgerald",
+      cover: "https://covers.openlibrary.org/b/isbn/9780743273565-L.jpg",
+    },
+  ];
+
+  const newReleaseBooks = [
+    {
+      title: "Những Người Khốn Khổ",
+      subtitle: "Victor Hugo",
+      cover: "https://covers.openlibrary.org/b/isbn/9780451419439-L.jpg",
+    },
+    {
+      title: "Xứ Cát (Dune)",
       subtitle: "Frank Herbert",
-      cover: "https://via.placeholder.com/150x200?text=Dune",
+      cover: "https://covers.openlibrary.org/b/isbn/9780441013593-L.jpg",
     },
     {
-      title: "The Midnight Library",
-      subtitle: "Matt Haig",
-      cover: "https://via.placeholder.com/150x200?text=Midnight+Library",
+      title: "Tội Ác và Trừng Phạt",
+      subtitle: "Fyodor Dostoevsky",
+      cover: "https://covers.openlibrary.org/b/isbn/9780143107637-L.jpg",
+    },
+  ];
+
+  const dealBooks = [
+    {
+      title: "Hoàng Tử Bé",
+      subtitle: "Antoine de Saint-Exupéry",
+      cover: "https://covers.openlibrary.org/b/isbn/9780156012195-L.jpg",
+    },
+    {
+      title: "Ông Già Và Biển Cả",
+      subtitle: "Ernest Hemingway",
+      cover: "https://covers.openlibrary.org/b/isbn/9780684801223-L.jpg",
+    },
+    {
+      title: "Giết Con Chim Nhại",
+      subtitle: "Harper Lee",
+      cover: "https://covers.openlibrary.org/b/isbn/9780061120084-L.jpg",
+    },
+  ];
+
+  const exclusiveBooks = [
+    {
+      title: "Anh Chàng Hobbit",
+      subtitle: "J.R.R. Tolkien",
+      cover: "https://covers.openlibrary.org/b/isbn/9780547928227-L.jpg",
+    },
+    {
+      title: "Chúa Tể Những Chiếc Nhẫn",
+      subtitle: "J.R.R. Tolkien",
+      cover: "https://covers.openlibrary.org/b/isbn/9780261103252-L.jpg",
+    },
+    {
+      title: "Trò Chơi Vương Quyền",
+      subtitle: "George R.R. Martin",
+      cover: "https://covers.openlibrary.org/b/isbn/9780553103540-L.jpg",
     },
   ];
 
@@ -93,13 +143,8 @@ const Home = () => {
     {
       icon: <EllipsisOutlined style={{ fontSize: 32, color: "#1677ff" }} />,
       tenLoai: "Xem thêm",
-      onClick: () => navigate("/genres"),
     },
   ];
-
-  console.log("genre1Books", genre1Books);
-  console.log("genre2Books", genre2Books);
-  console.log("genres", genresList);
 
   return (
     <div>
@@ -123,28 +168,28 @@ const Home = () => {
             title="Sách Bán Chạy Nhất"
             subtitle="Được yêu thích nhất"
             description="Khám phá những cuốn sách được độc giả tin tưởng và lựa chọn nhiều nhất"
-            items={books}
+            items={bestSellerBooks}
           />
           <HomeBookCollection
             tag="Sách mới"
             title="Ra Mắt Tuần Này"
             subtitle="Cập nhật liên tục"
             description="Những cuốn sách mới nhất vừa được phát hành, đừng bỏ lỡ"
-            items={books}
+            items={newReleaseBooks}
           />
           <HomeBookCollection
             tag="Ưu đãi hấp dẫn"
             title="Giảm Giá Đặc Biệt"
             subtitle="Tiết kiệm đến 50%"
             description="Cơ hội sở hữu sách yêu thích với mức giá tốt nhất"
-            items={books}
+            items={dealBooks}
           />
           <HomeBookCollection
             tag="Độc quyền"
             title="Bộ Sưu Tập Cao Cấp"
             subtitle="Phiên bản giới hạn"
             description="Sách cao cấp với chữ ký tác giả và bìa đặc biệt"
-            items={books}
+            items={exclusiveBooks}
           />
         </Carousel>
       </div>
@@ -290,7 +335,11 @@ const Home = () => {
                   borderRadius: 12,
                   height: "100%",
                 }}
-                onClick={genre.onClick}
+                onClick={() =>
+                  genre.maLoai
+                    ? navigate(`/books?maLoai=${genre.maLoai}`)
+                    : navigate("/books")
+                }
               >
                 <div className="text-2xl text-blue-500">{genre.icon}</div>
                 <h3 style={{ marginTop: 12 }}>{genre.tenLoai}</h3>
