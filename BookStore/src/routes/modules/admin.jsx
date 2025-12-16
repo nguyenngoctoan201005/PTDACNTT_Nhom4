@@ -26,6 +26,9 @@ const QTV_Themsachmoi = lazy(() =>
     "../../page/qtv_page/qtv_quanlysach/qtv_themsachmoi/QTV_Themsachmoi.jsx"
   )
 );
+const QTV_Quanlytacgia = lazy(() =>
+  import("../../page/qtv_page/qtv_quanlytacgia/QTV_Quanlytacgia.jsx")
+);
 
 export const adminRoutes = [
   {
@@ -42,6 +45,11 @@ export const adminRoutes = [
     path: "qtvquanlytheloai",
     element: <QTV_Quanlytheloai />,
     title: "Quản lý thể loại - Quản trị viên",
+  },
+  {
+    path: "qtvquanlytacgia",
+    element: <QTV_Quanlytacgia />,
+    title: "Quản lý tác giả - Quản trị viên",
   },
   {
     path: "qtvkhachhang",

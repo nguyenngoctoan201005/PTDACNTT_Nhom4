@@ -1,6 +1,6 @@
 /* Cleaned up for new Dashboard design using Tailwind/AntD */
 .qtv_trangbdk_main {
   /* Minimal override if needed */
-  width: calc(100vw - 300px);
+  width: calc(100vw - 320px);
   margin-left: 300px;
 }
