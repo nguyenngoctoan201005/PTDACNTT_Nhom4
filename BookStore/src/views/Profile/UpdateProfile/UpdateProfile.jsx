@@ -1,4 +1,4 @@
-import { Card, Form, Input, Button, Row, Col, Select } from "antd";
+import { Card, Form, Input, Button, Row, Col, Select, message } from "antd";
 import { EyeInvisibleOutlined } from "@ant-design/icons";
 import { useGlobalContext } from "../../../GlobalContext";
 import { useState, useEffect, useMemo } from "react";
@@ -6,12 +6,15 @@ import {
   getListProvinces,
   getProvinceDetail,
 } from "../../../api/provinceService";
+import { updateKhachHang } from "../../../api/khachHangService";
 import { useNavigate } from "react-router";
 
 const UpdateProfile = () => {
   const [form] = Form.useForm();
   const { user } = useGlobalContext();
   const navigate = useNavigate();
+
+  console.log("user", user);
 
   const [provinces, setProvinces] = useState([]);
   const [wards, setWards] = useState([]);
@@ -21,12 +24,25 @@ const UpdateProfile = () => {
   const handleFinish = async (values) => {
     try {
       setLoading(true);
-      console.log(values);
+      const payload = {
+        maKhachHang: user.maKH,
+        hoTen: values.hoTen,
+        email: values.email,
+        soDT: values.phoneNumber,
+        diaChi: values.address,
+        maQuanHuyen: values.ward_code,
+        // Keep other fields if necessary or if backend requires them
+        userName: values.userName,
+      };
+
+      await updateKhachHang(payload);
+      message.success("Cập nhật thông tin thành công!");
+      navigate("/profile/info");
     } catch (err) {
-      message.error(err.message);
+      console.error(err);
+      message.error(err.response?.data?.message || "Cập nhật thất bại");
     } finally {
       setLoading(false);
-      navigate("/profile/info");
     }
   };
 

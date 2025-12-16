@@ -1,13 +1,28 @@
-import { Card, Form, Input, Button, Row, Col, Select } from "antd";
+import { Card, Form, Input, Button, Row, Col, Select, message } from "antd";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import { useNavigate } from "react-router";
+import { updateMatKhauKhachHang } from "../../../api/khachHangService";
+import { useGlobalContext } from "../../../GlobalContext";
 
 const ChangePassword = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
+  const { user } = useGlobalContext();
 
-  const handleFinishChangePassword = () => {
-    navigate("/profile/info");
+  const handleFinishChangePassword = async (values) => {
+    try {
+      await updateMatKhauKhachHang({
+        maKhachHang: user.maKH,
+        matKhau: values.old_password,
+        newPassWord: values.new_password,
+        verifynewPassWord: values.confirm_new_password,
+      });
+      message.success("Đổi mật khẩu thành công!");
+      navigate("/profile/info");
+    } catch (error) {
+      console.error(error);
+      message.error(error.response?.data?.message || "Đổi mật khẩu thất bại");
+    }
   };
 
   return (
