@@ -7,7 +7,7 @@ import {
 } from "../../../../api/khachHangService";
 import {
   getListProvinces,
-  getProvinceDetail,
+  getListWards,
 } from "../../../../api/provinceService";
 
 const ModalKhachHang = ({
@@ -25,19 +25,23 @@ const ModalKhachHang = ({
 
   useEffect(() => {
     getListProvinces()
-      .then((data) => setProvinces(data))
-      .catch((err) => console.error("Lỗi lấy tỉnh:", err));
+      .then((data) => {
+        setProvinces(data.result);
+      })
+      .catch((error) => {
+        console.error("Lỗi khi lấy danh sách tỉnh:", error);
+      });
   }, []);
 
   useEffect(() => {
-    if (selectedCity) {
-      getProvinceDetail(selectedCity, 2)
-        .then((data) => setWards(data.wards))
-        .catch((err) => console.error("Lỗi lấy xã:", err));
-    } else {
-      setWards([]);
-    }
-  }, [selectedCity]);
+    getListWards()
+      .then((data) => {
+        setWards(data.result);
+      })
+      .catch((error) => {
+        console.error("Lỗi khi lấy danh sách xã:", error);
+      });
+  }, []);
 
   useEffect(() => {
     if (open) {
@@ -102,12 +106,12 @@ const ModalKhachHang = ({
   };
 
   const provinceOptions = useMemo(
-    () => provinces.map((p) => ({ label: p.name, value: p.code })),
+    () => provinces.map((p) => ({ label: p.tenTinh, value: p.maTinh })),
     [provinces]
   );
 
   const wardOptions = useMemo(
-    () => wards.map((p) => ({ label: p.name, value: p.code })),
+    () => wards.map((p) => ({ label: p.tenQuanHuyen, value: p.maQuanHuyen })),
     [wards]
   );
 

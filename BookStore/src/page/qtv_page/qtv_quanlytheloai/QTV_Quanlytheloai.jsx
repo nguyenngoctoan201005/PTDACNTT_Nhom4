@@ -132,8 +132,8 @@ export default function QTV_Quanlytheloai() {
   return (
     <>
       <QTV_Nav />
-      <main className="qtv_quanlytheloai_main">
-        <div className="qtv_quanlytheloai_header mx-4 mt-4 rounded-lg flex items-center justify-between">
+      <main className="qtv_quanlytheloai_main" style={{ marginLeft: 300 }}>
+        <div className=" mx-4 mt-4 rounded-lg flex items-center justify-between">
           <div>{t("admin.genre.title")}</div>
           <Button
             type="primary"

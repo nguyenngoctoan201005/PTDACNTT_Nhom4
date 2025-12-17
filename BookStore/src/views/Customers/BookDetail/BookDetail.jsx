@@ -24,6 +24,7 @@ import {
   HeartFilled,
 } from "@ant-design/icons";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import BookReview from "./BookReview";
 import BookCard from "../../../components/BookCard";
 import { useParams } from "react-router";
@@ -31,13 +32,13 @@ import { useGlobalContext } from "../../../GlobalContext";
 import { getSachDetail, getSachByMaLoai } from "../../../api/sachService";
 import { formatCurrency } from "../../../hooks/formatCurrentcy";
 import LoadingSpinner from "../../../components/LoadingSpinner";
-import { useTranslation } from "react-i18next";
 
 const { Title, Text, Paragraph } = Typography;
 
 const BookDetail = () => {
   const [relatedBooks, setRelatedBooks] = useState([]);
   const { t } = useTranslation();
+  const { user } = useGlobalContext();
 
   const [bookDetail, setBookDetail] = useState();
   const [value, setValue] = useState(1);
@@ -159,6 +160,10 @@ const BookDetail = () => {
   }, [bookDetail]);
 
   const handleAddToCart = async () => {
+    if (!user) {
+      message.error(t("book.detail.login_required_cart"));
+      return;
+    }
     try {
       setCartLoading(true);
       await addToCart({
@@ -174,7 +179,37 @@ const BookDetail = () => {
       setCartLoading(false);
     }
   };
+  const handleToggleFavorite = () => {
+    if (!user) {
+      message.error(t("book.detail.login_required_favorite"));
+      return;
+    }
 
+    const storedBooks = JSON.parse(localStorage.getItem("favoriteBooks")) || [];
+    if (addFavorite) {
+      const newBooks = storedBooks.filter(
+        (item) => item.id !== bookDetail.maSach
+      );
+      localStorage.setItem("favoriteBooks", JSON.stringify(newBooks));
+      setAddFavorite(false);
+      message.success(t("common.message.removed_favorite"));
+    } else {
+      const newBook = {
+        id: bookDetail.maSach,
+        name: bookDetail.tenSach,
+        price: bookDetail.donGia,
+        hinhAnhs: bookDetail.hinhAnhs,
+        soSao: bookDetail.avgSao,
+        tacGia: bookDetail.tacGiaSet?.[0]?.tenTG,
+      };
+      localStorage.setItem(
+        "favoriteBooks",
+        JSON.stringify([...storedBooks, newBook])
+      );
+      setAddFavorite(true);
+      message.success(t("common.message.added_favorite"));
+    }
+  };
   if (loading) {
     return (
       <div
@@ -203,7 +238,7 @@ const BookDetail = () => {
         <Row gutter={[40, 40]} align="middle">
           <Col xs={24} md={12} lg={12}>
             <img
-              src={`https://covers.openlibrary.org/b/id/${bookDetail?.hinhAnhs[0]}-L.jpg`}
+              src={`https://covers.openlibrary.org/b/id/${bookDetail?.hinhAnhs?.[0]}-L.jpg`}
               alt={bookDetail?.tenSach}
               style={{
                 width: "100%",
@@ -223,7 +258,7 @@ const BookDetail = () => {
                 {bookDetail?.tenSach}
               </Title>
               <Text type="secondary">
-                Tác giả: {bookDetail?.tacGiaSet[0]?.tenTG}
+                {t("book.detail.author")}: {bookDetail?.tacGiaSet[0]?.tenTG}
               </Text>
 
               <Space align="center" size="small">
@@ -295,38 +330,10 @@ const BookDetail = () => {
                       <HeartOutlined />
                     )
                   }
-                  onClick={() => {
-                    const storedBooks =
-                      JSON.parse(localStorage.getItem("favoriteBooks")) || [];
-                    if (addFavorite) {
-                      const newBooks = storedBooks.filter(
-                        (item) => item.id !== bookDetail.maSach
-                      );
-                      localStorage.setItem(
-                        "favoriteBooks",
-                        JSON.stringify(newBooks)
-                      );
-                      setAddFavorite(false);
-                      message.success(t("common.message.removed_favorite"));
-                    } else {
-                      const newBook = {
-                        id: bookDetail.maSach,
-                        name: bookDetail.tenSach,
-                        price: bookDetail.donGia,
-                        hinhAnhs: bookDetail.hinhAnhs,
-                        soSao: bookDetail.avgSao,
-                        tacGia: bookDetail.tacGiaSet?.[0]?.tenTG,
-                      };
-                      localStorage.setItem(
-                        "favoriteBooks",
-                        JSON.stringify([...storedBooks, newBook])
-                      );
-                      setAddFavorite(true);
-                      message.success(t("common.message.added_favorite"));
-                    }
-                  }}
+                  onClick={handleToggleFavorite}
                   size="large"
                   type="text"
+                  title={t("book.detail.add_to_favorite")}
                 />
                 <Button icon={<ShareAltOutlined />} size="large" type="text" />
               </Space>
@@ -372,7 +379,7 @@ const BookDetail = () => {
                       }}
                     >
                       <BookCard
-                        imageUrl={`https://covers.openlibrary.org/b/id/${book.hinhAnhs[0]}-L.jpg`}
+                        imageUrl={`https://covers.openlibrary.org/b/id/${book.hinhAnhs?.[0]}-L.jpg`}
                         type={book.type}
                         discount={book.discount}
                         name={book.tenSach}

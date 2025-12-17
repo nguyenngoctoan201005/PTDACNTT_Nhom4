@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 import {
   Form,
   Input,
@@ -6,6 +6,7 @@ import {
   Card,
   Select,
   message,
+  Modal,
   Row,
   Col,
   Breadcrumb,
@@ -14,10 +15,7 @@ import {
 import { Link } from "react-router";
 import OrderCard from "../../../components/OrderCard";
 import { useNavigate } from "react-router";
-import {
-  getListProvinces,
-  getProvinceDetail,
-} from "../../../api/provinceService";
+import { getListProvinces, getListWards } from "../../../api/provinceService";
 import { useGlobalContext } from "../../../GlobalContext";
 import { insertDonHang } from "../../../api/donHangService";
 import { formatCurrency } from "../../../hooks/formatCurrentcy";
@@ -39,6 +37,13 @@ const Checkout = () => {
     total: 0,
   });
   const [products, setProducts] = useState([]);
+  const [showResultModal, setShowResultModal] = useState(false);
+  const [countdown, setCountdown] = useState(15);
+  const timeoutRef = useRef(null);
+  const intervalRef = useRef(null);
+  const [paymentMethod, setPaymentMethod] = useState("COD");
+  const [qrUrl, setQrUrl] = useState(null);
+  const [showQrModal, setShowQrModal] = useState(false);
 
   const orderData = {
     ...user,
@@ -52,7 +57,7 @@ const Checkout = () => {
   useEffect(() => {
     getListProvinces()
       .then((data) => {
-        setProvinces(data);
+        setProvinces(data.result);
       })
       .catch((error) => {
         console.error("Lỗi khi lấy danh sách tỉnh:", error);
@@ -60,23 +65,22 @@ const Checkout = () => {
   }, []);
 
   useEffect(() => {
-    if (!selectedCity) return;
-    getProvinceDetail(selectedCity, 2)
+    getListWards()
       .then((data) => {
-        setWards(data.wards);
+        setWards(data.result);
       })
       .catch((error) => {
         console.error("Lỗi khi lấy danh sách xã:", error);
       });
-  }, [selectedCity]);
+  }, []);
 
   const provinceOptions = useMemo(
-    () => provinces.map((p) => ({ label: p.name, value: p.code })),
+    () => provinces.map((p) => ({ label: p.tenTinh, value: p.maTinh })),
     [provinces]
   );
 
   const wardOptions = useMemo(
-    () => wards.map((p) => ({ label: p.name, value: p.code })),
+    () => wards.map((p) => ({ label: p.tenQuanHuyen, value: p.maQuanHuyen })),
     [wards]
   );
 
@@ -119,6 +123,17 @@ const Checkout = () => {
     }
   };
 
+  const generateQr = () => {
+    const BANK_ID = "MB"; // Mã ngân hàng: MB, VCB, TECHCOMBANK, ACB...
+    const ACCOUNT_NO = "9704229201118880886"; // Số tài khoản của bạn
+    const ACCOUNT_NAME = "LE HUY HOANG"; // Tên chủ tài khoản
+    const content = "";
+
+    const url = `https://img.vietqr.io/image/${BANK_ID}-${ACCOUNT_NO}-compact.png?amount=${orderSummary.total}&addInfo=${content}&accountName=${ACCOUNT_NAME}`;
+    setQrUrl(url);
+    setShowQrModal(true);
+  };
+
   const handleRemove = (id) => {
     const updated = products.filter((p) => p.sach.maSach !== id);
     setProducts(updated);
@@ -143,9 +158,9 @@ const Checkout = () => {
         ngayDat: new Date().toISOString().split("T")[0],
         soDTNguoiNhan: values.soDT,
         maNV: 1,
-        maGiamGia: Number(discountCode),
+        maGiamGia: discountCode ? Number(discountCode) : null,
         maKH: user?.maKH,
-        maPTTT: 1,
+        maPTTT: paymentMethod === "COD" ? 1 : 2,
         maQuanHuyen: values.ward,
         chiTietDonHang: products.map((p) => ({
           maSach: p.sach.id,
@@ -154,20 +169,38 @@ const Checkout = () => {
         })),
       };
 
-      console.log("Payload gửi lên:", payload);
-
-      await insertDonHang(payload);
-
       await insertDonHang(payload);
 
       message.success(t("cart.checkout_page.success"));
+      // refresh cart and show result modal with countdown
       fetchCart();
-      navigate("/orders");
+      setCountdown(15);
+      setShowResultModal(true);
+
+      // start interval to update countdown
+      intervalRef.current = setInterval(() => {
+        setCountdown((s) => s - 1);
+      }, 1000);
+
+      // after 15s navigate to home
+      timeoutRef.current = setTimeout(() => {
+        clearInterval(intervalRef.current);
+        setShowResultModal(false);
+        navigate("/home");
+      }, 15000);
     } catch (error) {
       console.error("Lỗi đặt hàng:", error);
       message.error(t("cart.checkout_page.error"));
     }
   };
+
+  // cleanup timers on unmount
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, []);
 
   const orderBooks = products.map((c) => ({
     ...c.sach,
@@ -206,6 +239,30 @@ const Checkout = () => {
               <h3 className="font-semibold text-lg mb-2">
                 {t("cart.checkout_page.customer_info")}
               </h3>
+              <div style={{ marginBottom: 16 }}>
+                <h4 className="font-medium mb-2">
+                  {t("cart.checkout_page.payment.title")}
+                </h4>
+                <div style={{ display: "flex", gap: 12 }}>
+                  <Button
+                    type={paymentMethod === "COD" ? "primary" : "default"}
+                    onClick={() => setPaymentMethod("COD")}
+                  >
+                    {t("cart.checkout_page.payment.cash")}
+                  </Button>
+                  <Button
+                    type={paymentMethod === "BANK" ? "primary" : "default"}
+                    onClick={() => setPaymentMethod("BANK")}
+                  >
+                    {t("cart.checkout_page.payment.bank")}
+                  </Button>
+                  {paymentMethod === "BANK" && (
+                    <Button onClick={generateQr}>
+                      {t("cart.checkout_page.payment.scan_qr")}
+                    </Button>
+                  )}
+                </div>
+              </div>
               <Form.Item
                 name="hoTen"
                 label={t("cart.checkout_page.form.name")}
@@ -384,6 +441,54 @@ const Checkout = () => {
           </Col>
         </Row>
       </Form>
+
+      <Modal
+        open={showResultModal}
+        title={t("cart.checkout_page.success")}
+        footer={[
+          <Button
+            key="homeNow"
+            type="primary"
+            onClick={() => {
+              if (timeoutRef.current) clearTimeout(timeoutRef.current);
+              if (intervalRef.current) clearInterval(intervalRef.current);
+              setShowResultModal(false);
+              navigate("/home");
+            }}
+          >
+            {t("cart.checkout_page.go_home_now") || "Về trang chủ"}
+          </Button>,
+        ]}
+        closable={false}
+      >
+        <div>
+          <p>{t("cart.checkout_page.success")}</p>
+          <p style={{ marginTop: 8 }}>
+            {t("cart.checkout_page.countdown", { count: countdown })}
+          </p>
+        </div>
+      </Modal>
+
+      <Modal
+        open={showQrModal}
+        title={t("cart.checkout_page.payment.scan_qr")}
+        footer={null}
+        onCancel={() => setShowQrModal(false)}
+      >
+        <div
+          style={{ textAlign: "center" }}
+          className="flex flex-col justify-center items-center"
+        >
+          {qrUrl ? (
+            <img src={qrUrl} alt="qr" style={{ width: 300, height: 300 }} />
+          ) : (
+            <p>Generating...</p>
+          )}
+          <p style={{ marginTop: 8 }}>
+            {t("cart.checkout_page.payment.scan_qr")}
+          </p>
+        </div>
+      </Modal>
 
       <Card style={{ marginTop: 16 }}>
         <Row gutter={[16, 16]}>

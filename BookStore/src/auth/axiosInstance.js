@@ -31,7 +31,18 @@ axiosInstance.interceptors.response.use(
     if (error.response?.status === 401) {
       await removeToken();
       await removeRoles();
-      window.location.href = "/login";
+      
+      // Public paths that don't require auth - don't redirect
+      const publicPaths = ["/", "/home", "/books", "/about", "/login", "/register"];
+      const currentPath = window.location.pathname;
+      const isPublicPath = publicPaths.some((path) =>
+        path === "/" ? currentPath === "/" : currentPath.startsWith(path)
+      );
+      
+      // Only redirect if on protected path
+      if (!isPublicPath) {
+        window.location.href = "/login";
+      }
     }
     return Promise.reject(error);
   }

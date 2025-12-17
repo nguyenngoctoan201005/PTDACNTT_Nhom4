@@ -6,12 +6,15 @@
     "reviews": "Đánh giá",
     "publisher": "Nhà Xuất Bản",
     "author": "Tác giả",
-    "related_books": "Các sách tương tự",
+    "related_books": "Các sách tương tự cũng thể loại",
     "stock_quantity": "Số lượng hiện có ({{count}} quyển)",
     "quantity": "Số lượng:",
     "add_to_cart": "Thêm vào giỏ hàng",
     "added_to_cart": "Thêm vào giỏ hàng thành công",
-    "error_fetch": "Lỗi khi lấy chi tiết sách"
+    "add_to_favorite": "Thêm vào yêu thích",
+    "error_fetch": "Lỗi khi lấy chi tiết sách",
+    "login_required_cart": "Bạn cần đăng nhập để thêm sách vào giỏ hàng",
+    "login_required_favorite": "Bạn cần đăng nhập để thêm sách vào yêu thích"
   },
   "list": {
     "title": "Tất cả sách",

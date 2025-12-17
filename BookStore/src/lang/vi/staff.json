@@ -97,5 +97,26 @@
       "soft_cover": "Bìa mềm",
       "hard_cover": "Bìa cứng"
     }
+  },
+  "return_order": {
+    "title": "Hủy / Yêu cầu trả hàng",
+    "search_placeholder": "Tìm kiếm theo mã đơn hàng hoặc tên khách hàng...",
+    "columns": {
+      "stt": "STT",
+      "code": "Mã đơn hàng",
+      "customer": "Khách hàng",
+      "date": "Ngày đặt",
+      "status": "Trạng thái",
+      "total": "Tổng tiền",
+      "action": "Thao tác"
+    },
+    "button_detail": "Xem chi tiết",
+    "status": {
+      "pending": "Chờ xác nhận",
+      "shipping": "Đang giao",
+      "delivered": "Đã giao",
+      "cancelled": "Đã hủy",
+      "return": "Trả hàng"
+    }
   }
 }

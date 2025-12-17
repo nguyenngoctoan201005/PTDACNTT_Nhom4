@@ -2,10 +2,7 @@ import { Card, Form, Input, Button, Row, Col, Select, message } from "antd";
 import { EyeInvisibleOutlined } from "@ant-design/icons";
 import { useGlobalContext } from "../../../GlobalContext";
 import { useState, useEffect, useMemo } from "react";
-import {
-  getListProvinces,
-  getProvinceDetail,
-} from "../../../api/provinceService";
+import { getListProvinces, getListWards } from "../../../api/provinceService";
 import { updateKhachHang } from "../../../api/khachHangService";
 import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
@@ -69,7 +66,7 @@ const UpdateProfile = () => {
   useEffect(() => {
     getListProvinces()
       .then((data) => {
-        setProvinces(data);
+        setProvinces(data.result);
       })
       .catch((error) => {
         console.error("Lỗi khi lấy danh sách tỉnh:", error);
@@ -77,23 +74,22 @@ const UpdateProfile = () => {
   }, []);
 
   useEffect(() => {
-    if (!selectedCity) return;
-    getProvinceDetail(selectedCity, 2)
+    getListWards()
       .then((data) => {
-        setWards(data.wards);
+        setWards(data.result);
       })
       .catch((error) => {
         console.error("Lỗi khi lấy danh sách xã:", error);
       });
-  }, [selectedCity]);
+  }, []);
 
   const provinceOptions = useMemo(
-    () => provinces.map((p) => ({ label: p.name, value: p.code })),
+    () => provinces.map((p) => ({ label: p.tenTinh, value: p.maTinh })),
     [provinces]
   );
 
   const wardOptions = useMemo(
-    () => wards.map((p) => ({ label: p.name, value: p.code })),
+    () => wards.map((p) => ({ label: p.tenQuanHuyen, value: p.maQuanHuyen })),
     [wards]
   );
 

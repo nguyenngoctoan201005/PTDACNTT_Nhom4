@@ -105,14 +105,14 @@ const OrderCard = ({ key, book, onRemove, onQuantityChange }) => {
         <Col flex="auto">
           <Row align="middle" gutter={16}>
             <Col>
-              <Image
-                src={book.imageUrl}
+              {/* <Image
+                src={`https://covers.openlibrary.org/b/isbn/${book.hinhAnhs?.[0]}-L.jpg`}
                 alt={book.tenSach}
                 width={80}
                 height={100}
                 preview={false}
                 style={{ borderRadius: 8, objectFit: "cover" }}
-              />
+              /> */}
             </Col>
             <Col>
               <Title level={5} style={{ marginBottom: 0 }}>

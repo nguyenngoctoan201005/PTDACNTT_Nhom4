@@ -217,7 +217,7 @@ const Home = () => {
                 }}
               >
                 <BookCard
-                  imageUrl={`https://covers.openlibrary.org/b/id/${book.hinhAnhs[0]}-L.jpg`}
+                  imageUrl={`https://covers.openlibrary.org/b/id/${book.hinhAnhs?.[0]}-L.jpg`}
                   type={book.type}
                   discount={book.discount}
                   name={book.tenSach}
@@ -238,7 +238,7 @@ const Home = () => {
                       const newBook = {
                         id: book.maSach,
                         name: book.tenSach,
-                        imageUrl: `https://covers.openlibrary.org/b/id/${book.hinhAnhs[0]}-L.jpg`,
+                        imageUrl: `https://covers.openlibrary.org/b/id/${book.hinhAnhs?.[0]}-L.jpg`,
                         price: book.donGia,
                         author: book.tacGiaSet?.[0]?.tenTG,
                         type: book.type,
@@ -281,7 +281,7 @@ const Home = () => {
                 }}
               >
                 <BookCard
-                  imageUrl={`https://covers.openlibrary.org/b/id/${book.hinhAnhs[0]}-L.jpg`}
+                  imageUrl={`https://covers.openlibrary.org/b/id/${book.hinhAnhs?.[0]}-L.jpg`}
                   type={book.type}
                   discount={book.discount}
                   name={book.tenSach}
@@ -302,7 +302,7 @@ const Home = () => {
                       const newBook = {
                         id: book.maSach,
                         name: book.tenSach,
-                        imageUrl: `https://covers.openlibrary.org/b/id/${book.hinhAnhs[0]}-L.jpg`,
+                        imageUrl: `https://covers.openlibrary.org/b/id/${book.hinhAnhs?.[0]}-L.jpg`,
                         price: book.donGia,
                         author: book.tacGiaSet?.[0]?.tenTG,
                         type: book.type,

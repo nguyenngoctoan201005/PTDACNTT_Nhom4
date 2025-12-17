@@ -24,10 +24,9 @@ export const publicRoutes = [
       {
         path: "books/:bookId",
         element: <BookDetail />,
-        // Book detail title is set inside the page dynamically
       },
       { path: "about", element: <About />, titleKey: "about.title" },
-      { path: "*", element: <NotFound />, title: "404 - Không tìm thấy trang" },
+      { path: "*", element: <NotFound />, title: "404" },
     ],
   },
   {

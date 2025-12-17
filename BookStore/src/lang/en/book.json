@@ -11,7 +11,10 @@
     "quantity": "Quantity:",
     "add_to_cart": "Add to Cart",
     "added_to_cart": "Added to cart successfully",
-    "error_fetch": "Error fetching book details"
+    "add_to_favorite": "Add to Favorites",
+    "error_fetch": "Error fetching book details",
+    "login_required_cart": "You need to login to add items to cart",
+    "login_required_favorite": "You need to login to add items to favorites"
   },
   "list": {
     "title": "All Books",

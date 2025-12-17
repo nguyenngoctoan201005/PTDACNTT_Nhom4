@@ -23,6 +23,11 @@ const BookCard = ({
   onAddToFavorite,
   onAddToCart,
 }) => {
+  const { user } = useGlobalContext();
+  if (!user) {
+    onAddToCart = false;
+    onAddToFavorite = false;
+  }
   const { addToCart } = useGlobalContext();
   const discountedPrice = discount
     ? Math.round(price - (price * discount) / 100)

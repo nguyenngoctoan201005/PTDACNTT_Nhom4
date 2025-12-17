@@ -5,6 +5,8 @@ import {
   updateSach,
   getSachDetail,
 } from "../../../../../api/sachService";
+import { getListTheLoai } from "../../../../../api/theLoaiService";
+import { getListTacGia } from "../../../../../api/tacGiaService";
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -12,9 +14,33 @@ const { Option } = Select;
 const ModalSach = ({ open, onCancel, onOk, type = "create", dataEdit }) => {
   const [form] = Form.useForm();
   const [isLoading, setIsLoading] = useState(false);
+  const [listTheLoai, setListTheLoai] = useState([]);
+  const [listTacGia, setListTacGia] = useState([]);
 
   useEffect(() => {
     if (open) {
+      // fetch categories and authors for the selects
+      const fetchTheLoai = async () => {
+        try {
+          const res = await getListTheLoai();
+          setListTheLoai(res?.result || []);
+        } catch (err) {
+          console.error("Lỗi khi tải danh sách thể loại:", err);
+        }
+      };
+
+      const fetchTacGia = async () => {
+        try {
+          const res = await getListTacGia();
+          setListTacGia(res?.result || []);
+        } catch (err) {
+          console.error("Lỗi khi tải danh sách tác giả:", err);
+        }
+      };
+
+      fetchTheLoai();
+      fetchTacGia();
+
       if (type === "update" && dataEdit) {
         const fetchDetail = async () => {
           try {
@@ -60,6 +86,13 @@ const ModalSach = ({ open, onCancel, onOk, type = "create", dataEdit }) => {
   const handleSubmit = async () => {
     try {
       const values = await form.validateFields();
+      values["nhaXuatBan"] = {
+        maNXB: 1,
+      };
+      values["loaiSach"] = {
+        maLoai: form.getFieldValue("loaiSach"),
+      };
+      values["tacGiaIds"] = [form.getFieldValue("maTacGia")];
       setIsLoading(true);
 
       if (type === "create") {
@@ -130,17 +163,16 @@ const ModalSach = ({ open, onCancel, onOk, type = "create", dataEdit }) => {
           </Form.Item>
 
           <Form.Item
-            name="maTheLoai"
+            name="loaiSach"
             label="Thể loại"
             rules={[{ required: true, message: "Vui lòng chọn thể loại" }]}
           >
             <Select placeholder="Chọn thể loại">
-              {/* Placeholder options - replace with API data if available */}
-              <Option value="vanhoc">Văn học</Option>
-              <Option value="kinhte">Kinh tế</Option>
-              <Option value="tamly">Tâm lý</Option>
-              <Option value="giaotrinh">Giáo trình</Option>
-              <Option value="truyentranh">Truyện tranh</Option>
+              {listTheLoai.map((item) => (
+                <Option key={item.maLoai} value={item.maLoai}>
+                  {item.tenLoai}
+                </Option>
+              ))}
             </Select>
           </Form.Item>
 
@@ -150,9 +182,11 @@ const ModalSach = ({ open, onCancel, onOk, type = "create", dataEdit }) => {
             rules={[{ required: true, message: "Vui lòng chọn tác giả" }]}
           >
             <Select placeholder="Chọn tác giả">
-              {/* Placeholder options */}
-              <Option value="nguyenvana">Nguyễn Văn A</Option>
-              <Option value="nguyenvanb">Nguyễn Văn B</Option>
+              {listTacGia.map((tg) => (
+                <Option key={tg.maTG} value={tg.maTG}>
+                  {tg.tenTG}
+                </Option>
+              ))}
             </Select>
           </Form.Item>
 
@@ -161,14 +195,15 @@ const ModalSach = ({ open, onCancel, onOk, type = "create", dataEdit }) => {
           </Form.Item>
 
           <Form.Item
-            name="maNXB"
+            name="nhaXuatBan"
             label="Nhà xuất bản"
             rules={[{ required: true, message: "Vui lòng chọn NXB" }]}
           >
             <Select placeholder="Chọn NXB">
               {/* Placeholder options */}
-              <Option value="nxb_hanoi">NXB Hà Nội</Option>
-              <Option value="nxb_tre">NXB Trẻ</Option>
+              <Option value="1">NXB Văn Học</Option>
+              <Option value="2">NXB Hà Nội</Option>
+              <Option value="3">NXB Trẻ</Option>
             </Select>
           </Form.Item>
 

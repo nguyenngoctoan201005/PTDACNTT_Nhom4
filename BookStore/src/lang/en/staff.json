@@ -97,5 +97,26 @@
       "soft_cover": "Soft Cover",
       "hard_cover": "Hard Cover"
     }
+  },
+  "return_order": {
+    "title": "Cancel / Return Request",
+    "search_placeholder": "Search by order code or customer name...",
+    "columns": {
+      "stt": "No.",
+      "code": "Order Code",
+      "customer": "Customer",
+      "date": "Order Date",
+      "status": "Status",
+      "total": "Total Amount",
+      "action": "Action"
+    },
+    "button_detail": "View Details",
+    "status": {
+      "pending": "Pending",
+      "shipping": "Shipping",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled",
+      "return": "Return"
+    }
   }
 }

@@ -39,16 +39,14 @@ const BookReview = () => {
 
   const fetchDanhGia = async () => {
     try {
-      const data = await getListDanhGiaByMaSach({
-        maSach: bookId,
-      });
+      const data = await getListDanhGiaByMaSach(bookId);
       const sorted = [...data.result].sort(
         (a, b) => dayjs(b.ngayBL).valueOf() - dayjs(a.ngayBL).valueOf()
       );
 
       setListDanhGia(sorted);
     } catch (error) {
-      message.error("Lỗi khi lấy danh sách đánh giá");
+      console.error("Lỗi khi lấy danh sách đánh giá");
     }
   };
 
@@ -95,12 +93,12 @@ const BookReview = () => {
       <div>
         <Title level={5}>Đánh giá của khách hàng</Title>
         <Text type="secondary">
-          {listDanhGia.length} lượt đánh giá với trung bình{" "}
+          {listDanhGia.length || 0} lượt đánh giá với trung bình{" "}
           <Text strong style={{ color: "#faad14" }}>
             {Math.round(
               listDanhGia.reduce((total, review) => total + review.soSao, 0) /
                 listDanhGia.length
-            )}
+            ) || 0}
           </Text>{" "}
           sao
         </Text>
@@ -133,31 +131,33 @@ const BookReview = () => {
         </div>
       </div>
 
-      <div className="mt-2">
-        <Title level={5}>Viết đánh giá của bạn</Title>
+      {user && (
+        <div className="mt-2">
+          <Title level={5}>Viết đánh giá của bạn</Title>
 
-        <div style={{ marginBottom: 12 }}>
-          <Text strong>Rating</Text>
-          <br />
-          <Rate value={rating} onChange={(value) => setRating(value)} />
+          <div style={{ marginBottom: 12 }}>
+            <Text strong>Rating</Text>
+            <br />
+            <Rate value={rating} onChange={(value) => setRating(value)} />
+          </div>
+
+          <div style={{ marginBottom: 16 }}>
+            <Text strong>Đánh giá của bạn</Text>
+            <TextArea
+              rows={4}
+              placeholder="Chia sẻ suy nghĩ của bạn về cuốn sách này."
+              value={review}
+              onChange={(e) => setReview(e.target.value)}
+            />
+          </div>
+
+          <Space>
+            <Button type="primary" onClick={handleSubmit} loading={loading}>
+              Gửi
+            </Button>
+          </Space>
         </div>
-
-        <div style={{ marginBottom: 16 }}>
-          <Text strong>Đánh giá của bạn</Text>
-          <TextArea
-            rows={4}
-            placeholder="Chia sẻ suy nghĩ của bạn về cuốn sách này."
-            value={review}
-            onChange={(e) => setReview(e.target.value)}
-          />
-        </div>
-
-        <Space>
-          <Button type="primary" onClick={handleSubmit} loading={loading}>
-            Gửi
-          </Button>
-        </Space>
-      </div>
+      )}
     </Card>
   );
 };

@@ -58,6 +58,9 @@ const Books = () => {
   }, []);
 
   useEffect(() => {
+    // Wait until genres (options) are loaded so Select can resolve label for the value
+    if (genreList.length === 0) return;
+
     form.setFieldsValue({
       name: keyword || "",
       genres: loaiSach || undefined,
@@ -65,7 +68,7 @@ const Books = () => {
     });
 
     form.submit();
-  }, [keyword, loaiSach]);
+  }, [keyword, loaiSach, genreList]);
 
   const handleSubmitFilter = async (values) => {
     setCurrentPage(1);
@@ -270,6 +273,7 @@ const Books = () => {
                     optionFilterProp="label"
                     options={genreList}
                     allowClear
+                    value={loaiSach ? loaiSach : null}
                   />
                 </Form.Item>
                 <Form.Item
@@ -317,7 +321,7 @@ const Books = () => {
                     }}
                   >
                     <BookCard
-                      imageUrl={`https://covers.openlibrary.org/b/id/${book.hinhAnhs[0]}-L.jpg`}
+                      imageUrl={`https://covers.openlibrary.org/b/id/${book.hinhAnhs?.[0]}-L.jpg`}
                       type={book.type}
                       discount={book.discount}
                       name={book.tenSach}
@@ -338,7 +342,7 @@ const Books = () => {
                           const newBook = {
                             id: book.maSach,
                             name: book.tenSach,
-                            imageUrl: `https://covers.openlibrary.org/b/id/${book.hinhAnhs[0]}-L.jpg`,
+                            imageUrl: `https://covers.openlibrary.org/b/id/${book.hinhAnhs?.[0]}-L.jpg`,
                             price: book.donGia,
                             author: book.tacGiaSet?.[0]?.tenTG,
                             type: book.type,

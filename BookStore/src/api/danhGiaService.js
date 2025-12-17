@@ -44,8 +44,8 @@ export const getListDanhGia = async () => {
     ]
 } */
 
-export const getListDanhGiaByMaSach = async (maDanhGia) => {
-  const res = await axiosInstance.get(`/danh_gia/${maDanhGia}`);
+export const getListDanhGiaByMaSach = async (maSach) => {
+  const res = await axiosInstance.get(`/danh_gia/${maSach}`);
 
   return res.data;
 };

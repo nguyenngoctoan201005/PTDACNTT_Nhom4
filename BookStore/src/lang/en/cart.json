@@ -12,7 +12,7 @@
       "email": "Email",
       "phone": "Phone number",
       "city": "City",
-      "ward": "Ward/Commune",
+      "ward": "District",
       "address": "Specific address",
       "placeholder": {
         "name": "Enter full name",
@@ -42,6 +42,14 @@
     "products": "Products",
     "empty_cart": "Cart is empty.",
     "success": "Ordered successfully!",
-    "error": "Order failed, please try again!"
+    "error": "Order failed, please try again!",
+    "go_home_now": "Go to Home",
+    "countdown": "Redirecting to home in {{count}} seconds...",
+    "payment": {
+      "title": "Payment Method",
+      "cash": "Cash (COD)",
+      "bank": "Bank Transfer",
+      "scan_qr": "Scan QR to pay"
+    }
   }
 }

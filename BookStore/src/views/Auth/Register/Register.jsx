@@ -25,10 +25,7 @@ import { Logo } from "../../../assets";
 import { useGlobalContext } from "../../../GlobalContext";
 import { Link } from "react-router";
 import { useTranslation } from "react-i18next";
-import {
-  getListProvinces,
-  getProvinceDetail,
-} from "../../../api/provinceService";
+import { getListProvinces, getListWards } from "../../../api/provinceService";
 import { register } from "../../../api/authService";
 
 const { Title, Text } = Typography;
@@ -72,7 +69,7 @@ const Register = () => {
   useEffect(() => {
     getListProvinces()
       .then((data) => {
-        setProvinces(data);
+        setProvinces(data.result);
       })
       .catch((error) => {
         console.error("Lỗi khi lấy danh sách tỉnh:", error);
@@ -80,23 +77,22 @@ const Register = () => {
   }, []);
 
   useEffect(() => {
-    if (!selectedCity) return;
-    getProvinceDetail(selectedCity, 2)
+    getListWards()
       .then((data) => {
-        setWards(data.wards);
+        setWards(data.result);
       })
       .catch((error) => {
         console.error("Lỗi khi lấy danh sách xã:", error);
       });
-  }, [selectedCity]);
+  }, []);
 
   const provinceOptions = useMemo(
-    () => provinces.map((p) => ({ label: p.name, value: p.code })),
+    () => provinces.map((p) => ({ label: p.tenTinh, value: p.maTinh })),
     [provinces]
   );
 
   const wardOptions = useMemo(
-    () => wards.map((p) => ({ label: p.name, value: p.code })),
+    () => wards.map((p) => ({ label: p.tenQuanHuyen, value: p.maQuanHuyen })),
     [wards]
   );
 

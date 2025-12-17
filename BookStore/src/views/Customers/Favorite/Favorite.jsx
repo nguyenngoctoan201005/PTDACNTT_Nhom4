@@ -60,7 +60,7 @@ const Favorite = () => {
               >
                 <BookCard
                   imageUrl={
-                    `https://covers.openlibrary.org/b/id/${book.hinhAnhs[0]}-L.jpg` ||
+                    `https://covers.openlibrary.org/b/id/${book.hinhAnhs?.[0]}-L.jpg` ||
                     ""
                   }
                   type={book.type}

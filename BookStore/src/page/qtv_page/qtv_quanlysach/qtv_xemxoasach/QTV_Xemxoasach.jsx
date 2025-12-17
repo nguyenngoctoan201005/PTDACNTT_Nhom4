@@ -167,12 +167,14 @@ export default function QTV_Xemxoasach() {
     },
     {
       title: t("admin.book.columns.image"),
-      dataIndex: "hinhAnh",
       key: "hinhAnh",
       width: 100,
-      render: (text) => (
+      render: (_, record) => (
         <img
-          src={text || "https://via.placeholder.com/50"}
+          src={
+            `https://covers.openlibrary.org/b/id/${record.hinhAnhs?.[0]}-L.jpg` ||
+            "https://via.placeholder.com/50"
+          }
           alt="Book cover"
           style={{ width: 50, height: 70, objectFit: "cover" }}
         />
