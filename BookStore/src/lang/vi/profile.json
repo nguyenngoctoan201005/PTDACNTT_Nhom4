@@ -1,0 +1,27 @@
+{
+  "change_password": {
+    "title": "Đổi mật khẩu",
+    "old_password": "Mật khẩu cũ",
+    "new_password": "Mật khẩu mới",
+    "confirm_new_password": "Xác nhận mật khẩu mới",
+    "placeholder": {
+      "old": "Nhập mật khẩu cũ của bạn",
+      "new": "Nhập mật khẩu mới của bạn",
+      "confirm": "Xác nhận mật khẩu mới của bạn"
+    },
+    "error": {
+      "duplicate": "Mật khẩu mới không được trùng mật khẩu cũ!",
+      "success": "Đổi mật khẩu thành công!",
+      "fail": "Đổi mật khẩu thất bại"
+    }
+  },
+  "update_info": {
+    "title": "Cập nhật thông tin",
+    "success": "Cập nhật thông tin thành công!",
+    "fail": "Cập nhật thất bại"
+  },
+  "info": {
+    "title": "Thông tin cơ bản",
+    "subtitle": "Quản lý thông tin tài khoản của bạn"
+  }
+}

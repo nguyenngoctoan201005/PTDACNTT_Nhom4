@@ -43,6 +43,7 @@ import "./NV_Bangdieukhien.css";
 import { getAllDonHang } from "../../../api/donHangService";
 import { getListDanhGia } from "../../../api/danhGiaService";
 import { getAllSachs } from "../../../api/sachService";
+import { useTranslation } from "react-i18next";
 
 const { RangePicker } = DatePicker;
 
@@ -84,8 +85,8 @@ const mapStatusToEnglish = (statusVN) => {
   }
 };
 
-
 export default function NV_Bangdieukhien() {
+  const { t } = useTranslation();
   const [dateRange, setDateRange] = useState([
     dayjs().startOf("month"),
     dayjs(),
@@ -111,14 +112,14 @@ export default function NV_Bangdieukhien() {
 
           // Tính Tổng Doanh Thu (chỉ tính các đơn "Đã giao")
           const revenue = allOrders
-            .filter(order => order.trangThai === "Đã giao")
+            .filter((order) => order.trangThai === "Đã giao")
             .reduce((sum, order) => sum + order.tongTien, 0);
 
           setTotalRevenue(revenue); // <<< SET DOANH THU THẬT
 
           // Sắp xếp đơn hàng theo maDonHang giảm dần (ID cao nhất = mới nhất)
-          const sortedOrders = allOrders.sort((a, b) =>
-            b.maDonHang - a.maDonHang
+          const sortedOrders = allOrders.sort(
+            (a, b) => b.maDonHang - a.maDonHang
           );
           setOrders(sortedOrders);
         }
@@ -131,10 +132,14 @@ export default function NV_Bangdieukhien() {
 
         // 3. Lấy sách tồn kho thấp
         const lowStockRes = await getAllSachs({});
-        if (lowStockRes.code === 0 && lowStockRes.result && lowStockRes.result.data) {
+        if (
+          lowStockRes.code === 0 &&
+          lowStockRes.result &&
+          lowStockRes.result.data
+        ) {
           const filteredLowStock = lowStockRes.result.data
-            .filter(sach => sach.soLuongCo < 10)
-            .map(sach => ({
+            .filter((sach) => sach.soLuongCo < 10)
+            .map((sach) => ({
               key: sach.maSach,
               name: sach.tenSach,
               code: `S${sach.maSach}`,
@@ -143,10 +148,11 @@ export default function NV_Bangdieukhien() {
             .slice(0, 5);
           setLowStock(filteredLowStock);
         }
-
       } catch (error) {
         console.error("Error fetching dashboard data:", error);
-        message.error("Lỗi khi tải dữ liệu tổng quan. Vui lòng kiểm tra console.");
+        message.error(
+          "Lỗi khi tải dữ liệu tổng quan. Vui lòng kiểm tra console."
+        );
       } finally {
         setLoading(false);
       }
@@ -188,30 +194,28 @@ export default function NV_Bangdieukhien() {
   // CHUẨN BỊ DỮ LIỆU THẬT CHO CÁC MỤC
 
   // 1. Đơn hàng gần đây
-  const recentOrdersData = orders
-    .slice(0, 5)
-    .map((order) => ({
-      key: order.maDonHang,
-      id: `#ORD-${order.maDonHang}`,
-      customer: order.tenNguoiNhan,
-      date: dayjs(order.ngayDat).format('DD/MM/YYYY'),
-      amount: new Intl.NumberFormat("vi-VN").format(order.tongTien) + " đ",
-      status: mapStatusToEnglish(order.trangThai),
-    }));
+  const recentOrdersData = orders.slice(0, 5).map((order) => ({
+    key: order.maDonHang,
+    id: `#ORD-${order.maDonHang}`,
+    customer: order.tenNguoiNhan,
+    date: dayjs(order.ngayDat).format("DD/MM/YYYY"),
+    amount: new Intl.NumberFormat("vi-VN").format(order.tongTien) + " đ",
+    status: mapStatusToEnglish(order.trangThai),
+  }));
 
   // 2. Yêu cầu trả hàng
   const returnRequestsData = orders
-    .filter(order => order.trangThai === "Trả hàng")
-    .map(order => ({
+    .filter((order) => order.trangThai === "Trả hàng")
+    .map((order) => ({
       key: order.maDonHang,
       orderId: `DH${order.maDonHang}`,
       reason: order.ghiChu || "Yêu cầu trả hàng không có lý do cụ thể",
       customer: order.tenNguoiNhan,
-      date: dayjs(order.ngayDat).format('DD/MM/YYYY'),
+      date: dayjs(order.ngayDat).format("DD/MM/YYYY"),
     }));
 
   // 3. Đánh giá mới
-  const newReviewsData = reviews.map(review => ({
+  const newReviewsData = reviews.map((review) => ({
     key: review.maDanhGia,
     orderId: `DG${review.maDanhGia}`,
     stars: review.soSao,
@@ -223,19 +227,30 @@ export default function NV_Bangdieukhien() {
   const totalReturnRequests = returnRequestsData.length;
   const totalNewReviews = newReviewsData.length;
 
-
   const orderColumns = [
-    { title: "Mã ĐH", dataIndex: "id", key: "id" },
-    { title: "Khách hàng", dataIndex: "customer", key: "customer" },
-    { title: "Ngày đặt", dataIndex: "date", key: "date" },
     {
-      title: "Tổng tiền",
+      title: t("staff.dashboard.tables.recent_orders.columns.id"),
+      dataIndex: "id",
+      key: "id",
+    },
+    {
+      title: t("staff.dashboard.tables.recent_orders.columns.customer"),
+      dataIndex: "customer",
+      key: "customer",
+    },
+    {
+      title: t("staff.dashboard.tables.recent_orders.columns.date"),
+      dataIndex: "date",
+      key: "date",
+    },
+    {
+      title: t("staff.dashboard.tables.recent_orders.columns.amount"),
       dataIndex: "amount",
       key: "amount",
       render: (text) => <span className="font-semibold">{text}</span>,
     },
     {
-      title: "Trạng thái",
+      title: t("staff.dashboard.tables.recent_orders.columns.status"),
       dataIndex: "status",
       key: "status",
       render: (status) => renderStatusTag(status),
@@ -243,18 +258,30 @@ export default function NV_Bangdieukhien() {
   ];
 
   const lowStockColumns = [
-    { title: "Sản phẩm", dataIndex: "name", key: "name" },
-    { title: "Mã SP", dataIndex: "code", key: "code" },
     {
-      title: "Tồn kho",
+      title: t("staff.dashboard.tables.low_stock.columns.product"),
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: t("staff.dashboard.tables.low_stock.columns.code"),
+      dataIndex: "code",
+      key: "code",
+    },
+    {
+      title: t("staff.dashboard.tables.low_stock.columns.stock"),
       dataIndex: "stock",
       key: "stock",
       render: (text) => <span className="text-red-600 font-bold">{text}</span>,
     },
     {
-      title: "Hành động",
+      title: t("staff.dashboard.tables.low_stock.columns.action"),
       key: "action",
-      render: () => <Button type="link" size="small">Nhập hàng</Button>,
+      render: () => (
+        <Button type="link" size="small">
+          {t("staff.dashboard.tables.low_stock.import_stk")}
+        </Button>
+      ),
     },
   ];
 
@@ -265,7 +292,7 @@ export default function NV_Bangdieukhien() {
       <main className="nv_trangbdk_main bg-gray-50 min-h-screen p-6">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold text-gray-800 m-0">
-            Tổng quan hệ thống
+            {t("staff.dashboard.title")}
           </h2>
         </div>
 
@@ -277,7 +304,7 @@ export default function NV_Bangdieukhien() {
               className="shadow-sm hover:shadow-md transition-shadow"
             >
               <Statistic
-                title="Tổng doanh thu"
+                title={t("staff.dashboard.revenue")}
                 value={totalRevenue} // <<< DỮ LIỆU THẬT
                 precision={0}
                 valueStyle={{ color: "#3f8600", fontWeight: "bold" }}
@@ -290,7 +317,9 @@ export default function NV_Bangdieukhien() {
               <div className="flex items-center mt-2 text-green-600 text-sm">
                 <ArrowUpOutlined />{" "}
                 {/* Giữ lại mock data so sánh nếu chưa có logic lọc theo thời gian */}
-                <span className="ml-1">10% so với tháng trước</span>
+                <span className="ml-1">
+                  10% {t("staff.dashboard.compare.month")}
+                </span>
               </div>
             </Card>
           </Col>
@@ -300,7 +329,7 @@ export default function NV_Bangdieukhien() {
               className="shadow-sm hover:shadow-md transition-shadow"
             >
               <Statistic
-                title="Tổng đơn hàng"
+                title={t("staff.dashboard.orders")}
                 value={orders.length || 0}
                 precision={0}
                 valueStyle={{ color: "#1677ff", fontWeight: "bold" }}
@@ -308,7 +337,9 @@ export default function NV_Bangdieukhien() {
               />
               <div className="flex items-center mt-2 text-green-600 text-sm">
                 <ArrowUpOutlined />{" "}
-                <span className="ml-1">5% so với tháng trước</span>
+                <span className="ml-1">
+                  5% {t("staff.dashboard.compare.month")}
+                </span>
               </div>
             </Card>
           </Col>
@@ -318,15 +349,25 @@ export default function NV_Bangdieukhien() {
               className="shadow-sm hover:shadow-md transition-shadow"
             >
               <Statistic
-                title="Yêu cầu trả hàng"
+                title={t("staff.dashboard.return_requests")}
                 value={totalReturnRequests}
                 precision={0}
                 valueStyle={{ color: "#cf1322", fontWeight: "bold" }}
                 prefix={<UndoOutlined />}
               />
               <div className="flex items-center mt-2 text-red-500 text-sm">
-                {totalReturnRequests > 0 ? <ArrowDownOutlined /> : <span className="ml-1">Không có yêu cầu</span>}{" "}
-                <span className="ml-1">{totalReturnRequests > 0 ? "Cần xử lý ngay" : ""}</span>
+                {totalReturnRequests > 0 ? (
+                  <ArrowDownOutlined />
+                ) : (
+                  <span className="ml-1">
+                    {t("staff.dashboard.compare.none")}
+                  </span>
+                )}{" "}
+                <span className="ml-1">
+                  {totalReturnRequests > 0
+                    ? t("staff.dashboard.compare.urgent")
+                    : ""}
+                </span>
               </div>
             </Card>
           </Col>
@@ -336,14 +377,14 @@ export default function NV_Bangdieukhien() {
               className="shadow-sm hover:shadow-md transition-shadow"
             >
               <Statistic
-                title="Đánh giá mới"
+                title={t("staff.dashboard.new_reviews")}
                 value={totalNewReviews}
                 precision={0}
                 valueStyle={{ color: "#faad14", fontWeight: "bold" }}
                 prefix={<StarOutlined />}
               />
               <div className="flex items-center mt-2 text-gray-500 text-sm">
-                <span>Trong 7 ngày qua</span>
+                <span>{t("staff.dashboard.compare.days")}</span>
               </div>
             </Card>
           </Col>
@@ -353,10 +394,12 @@ export default function NV_Bangdieukhien() {
         <Row gutter={[16, 16]} className="mb-6">
           <Col xs={24} lg={16}>
             <Card
-              title="Biểu đồ doanh thu"
+              title={t("staff.dashboard.charts.revenue")}
               extra={
                 <Space>
-                  <span className="text-gray-600 font-medium">Lọc:</span>
+                  <span className="text-gray-600 font-medium">
+                    {t("staff.dashboard.filter")}:
+                  </span>
                   <RangePicker
                     defaultValue={[dayjs().startOf("month"), dayjs()]}
                     format="DD/MM/YYYY"
@@ -443,7 +486,7 @@ export default function NV_Bangdieukhien() {
           </Col>
           <Col xs={24} lg={8}>
             <Card
-              title="Tỷ lệ danh mục"
+              title={t("staff.dashboard.charts.category")}
               bordered={false}
               className="shadow-sm h-full"
             >
@@ -481,10 +524,14 @@ export default function NV_Bangdieukhien() {
         <Row gutter={[16, 16]} className="mb-6">
           <Col xs={24} lg={14}>
             <Card
-              title="Đơn hàng gần đây"
+              title={t("staff.dashboard.tables.recent_orders.title")}
               bordered={false}
               className="shadow-sm h-full"
-              extra={<a href="#">Xem tất cả</a>}
+              extra={
+                <a href="#">
+                  {t("staff.dashboard.tables.recent_orders.view_all")}
+                </a>
+              }
             >
               <Table
                 columns={orderColumns}
@@ -500,7 +547,9 @@ export default function NV_Bangdieukhien() {
               title={
                 <Space>
                   <WarningOutlined style={{ color: "red" }} />
-                  <span className="text-red-600">Cảnh báo tồn kho thấp</span>
+                  <span className="text-red-600">
+                    {t("staff.dashboard.tables.low_stock.title")}
+                  </span>
                 </Space>
               }
               bordered={false}
@@ -525,7 +574,7 @@ export default function NV_Bangdieukhien() {
               title={
                 <Space>
                   <UndoOutlined style={{ color: "#fa8c16" }} />
-                  <span>Yêu cầu trả hàng</span>
+                  <span>{t("staff.dashboard.return_requests")}</span>
                 </Space>
               }
               bordered={false}
@@ -573,7 +622,7 @@ export default function NV_Bangdieukhien() {
               title={
                 <Space>
                   <StarOutlined style={{ color: "#fadb14" }} />
-                  <span>Đánh giá mới</span>
+                  <span>{t("staff.dashboard.new_reviews")}</span>
                 </Space>
               }
               bordered={false}
@@ -587,7 +636,9 @@ export default function NV_Bangdieukhien() {
                 renderItem={(item) => (
                   <List.Item>
                     <List.Item.Meta
-                      avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
+                      avatar={
+                        <Avatar src="https://joeschmoe.io/api/v1/random" />
+                      }
                       title={
                         <div className="flex justify-between">
                           <span className="font-semibold">{item.customer}</span>

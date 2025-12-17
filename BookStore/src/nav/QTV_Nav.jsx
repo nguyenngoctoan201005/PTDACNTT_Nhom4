@@ -1,20 +1,27 @@
 import "./QTV_Nav.css";
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
-import { Dropdown, Avatar } from "antd";
+import { Dropdown, Avatar, Button } from "antd";
 import { UserOutlined, LogoutOutlined } from "@ant-design/icons";
 import { useGlobalContext } from "../GlobalContext";
+import { useTranslation } from "react-i18next";
 
 export function QTV_Nav() {
+  const { t, i18n } = useTranslation();
   const location = useLocation();
   const { user, handleLogout } = useGlobalContext();
   const [selected, setSelected] = useState(
     location.pathname.replace("/admin/", "")
   );
+
+  const handleLanguageChange = (lang) => {
+    i18n.changeLanguage(lang);
+  };
+
   return (
     <nav className="qtv_nav">
       <div className="qtv_nav_tieude">
-        <div className="qtv_nav_tieude_text">Quản trị viên</div>
+        <div className="qtv_nav_tieude_text">{t("nav.admin.title")}</div>
         <hr className="qtv_nav_tieude_hr" />
       </div>
       <div
@@ -42,7 +49,7 @@ export function QTV_Nav() {
           to="/admin/qtvbangdieukhien"
           onClick={() => setSelected("qtvbangdieukhien")}
         >
-          <div>Bảng điều khiển</div>
+          <div>{t("nav.admin.dashboard")}</div>
         </Link>
       </div>
       <div
@@ -63,7 +70,7 @@ export function QTV_Nav() {
           to="/admin/qtvquanlysach"
           onClick={() => setSelected("qtvquanlysach")}
         >
-          <div>Quản lý sách</div>
+          <div>{t("nav.admin.books")}</div>
         </Link>
       </div>
       <div
@@ -88,7 +95,7 @@ export function QTV_Nav() {
           to="/admin/qtvquanlytheloai"
           onClick={() => setSelected("qtvquanlytheloai")}
         >
-          <div>Quản lý thể loại</div>
+          <div>{t("nav.admin.genres")}</div>
         </Link>
       </div>
       <div
@@ -112,7 +119,7 @@ export function QTV_Nav() {
           to="/admin/qtvquanlytacgia"
           onClick={() => setSelected("qtvquanlytacgia")}
         >
-          <div>Quản lý tác giả</div>
+          <div>{t("nav.admin.authors")}</div>
         </Link>
       </div>
       <div
@@ -133,7 +140,7 @@ export function QTV_Nav() {
           to="/admin/qtvkhachhang"
           onClick={() => setSelected("qtvkhachhang")}
         >
-          <div>Khách hàng</div>
+          <div>{t("nav.admin.customers")}</div>
         </Link>
       </div>
       <div
@@ -159,7 +166,7 @@ export function QTV_Nav() {
           to="/admin/qtvquanlynhanvien"
           onClick={() => setSelected("qtvquanlynhanvien")}
         >
-          <div>Quản lý nhân viên</div>
+          <div>{t("nav.admin.staff")}</div>
         </Link>
       </div>
       <div
@@ -182,7 +189,7 @@ export function QTV_Nav() {
           to="/admin/qtvquanlykhuyenmai"
           onClick={() => setSelected("qtvquanlykhuyenmai")}
         >
-          <div>Quản lý khuyến mãi</div>
+          <div>{t("nav.admin.promotions")}</div>
         </Link>
       </div>
       {/* <div
@@ -220,9 +227,22 @@ export function QTV_Nav() {
                 type: "divider",
               },
               {
+                key: "vi",
+                label: `${i18n.language === "vi" ? "✓ " : ""}Tiếng Việt`,
+                onClick: () => handleLanguageChange("vi"),
+              },
+              {
+                key: "en",
+                label: `${i18n.language === "en" ? "✓ " : ""}English`,
+                onClick: () => handleLanguageChange("en"),
+              },
+              {
+                type: "divider",
+              },
+              {
                 key: "logout",
                 icon: <LogoutOutlined style={{ color: "red" }} />,
-                label: "Đăng xuất",
+                label: t("nav.common.logout"),
                 onClick: handleLogout,
               },
             ],

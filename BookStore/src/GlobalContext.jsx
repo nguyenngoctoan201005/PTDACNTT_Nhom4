@@ -110,12 +110,14 @@ export const GlobalProvider = ({ children }) => {
   };
 
   const handleLogout = () => {
+    // Navigate to login first (replace history) to avoid briefly rendering
+    // protected layouts (which may show a RequireLoginPage) during state reset.
+    navigate("/login", { replace: true });
     removeToken();
     removeRoles();
     setToken(null);
     setRoles([]);
     setUser(null);
-    navigate("/login");
   };
 
   const fetchCart = async () => {

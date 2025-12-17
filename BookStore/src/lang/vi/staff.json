@@ -1,0 +1,101 @@
+{
+  "dashboard": {
+    "title": "Tổng quan hệ thống",
+    "revenue": "Tổng doanh thu",
+    "orders": "Tổng đơn hàng",
+    "return_requests": "Yêu cầu trả hàng",
+    "new_reviews": "Đánh giá mới",
+    "charts": {
+      "revenue": "Biểu đồ doanh thu",
+      "category": "Tỷ lệ danh mục"
+    },
+    "tables": {
+      "recent_orders": {
+        "title": "Đơn hàng gần đây",
+        "view_all": "Xem tất cả",
+        "columns": {
+          "id": "Mã ĐH",
+          "customer": "Khách hàng",
+          "date": "Ngày đặt",
+          "amount": "Tổng tiền",
+          "status": "Trạng thái"
+        }
+      },
+      "low_stock": {
+        "title": "Cảnh báo tồn kho thấp",
+        "columns": {
+          "product": "Sản phẩm",
+          "code": "Mã SP",
+          "stock": "Tồn kho",
+          "action": "Hành động"
+        },
+        "import_stk": "Nhập hàng"
+      }
+    },
+    "filter": "Lọc",
+    "compare": {
+      "month": "so với tháng trước",
+      "none": "Không có yêu cầu",
+      "urgent": "Cần xử lý ngay",
+      "days": "Trong 7 ngày qua"
+    }
+  },
+  "book_maintenance": {
+    "title": "Bảo trì sách",
+    "add_button": "Thêm sách",
+    "search_placeholder": "Tìm kiếm theo tên sách...",
+    "columns": {
+      "stt": "STT",
+      "code": "Mã sách",
+      "name": "Tên sách",
+      "author": "Tác giả",
+      "price": "Giá bán",
+      "stock": "Tồn kho",
+      "action": "Thao tác"
+    },
+    "delete": {
+      "title": "Xóa sách",
+      "confirm": "Bạn có chắc chắn muốn xóa sách <b>{{name}}</b>?",
+      "success": "Xóa sách thành công",
+      "error": "Lỗi khi xóa sách"
+    },
+    "error": {
+      "fetch_list": "Lỗi khi tải danh sách sách"
+    }
+  },
+  "edit_book": {
+    "title": "Chỉnh sửa thông tin sách",
+    "section_info": "Thông tin sách",
+    "labels": {
+      "name": "Tên sách*",
+      "price": "Giá bán*",
+      "stock": "Số lượng tồn kho*",
+      "genre": "Thể loại*",
+      "description": "Mô tả*",
+      "image": "Chọn hình ảnh*",
+      "author": "Tác giả*",
+      "translator": "Dịch giả*",
+      "publisher": "Nhà xuất bản*",
+      "product_type": "Loại sản phẩm*",
+      "size": "Kích thước*",
+      "pages": "Số trang*"
+    },
+    "placeholders": {
+      "name": "Nhập tên sách",
+      "price": "Nhập giá bán",
+      "stock": "Nhập số lượng tồn kho",
+      "translator": "Nhập dịch giả",
+      "size": "Ví dụ : 19 x 10cm",
+      "pages": "Nhập số trang"
+    },
+    "section_detail": "Mô tả chi tiết :",
+    "buttons": {
+      "save": "Lưu thay đổi",
+      "cancel": "Hủy"
+    },
+    "options": {
+      "soft_cover": "Bìa mềm",
+      "hard_cover": "Bìa cứng"
+    }
+  }
+}

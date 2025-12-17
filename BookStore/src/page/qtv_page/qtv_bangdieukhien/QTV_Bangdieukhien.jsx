@@ -37,6 +37,7 @@ import {
   Legend,
 } from "recharts";
 import "./QTV_Bangdieukhien.css";
+import { useTranslation } from "react-i18next";
 
 const { RangePicker } = DatePicker;
 
@@ -128,6 +129,7 @@ const topBooks = [
 ];
 
 export default function QTV_Bangdieukhien() {
+  const { t } = useTranslation();
   const [dateRange, setDateRange] = useState([
     dayjs().startOf("month"),
     dayjs(),
@@ -145,49 +147,55 @@ export default function QTV_Bangdieukhien() {
 
   const renderStatusTag = (status) => {
     let color = "";
+    let text = "";
     switch (status) {
       case "Completed":
         color = "green";
+        text = t("admin.status.completed");
         break;
       case "Pending":
         color = "orange";
+        text = t("admin.status.pending");
         break;
       case "Processing":
         color = "blue";
+        text = t("admin.status.processing");
         break;
       case "Cancelled":
         color = "red";
+        text = t("admin.status.cancelled");
         break;
       default:
         color = "default";
+        text = status;
     }
-    return <Tag color={color}>{status}</Tag>;
+    return <Tag color={color}>{text}</Tag>;
   };
 
   const columns = [
     {
-      title: "Mã ĐH",
+      title: t("admin.dashboard.recent_orders.columns.id"),
       dataIndex: "id",
       key: "id",
     },
     {
-      title: "Khách hàng",
+      title: t("admin.dashboard.recent_orders.columns.customer"),
       dataIndex: "customer",
       key: "customer",
     },
     {
-      title: "Ngày đặt",
+      title: t("admin.dashboard.recent_orders.columns.date"),
       dataIndex: "date",
       key: "date",
     },
     {
-      title: "Tổng tiền",
+      title: t("admin.dashboard.recent_orders.columns.amount"),
       dataIndex: "amount",
       key: "amount",
       render: (text) => <span className="font-semibold">{text}</span>,
     },
     {
-      title: "Trạng thái",
+      title: t("admin.dashboard.recent_orders.columns.status"),
       dataIndex: "status",
       key: "status",
       render: (status) => renderStatusTag(status),
@@ -201,7 +209,7 @@ export default function QTV_Bangdieukhien() {
       <main className="qtv_trangbdk_main bg-gray-50 min-h-screen p-6">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold text-gray-800 m-0">
-            Tổng quan hệ thống
+            {t("admin.dashboard.title")}
           </h2>
         </div>
 
@@ -213,7 +221,7 @@ export default function QTV_Bangdieukhien() {
               className="shadow-sm hover:shadow-md transition-shadow"
             >
               <Statistic
-                title="Tổng doanh thu"
+                title={t("admin.dashboard.stats.revenue")}
                 value={1250000000}
                 precision={0}
                 valueStyle={{ color: "#3f8600", fontWeight: "bold" }}
@@ -225,7 +233,9 @@ export default function QTV_Bangdieukhien() {
               />
               <div className="flex items-center mt-2 text-green-600 text-sm">
                 <ArrowUpOutlined />{" "}
-                <span className="ml-1">12% so với tháng trước</span>
+                <span className="ml-1">
+                  12% {t("admin.dashboard.stats.vs_last_month")}
+                </span>
               </div>
             </Card>
           </Col>
@@ -235,7 +245,7 @@ export default function QTV_Bangdieukhien() {
               className="shadow-sm hover:shadow-md transition-shadow"
             >
               <Statistic
-                title="Tổng đơn hàng"
+                title={t("admin.dashboard.stats.orders")}
                 value={3500}
                 precision={0}
                 valueStyle={{ color: "#1677ff", fontWeight: "bold" }}
@@ -243,7 +253,9 @@ export default function QTV_Bangdieukhien() {
               />
               <div className="flex items-center mt-2 text-green-600 text-sm">
                 <ArrowUpOutlined />{" "}
-                <span className="ml-1">5% so với tháng trước</span>
+                <span className="ml-1">
+                  5% {t("admin.dashboard.stats.vs_last_month")}
+                </span>
               </div>
             </Card>
           </Col>
@@ -253,7 +265,7 @@ export default function QTV_Bangdieukhien() {
               className="shadow-sm hover:shadow-md transition-shadow"
             >
               <Statistic
-                title="Khách hàng mới"
+                title={t("admin.dashboard.stats.new_customers")}
                 value={150}
                 precision={0}
                 valueStyle={{ color: "#cf1322", fontWeight: "bold" }}
@@ -261,7 +273,9 @@ export default function QTV_Bangdieukhien() {
               />
               <div className="flex items-center mt-2 text-red-500 text-sm">
                 <ArrowDownOutlined />{" "}
-                <span className="ml-1">2% so với tháng trước</span>
+                <span className="ml-1">
+                  2% {t("admin.dashboard.stats.vs_last_month")}
+                </span>
               </div>
             </Card>
           </Col>
@@ -271,14 +285,14 @@ export default function QTV_Bangdieukhien() {
               className="shadow-sm hover:shadow-md transition-shadow"
             >
               <Statistic
-                title="Sách đang bán"
+                title={t("admin.dashboard.stats.books")}
                 value={1200}
                 precision={0}
                 valueStyle={{ color: "#faad14", fontWeight: "bold" }}
                 prefix={<BookOutlined />}
               />
               <div className="flex items-center mt-2 text-gray-500 text-sm">
-                <span>Đang cập nhật thêm</span>
+                <span>{t("admin.dashboard.stats.updating")}</span>
               </div>
             </Card>
           </Col>
@@ -288,10 +302,12 @@ export default function QTV_Bangdieukhien() {
         <Row gutter={[16, 16]} className="mb-6">
           <Col xs={24} lg={16}>
             <Card
-              title="Biểu đồ doanh thu năm 2025"
+              title={t("admin.dashboard.charts.revenue_title", { year: 2025 })}
               extra={
                 <Space>
-                  <span className="text-gray-600 font-medium">Lọc:</span>
+                  <span className="text-gray-600 font-medium">
+                    {t("admin.dashboard.charts.filter")}
+                  </span>
                   <RangePicker
                     defaultValue={[dayjs().startOf("month"), dayjs()]}
                     format="DD/MM/YYYY"
@@ -358,7 +374,7 @@ export default function QTV_Bangdieukhien() {
                     <Area
                       type="monotone"
                       dataKey="revenue"
-                      name="Doanh thu"
+                      name={t("admin.dashboard.charts.revenue")}
                       stroke="#8884d8"
                       fillOpacity={1}
                       fill="url(#colorRevenue)"
@@ -366,7 +382,7 @@ export default function QTV_Bangdieukhien() {
                     <Area
                       type="monotone"
                       dataKey="profit"
-                      name="Lợi nhuận"
+                      name={t("admin.dashboard.charts.profit")}
                       stroke="#82ca9d"
                       fillOpacity={1}
                       fill="url(#colorProfit)"
@@ -378,7 +394,7 @@ export default function QTV_Bangdieukhien() {
           </Col>
           <Col xs={24} lg={8}>
             <Card
-              title="Tỷ lệ theo thể loại"
+              title={t("admin.dashboard.charts.category_ratio")}
               bordered={false}
               className="shadow-sm h-full"
             >
@@ -416,7 +432,7 @@ export default function QTV_Bangdieukhien() {
         <Row gutter={[16, 16]}>
           <Col xs={24} lg={16}>
             <Card
-              title="Đơn hàng gần đây"
+              title={t("admin.dashboard.recent_orders.title")}
               bordered={false}
               className="shadow-sm"
             >
@@ -429,7 +445,11 @@ export default function QTV_Bangdieukhien() {
             </Card>
           </Col>
           <Col xs={24} lg={8}>
-            <Card title="Sách bán chạy" bordered={false} className="shadow-sm">
+            <Card
+              title={t("admin.dashboard.top_books.title")}
+              bordered={false}
+              className="shadow-sm"
+            >
               <List
                 itemLayout="horizontal"
                 dataSource={topBooks}
@@ -452,7 +472,11 @@ export default function QTV_Bangdieukhien() {
                       }
                       description={
                         <Space direction="vertical" size={0}>
-                          <div>Đã bán: {item.sales} cuốn</div>
+                          <div>
+                            {t("admin.dashboard.top_books.sold", {
+                              count: item.sales,
+                            })}
+                          </div>
                           <div className="font-semibold text-blue-600">
                             {new Intl.NumberFormat("vi-VN", {
                               style: "currency",

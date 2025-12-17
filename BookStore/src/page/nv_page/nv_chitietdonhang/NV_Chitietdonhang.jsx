@@ -1,11 +1,16 @@
 import "./NV_Chitietdonhang.css";
 import { NV_Nav } from "../../../nav/NV_Nav";
+import { useTranslation } from "react-i18next";
+
 export default function NV_Chitietdonhang() {
+  const { t } = useTranslation();
   return (
     <>
       <NV_Nav />
       <main className="nv_trangctdh_main">
-        <div className="nv_trangctdh_tieude">Chi tiết đơn hàng</div>
+        <div className="nv_trangctdh_tieude">
+          {t("staff.order_detail.title")}
+        </div>
         <hr
           style={{
             border: "1px solid rgb(210, 206, 206)",
@@ -17,23 +22,31 @@ export default function NV_Chitietdonhang() {
 
         <div className="nv_trangctdh_caco">
           <div className="nv_trangctdh_caco_tieude">
-            Chi tiết đơn hàng mã DH001
+            {t("staff.order_detail.order_info.title", { code: "DH001" })}
           </div>
-          <div className="nv_trangctdh_caco_nhan">Mã Đơn Hàng : DH001</div>
-          <div className="nv_trangctdh_caco_nhan">Ngày đặt : 28/9/2025</div>
           <div className="nv_trangctdh_caco_nhan">
-            Ghi chú : gói hàng cẩn th
+            {t("staff.order_detail.order_info.code", { code: "DH001" })}
+          </div>
+          <div className="nv_trangctdh_caco_nhan">
+            {t("staff.order_detail.order_info.date", { date: "28/9/2025" })}
+          </div>
+          <div className="nv_trangctdh_caco_nhan">
+            {t("staff.order_detail.order_info.note", {
+              note: "gói hàng cẩn th",
+            })}
           </div>
           <div className="nv_trangctdh_caco_cntt">
             <span className="nv_trangctdh_caco_nhan">
-              Cập nhật trạng thái :{" "}
+              {t("staff.order_detail.order_info.update_status")}
             </span>
             <select name="" id="">
               <option value="cxn">Chờ xác nhận</option>
               <option value="cxn">Chờ giao hàng</option>
               <option value="cxn">Đang giao hàng</option>
             </select>
-            <button className="nv_trangctdh_caco_button">Cập nhật</button>
+            <button className="nv_trangctdh_caco_button">
+              {t("staff.order_detail.order_info.button_update")}
+            </button>
           </div>
           <div className="nv_trangctdh_caco_trangthaidh">
             <div style={{ borderRadius: "20px 0px 0px 20px" }}>
@@ -55,19 +68,29 @@ export default function NV_Chitietdonhang() {
               className="nv_trangctdh_caco_trangthaidh_noidungtrangthai"
               style={{ borderRadius: "0px 20px 20px 0px" }}
             >
-              Đã giao hàng thành công
+              {t("staff.order_detail.order_info.success")}
             </div>
           </div>
         </div>
 
         <div className="nv_trangctdh_caco">
-          <div className="nv_trangctdh_caco_tieude">Sản phẩm đã chọn mua</div>
+          <div className="nv_trangctdh_caco_tieude">
+            {t("staff.order_detail.products.title")}
+          </div>
           <table className="ctdh_tb">
             <tr>
-              <th className="ctdh_th ctdh_th1">Sản phẩm</th>
-              <th className="ctdh_th ctdh_th2">Đơn giá</th>
-              <th className="ctdh_th ctdh_th3">Số lượng</th>
-              <th className="ctdh_th ctdh_th4">Thành tiền</th>
+              <th className="ctdh_th ctdh_th1">
+                {t("staff.order_detail.products.columns.product")}
+              </th>
+              <th className="ctdh_th ctdh_th2">
+                {t("staff.order_detail.products.columns.price")}
+              </th>
+              <th className="ctdh_th ctdh_th3">
+                {t("staff.order_detail.products.columns.quantity")}
+              </th>
+              <th className="ctdh_th ctdh_th4">
+                {t("staff.order_detail.products.columns.total")}
+              </th>
             </tr>
             <tr>
               <td className="ctdh_td nv_trangctdh_caco_sach">
@@ -102,26 +125,40 @@ export default function NV_Chitietdonhang() {
         <div className="nv_trangctdh_caco_ttkhachhangvathanhtoan">
           <div className="nv_trangctdh_caco_ttkhachhangvathanhtoan_bang">
             <div className="nv_trangctdh_caco_ttkhachhangvathanhtoan_bang_tieude">
-              Thông tin khách hàng
+              {t("staff.order_detail.customer_info.title")}
             </div>
             <div className="nv_trangctdh_caco_ttkhachhangvathanhtoan_bang_thongtin">
-              <div className="tenkh">Tên khách hàng : Phạm Hùng Minh</div>
-              <div className="ttkh">Điện thoại : 099999999</div>
-              <div className="ttkh">Email : abc@gmail.com</div>
+              <div className="tenkh">
+                {t("staff.order_detail.customer_info.name", {
+                  name: "Phạm Hùng Minh",
+                })}
+              </div>
               <div className="ttkh">
-                Địa chỉ : 123/4 abc, phường 5, quận 6, TP.HCM{" "}
+                {t("staff.order_detail.customer_info.phone", {
+                  phone: "099999999",
+                })}
+              </div>
+              <div className="ttkh">
+                {t("staff.order_detail.customer_info.email", {
+                  email: "abc@gmail.com",
+                })}
+              </div>
+              <div className="ttkh">
+                {t("staff.order_detail.customer_info.address", {
+                  address: "123/4 abc, phường 5, quận 6, TP.HCM",
+                })}{" "}
               </div>
             </div>
           </div>
 
           <div className="nv_trangctdh_caco_ttkhachhangvathanhtoan_bang">
             <div className="nv_trangctdh_caco_ttkhachhangvathanhtoan_bang_tieude">
-              Thông tin thanh toán
+              {t("staff.order_detail.payment_info.title")}
             </div>
             <div className="nv_trangctdh_caco_ttkhachhangvathanhtoan_bang_thongtin">
               <div style={{ marginBottom: "10px" }}>
                 <div className="thanhtoan_phuongthuc">
-                  Phương thức thanh toán :{" "}
+                  {t("staff.order_detail.payment_info.method")}
                 </div>
                 <div className="thanhtoan_phuongthuc_dulieu">
                   Thanh toán khi nhận hàng
@@ -129,7 +166,7 @@ export default function NV_Chitietdonhang() {
               </div>
               <div>
                 <div className="thanhtoan_phuongthuc">
-                  Phương thức vận chuyển :{" "}
+                  {t("staff.order_detail.payment_info.shipping")}
                 </div>
                 <div className="thanhtoan_phuongthuc_dulieu">
                   Vận chuyển tiêu chuẩn
@@ -140,24 +177,26 @@ export default function NV_Chitietdonhang() {
         </div>
 
         <div className="nv_trangctdh_caco">
-          <div className="nv_trangctdh_caco_tieude">Tổng kết đơn hàng</div>
+          <div className="nv_trangctdh_caco_tieude">
+            {t("staff.order_detail.summary.title")}
+          </div>
           <div className="nv_trangctdh_caco_dongdulieu">
             <div className="nv_trangctdh_caco_dongdulieu_thtin">
-              Tạm tính (4 sản phẩm)
+              {t("staff.order_detail.summary.subtotal", { count: 4 })}
             </div>
             <div className="nv_trangctdh_caco_dongdulieu_thtin">200.000đ</div>
           </div>
 
           <div className="nv_trangctdh_caco_dongdulieu">
             <div className="nv_trangctdh_caco_dongdulieu_thtin">
-              Phí vận chuyển
+              {t("staff.order_detail.summary.shipping_fee")}
             </div>
             <div className="nv_trangctdh_caco_dongdulieu_thtin">30.000đ</div>
           </div>
 
           <div className="nv_trangctdh_caco_dongdulieu">
             <div className="nv_trangctdh_caco_dongdulieu_thtin">
-              Mã giảm giá (nếu có)
+              {t("staff.order_detail.summary.discount")}
             </div>
             <div className="nv_trangctdh_caco_dongdulieu_thtin">-20.000đ</div>
           </div>
@@ -175,7 +214,7 @@ export default function NV_Chitietdonhang() {
               className="nv_trangctdh_caco_dongdulieu_thtin"
               style={{ fontWeight: "600", fontSize: "20px", color: "red" }}
             >
-              Tổng cộng
+              {t("staff.order_detail.summary.total")}
             </div>
             <div
               className="nv_trangctdh_caco_dongdulieu_thtin"

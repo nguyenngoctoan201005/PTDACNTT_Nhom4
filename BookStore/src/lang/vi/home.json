@@ -1,0 +1,34 @@
+{
+  "name": "Trang chủ",
+  "genre": {
+    "title": "Khám phá theo thể loại",
+    "view_more": "Xem thêm",
+    "book_count": "{{count}} cuốn sách"
+  },
+  "collection": {
+    "bestseller": {
+      "tag": "Bộ sưu tập đặc biệt",
+      "title": "Sách Bán Chạy Nhất",
+      "subtitle": "Được yêu thích nhất",
+      "description": "Khám phá những cuốn sách được độc giả tin tưởng và lựa chọn nhiều nhất"
+    },
+    "new_release": {
+      "tag": "Sách mới",
+      "title": "Ra Mắt Tuần Này",
+      "subtitle": "Cập nhật liên tục",
+      "description": "Những cuốn sách mới nhất vừa được phát hành, đừng bỏ lỡ"
+    },
+    "deals": {
+      "tag": "Ưu đãi hấp dẫn",
+      "title": "Giảm Giá Đặc Biệt",
+      "subtitle": "Tiết kiệm đến 50%",
+      "description": "Cơ hội sở hữu sách yêu thích với mức giá tốt nhất"
+    },
+    "exclusive": {
+      "tag": "Độc quyền",
+      "title": "Bộ Sưu Tập Cao Cấp",
+      "subtitle": "Phiên bản giới hạn",
+      "description": "Sách cao cấp với chữ ký tác giả và bìa đặc biệt"
+    }
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "title": "Shopping Cart",
+  "empty": "Your cart is empty",
+  "total": "Total",
+  "checkout": "Checkout",
+  "continue_shopping": "Continue Shopping",
+  "checkout_page": {
+    "title": "Checkout",
+    "customer_info": "Customer Information",
+    "form": {
+      "name": "Full name",
+      "email": "Email",
+      "phone": "Phone number",
+      "city": "City",
+      "ward": "Ward/Commune",
+      "address": "Specific address",
+      "placeholder": {
+        "name": "Enter full name",
+        "email": "Enter email",
+        "phone": "Enter phone number",
+        "city": "Select city",
+        "ward": "Select ward/commune",
+        "address": "Enter specific address",
+        "discount": "Enter discount code"
+      }
+    },
+    "discount": {
+      "title": "Discount Code",
+      "apply": "Apply",
+      "success": "Discount code applied successfully!",
+      "invalid": "Invalid discount code!"
+    },
+    "summary": {
+      "quantity": "Quantity",
+      "items": "items",
+      "subtotal": "Subtotal",
+      "discount": "Discount",
+      "total": "Total",
+      "submit": "Place Order",
+      "back_to_cart": "Back to Cart"
+    },
+    "products": "Products",
+    "empty_cart": "Cart is empty.",
+    "success": "Ordered successfully!",
+    "error": "Order failed, please try again!"
+  }
+}

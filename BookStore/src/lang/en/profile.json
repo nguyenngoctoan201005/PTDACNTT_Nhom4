@@ -1,0 +1,27 @@
+{
+  "change_password": {
+    "title": "Change password",
+    "old_password": "Old password",
+    "new_password": "New password",
+    "confirm_new_password": "Confirm new password",
+    "placeholder": {
+      "old": "Enter your old password",
+      "new": "Enter your new password",
+      "confirm": "Confirm your new password"
+    },
+    "error": {
+      "duplicate": "New password cannot be the same as old password!",
+      "success": "Change password successfully!",
+      "fail": "Change password failed"
+    }
+  },
+  "update_info": {
+    "title": "Update Information",
+    "success": "Update information successfully!",
+    "fail": "Update failed"
+  },
+  "info": {
+    "title": "Basic Information",
+    "subtitle": "Manage your account information"
+  }
+}

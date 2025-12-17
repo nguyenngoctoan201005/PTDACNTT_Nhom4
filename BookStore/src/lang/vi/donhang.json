@@ -1,0 +1,49 @@
+{
+  "order_management": {
+    "title": "Quản Lý Đơn Hàng",
+    "search_placeholder": "Tìm kiếm đơn hàng...",
+    "columns": {
+      "stt": "STT",
+      "order_id": "Mã Đơn Hàng",
+      "customer": "Khách Hàng",
+      "order_date": "Ngày Đặt",
+      "amount": "Tổng Tiền",
+      "status": "Trạng Thái",
+      "action": "Hành Động"
+    },
+    "modal_detail": {
+      "title": "Chi Tiết Đơn Hàng",
+      "order_id": "Mã Đơn Hàng:",
+      "customer": "Khách Hàng:",
+      "recipient": "Người Nhận:",
+      "address": "Địa Chỉ:",
+      "phone": "Điện Thoại:",
+      "order_date": "Ngày Đặt:",
+      "status": "Trạng Thái:",
+      "subtotal": "Tổng Tiền:",
+      "discount": "Giảm Giá:",
+      "shipping": "Phí Vận Chuyển:",
+      "total": "Tổng Cộng:",
+      "items": "Chi Tiết Sản Phẩm",
+      "item_table": {
+        "book": "Tên Sách",
+        "quantity": "Số Lượng",
+        "price": "Giá",
+        "subtotal": "Thành Tiền"
+      },
+      "close": "Đóng"
+    },
+    "status": {
+      "pending": "Chờ xác nhận",
+      "confirmed": "Đã xác nhận",
+      "shipping": "Đang giao",
+      "delivered": "Đã giao",
+      "cancelled": "Đã hủy",
+      "return": "Trả hàng"
+    },
+    "view_btn": "Xem",
+    "no_data": "Không có dữ liệu đơn hàng",
+    "loading": "Đang tải...",
+    "error": "Lỗi khi tải đơn hàng"
+  }
+}

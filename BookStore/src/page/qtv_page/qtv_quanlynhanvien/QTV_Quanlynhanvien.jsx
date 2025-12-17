@@ -11,8 +11,10 @@ import {
 } from "@ant-design/icons";
 import { useDebounce } from "../../../hooks/useDebounce";
 import ModalNhanVien from "./components/ModalNhanVien";
+import { useTranslation } from "react-i18next";
 
 export default function QTV_Quanlynhanvien() {
+  const { t } = useTranslation();
   const [listNhanVien, setListNhanVien] = useState([]);
   const [selectedNhanVien, setSelectedNhanVien] = useState(null);
   const [modalState, setModalState] = useState({
@@ -28,7 +30,7 @@ export default function QTV_Quanlynhanvien() {
       const res = await getListNhanVien();
       setListNhanVien(res.result);
     } catch (error) {
-      message.error("Lỗi khi lấy danh sách nhân viên");
+      message.error(t("admin.employee.error.fetch_list"));
     }
   };
 
@@ -58,44 +60,44 @@ export default function QTV_Quanlynhanvien() {
   const deleteNV = async (maNhanVien) => {
     try {
       await deleteNhanVien(maNhanVien);
-      message.success("Xóa nhân viên thành công");
+      message.success(t("admin.employee.delete.success"));
       fetchNhanVien();
       setShowModalDelete(false);
     } catch (error) {
-      message.error("Lỗi khi xóa nhân viên");
+      message.error(t("admin.employee.delete.error"));
     }
   };
 
   const columns = [
     {
-      title: "STT",
+      title: t("admin.employee.columns.stt"),
       dataIndex: "maNhanVien",
       key: "stt",
       render: (text, record, index) => index + 1,
     },
     {
-      title: "NHÂN VIÊN",
+      title: t("admin.employee.columns.name"),
       dataIndex: "hoTen",
       key: "hoTen",
     },
     {
-      title: "SỐ CCCD",
+      title: t("admin.employee.columns.cccd"),
       dataIndex: "soCCCD",
       key: "soCCCD",
     },
     {
-      title: "TÊN ĐĂNG NHẬP",
+      title: t("admin.employee.columns.username"),
       dataIndex: "tenDangNhap",
       key: "tenDangNhap",
     },
     {
-      title: "MẬT KHẨU",
+      title: t("admin.employee.columns.password"),
       dataIndex: "matKhau",
       key: "matKhau",
       render: (text) => "******", // Hide password
     },
     {
-      title: "THAO TÁC",
+      title: t("admin.employee.columns.action"),
       key: "action",
       render: (_, record) => (
         <div className="flex gap-2 items-center">
@@ -126,19 +128,19 @@ export default function QTV_Quanlynhanvien() {
       <QTV_Nav />
       <main className="qtv_qlnhanvien_main p-4 bg-gray-50 min-h-screen">
         <div className="qtv_qlnhanvien_tieude mx-4 mt-4 rounded-lg flex items-center justify-between bg-white p-4 shadow-sm mb-4">
-          <div className="text-xl font-bold">Quản Lý Nhân Viên</div>
+          <div className="text-xl font-bold">{t("admin.employee.title")}</div>
           <Button
             type="primary"
             icon={<PlusOutlined />}
             onClick={openCreateModal}
           >
-            Thêm nhân viên
+            {t("admin.employee.add_button")}
           </Button>
         </div>
 
         <div className="flex flex-col md:flex-row gap-4 p-4 mx-4 bg-white rounded-lg shadow-md my-4 items-center">
           <Input
-            placeholder="Tìm kiếm theo tên..."
+            placeholder={t("admin.employee.search_placeholder")}
             allowClear
             enterButton
             className="w-full md:w-96"
@@ -146,7 +148,7 @@ export default function QTV_Quanlynhanvien() {
             prefix={<SearchOutlined />}
           />
           <Button type="primary" icon={<SearchOutlined />}>
-            Tìm kiếm
+            {t("admin.employee.search_button")}
           </Button>
         </div>
 
@@ -173,14 +175,15 @@ export default function QTV_Quanlynhanvien() {
         />
 
         <Modal
-          title="Xóa nhân viên"
+          title={t("admin.employee.delete.title")}
           open={showModalDelete}
           onOk={() => deleteNV(selectedNhanVien?.maNhanVien)}
           onCancel={() => setShowModalDelete(false)}
         >
           <p>
-            Bạn có chắc chắn muốn xóa nhân viên{" "}
-            <strong>{selectedNhanVien?.hoTen}</strong>?
+            {t("admin.employee.delete.confirm", {
+              name: selectedNhanVien?.hoTen,
+            })}
           </p>
         </Modal>
       </main>

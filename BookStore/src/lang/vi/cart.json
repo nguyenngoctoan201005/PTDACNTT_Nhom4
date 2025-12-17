@@ -1,0 +1,47 @@
+{
+  "title": "Giỏ hàng",
+  "empty": "Giỏ hàng của bạn đang trống",
+  "total": "Tổng tiền",
+  "checkout": "Thanh toán",
+  "continue_shopping": "Tiếp tục mua sắm",
+  "checkout_page": {
+    "title": "Đặt hàng",
+    "customer_info": "Thông tin khách hàng",
+    "form": {
+      "name": "Họ và tên",
+      "email": "Email",
+      "phone": "Điện thoại",
+      "city": "Thành phố",
+      "ward": "Phường/Xã",
+      "address": "Địa chỉ cụ thể",
+      "placeholder": {
+        "name": "Nhập họ và tên",
+        "email": "Nhập email",
+        "phone": "Nhập số điện thoại",
+        "city": "Chọn thành phố",
+        "ward": "Chọn phường xã",
+        "address": "Nhập địa chỉ cụ thể",
+        "discount": "Nhập mã giảm giá"
+      }
+    },
+    "discount": {
+      "title": "Mã giảm giá",
+      "apply": "Áp dụng",
+      "success": "Áp dụng mã giảm giá thành công!",
+      "invalid": "Mã giảm giá không hợp lệ!"
+    },
+    "summary": {
+      "quantity": "Số lượng sản phẩm",
+      "items": "sản phẩm",
+      "subtotal": "Thành tiền",
+      "discount": "Giảm giá",
+      "total": "Tổng cộng",
+      "submit": "Đặt mua",
+      "back_to_cart": "Quay về giỏ hàng"
+    },
+    "products": "Sản phẩm",
+    "empty_cart": "Giỏ hàng trống.",
+    "success": "Đặt hàng thành công!",
+    "error": "Đặt hàng thất bại, vui lòng thử lại!"
+  }
+}

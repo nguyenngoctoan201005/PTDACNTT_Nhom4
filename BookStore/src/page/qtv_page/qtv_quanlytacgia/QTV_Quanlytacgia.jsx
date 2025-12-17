@@ -11,8 +11,10 @@ import {
 import { getListTacGia, deleteTacGia } from "../../../api/tacGiaService";
 import ModalTacGia from "./components/ModalTacGia";
 import { useDebounce } from "../../../hooks/useDebounce";
+import { useTranslation } from "react-i18next";
 
 export default function QTV_Quanlytacgia() {
+  const { t } = useTranslation();
   const [listTacGia, setListTacGia] = useState([]);
   const [selectedTacGia, setSelectedTacGia] = useState(null);
   const [modalState, setModalState] = useState({
@@ -29,7 +31,7 @@ export default function QTV_Quanlytacgia() {
       setListTacGia(res.result || []);
     } catch (error) {
       console.error(error);
-      message.error("Lỗi khi lấy danh sách tác giả");
+      message.error(t("admin.author.error.fetch_list"));
     }
   };
 
@@ -40,13 +42,13 @@ export default function QTV_Quanlytacgia() {
   const handleDelete = async () => {
     try {
       await deleteTacGia(selectedTacGia.maTG);
-      message.success("Xóa tác giả thành công");
+      message.success(t("admin.author.delete.success"));
       fetchTacGia();
       setShowModalDelete(false);
       setSelectedTacGia(null);
     } catch (error) {
       console.error(error);
-      message.error("Lỗi khi xóa tác giả");
+      message.error(t("admin.author.delete.error"));
     }
   };
 
@@ -75,24 +77,24 @@ export default function QTV_Quanlytacgia() {
 
   const columns = [
     {
-      title: "STT",
+      title: t("admin.author.columns.stt"),
       key: "stt",
       render: (text, record, index) => index + 1,
       width: 80,
     },
     {
-      title: "TÊN TÁC GIẢ",
+      title: t("admin.author.columns.name"),
       dataIndex: "tenTG",
       key: "tenTG",
     },
     {
-      title: "TIỂU SỬ",
+      title: t("admin.author.columns.bio"),
       dataIndex: "tieuSu",
       key: "tieuSu",
-      render: (text) => text || "Đang cập nhật",
+      render: (text) => text || t("admin.author.default_bio"),
     },
     {
-      title: "THAO TÁC",
+      title: t("admin.author.columns.action"),
       key: "action",
       fixed: "right",
       width: 100,
@@ -121,18 +123,18 @@ export default function QTV_Quanlytacgia() {
       <QTV_Nav />
       <main className="qtv_quanlytacgia_main">
         <div className="qtv_quanlytacgia_header mx-4 mt-4 rounded-lg flex items-center justify-between">
-          <div>Quản lý tác giả</div>
+          <div>{t("admin.author.title")}</div>
           <Button
             type="primary"
             icon={<PlusOutlined />}
             onClick={openCreateModal}
           >
-            Thêm tác giả mới
+            {t("admin.author.add_button")}
           </Button>
         </div>
         <div className="flex flex-col md:flex-row gap-4 p-4 mx-4 bg-white rounded-lg shadow-md my-4 items-center">
           <Input
-            placeholder="Tìm kiếm tác giả..."
+            placeholder={t("admin.author.search_placeholder")}
             allowClear
             className="w-full md:w-96"
             onChange={(e) => setSearchText(e.target.value)}
@@ -160,14 +162,13 @@ export default function QTV_Quanlytacgia() {
           onOk={handleSuccess}
         />
         <Modal
-          title="Xóa tác giả"
+          title={t("admin.author.delete.title")}
           open={showModalDelete}
           onOk={handleDelete}
           onCancel={() => setShowModalDelete(false)}
         >
           <p>
-            Bạn có chắc chắn muốn xóa tác giả{" "}
-            <strong>{selectedTacGia?.tenTG}</strong>?
+            {t("admin.author.delete.confirm", { name: selectedTacGia?.tenTG })}
           </p>
         </Modal>
       </main>

@@ -11,8 +11,10 @@ import {
 import { getListTheLoai, deleteTheLoai } from "../../../api/theLoaiService"; // Import API
 import ModalTheLoai from "./components/ModalTheLoai"; // Import Modal
 import { useDebounce } from "../../../hooks/useDebounce"; // Import debounce hook if exists, otherwise I'll need to check or just standard filter
+import { useTranslation } from "react-i18next";
 
 export default function QTV_Quanlytheloai() {
+  const { t } = useTranslation();
   const [listTheLoai, setListTheLoai] = useState([]);
   const [selectedTheLoai, setSelectedTheLoai] = useState(null);
   const [modalState, setModalState] = useState({
@@ -30,7 +32,7 @@ export default function QTV_Quanlytheloai() {
       setListTheLoai(res.result || []);
     } catch (error) {
       console.error(error);
-      message.error("Lỗi khi lấy danh sách thể loại");
+      message.error(t("admin.genre.error.fetch_list"));
     }
   };
 
@@ -41,13 +43,13 @@ export default function QTV_Quanlytheloai() {
   const handleDelete = async () => {
     try {
       await deleteTheLoai(selectedTheLoai.maTheLoai);
-      message.success("Xóa thể loại thành công");
+      message.success(t("admin.genre.delete.success"));
       fetchTheLoai();
       setShowModalDelete(false);
       setSelectedTheLoai(null);
     } catch (error) {
       console.error(error);
-      message.error("Lỗi khi xóa thể loại");
+      message.error(t("admin.genre.delete.error"));
     }
   };
 
@@ -76,13 +78,13 @@ export default function QTV_Quanlytheloai() {
 
   const columns = [
     {
-      title: "STT",
+      title: t("admin.genre.columns.stt"),
       key: "stt",
       render: (text, record, index) => index + 1,
       width: 80,
     },
     {
-      title: "TÊN THỂ LOẠI",
+      title: t("admin.genre.columns.name"),
       dataIndex: "tenLoai",
       key: "tenLoai",
     },
@@ -101,7 +103,7 @@ export default function QTV_Quanlytheloai() {
     //   render: (text) => text || 0,
     // },
     {
-      title: "THAO TÁC",
+      title: t("admin.genre.columns.action"),
       key: "action",
       fixed: "right",
       width: 100,
@@ -132,18 +134,18 @@ export default function QTV_Quanlytheloai() {
       <QTV_Nav />
       <main className="qtv_quanlytheloai_main">
         <div className="qtv_quanlytheloai_header mx-4 mt-4 rounded-lg flex items-center justify-between">
-          <div>Quản lý thể loại</div>
+          <div>{t("admin.genre.title")}</div>
           <Button
             type="primary"
             icon={<PlusOutlined />}
             onClick={openCreateModal}
           >
-            Thêm thể loại mới
+            {t("admin.genre.add_button")}
           </Button>
         </div>
         <div className="flex flex-col md:flex-row gap-4 p-4 mx-4 bg-white rounded-lg shadow-md my-4 items-center">
           <Input
-            placeholder="Tìm kiếm thể loại..."
+            placeholder={t("admin.genre.search_placeholder")}
             allowClear
             className="w-full md:w-96"
             onChange={(e) => setSearchText(e.target.value)}
@@ -171,14 +173,15 @@ export default function QTV_Quanlytheloai() {
           onOk={handleSuccess}
         />
         <Modal
-          title="Xóa thể loại"
+          title={t("admin.genre.delete.title")}
           open={showModalDelete}
           onOk={handleDelete}
           onCancel={() => setShowModalDelete(false)}
         >
           <p>
-            Bạn có chắc chắn muốn xóa thể loại{" "}
-            <strong>{selectedTheLoai?.tenTheLoai}</strong>?
+            {t("admin.genre.delete.confirm", {
+              name: selectedTheLoai?.tenLoai,
+            })}
           </p>
         </Modal>
       </main>

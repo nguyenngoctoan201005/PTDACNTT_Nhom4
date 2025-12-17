@@ -1,0 +1,39 @@
+{
+  "title": "Giới thiệu Nhà Sách",
+  "intro_1": "Nhà Sách ABC",
+  "intro_2": " – Không chỉ là nơi bán sách, mà còn là ",
+  "intro_3": "không gian tri thức và cảm hứng học tập",
+  "intro_4": " dành cho mọi lứa tuổi. Chúng tôi tin rằng ",
+  "intro_5": "“một cuốn sách hay có thể thay đổi cuộc đời của một người”",
+  "intro_6": ", và sứ mệnh của chúng tôi là mang tri thức ấy đến gần hơn với bạn đọc ở khắp mọi nơi.",
+  "mission": {
+    "title": "🌟 Sứ mệnh",
+    "items": [
+      "Cung cấp nguồn sách chất lượng, đa dạng thể loại: học tập, văn học, kỹ năng sống, kinh doanh, công nghệ, thiếu nhi...",
+      "Xây dựng môi trường mua sắm thân thiện, nhanh chóng và tiện lợi.",
+      "Khuyến khích văn hóa đọc và phát triển tri thức cộng đồng."
+    ]
+  },
+  "quality": {
+    "title": "📚 Chính sách chất lượng",
+    "items": [
+      "Sản phẩm được nhập khẩu chính hãng hoặc phát hành bởi các nhà xuất bản uy tín.",
+      "Cam kết sách mới 100%, đóng gói cẩn thận, giao hàng nhanh trên toàn quốc.",
+      "Hỗ trợ đổi trả trong vòng 7 ngày nếu sản phẩm lỗi hoặc sai sót trong vận chuyển."
+    ]
+  },
+  "customer": {
+    "title": "💬 Chính sách khách hàng",
+    "items": [
+      "Tư vấn chọn sách theo độ tuổi, sở thích và mục tiêu học tập.",
+      "Thành viên đăng ký tài khoản nhận ưu đãi giảm giá, mã khuyến mãi định kỳ.",
+      "Bảo mật tuyệt đối thông tin cá nhân của khách hàng."
+    ]
+  },
+  "commitment": {
+    "title": "❤️ Cam kết của chúng tôi",
+    "text_1": "Với phương châm ",
+    "text_2": "“Mỗi cuốn sách – Một người bạn đồng hành”",
+    "text_3": ", Nhà Sách ABC luôn nỗ lực mang lại trải nghiệm mua sắm tuyệt vời, đáng tin cậy và đầy cảm hứng cho bạn đọc trên toàn quốc."
+  }
+}

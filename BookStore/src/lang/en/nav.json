@@ -1,0 +1,26 @@
+{
+  "admin": {
+    "title": "Administrator",
+    "dashboard": "Dashboard",
+    "books": "Book Management",
+    "genres": "Genre Management",
+    "authors": "Author Management",
+    "customers": "Customers",
+    "staff": "Staff Management",
+    "promotions": "Promotion Management",
+    "history": "Edit History"
+  },
+  "staff": {
+    "title": "Staff",
+    "dashboard": "Dashboard",
+    "orders": "Order Management",
+    "returns": "Cancel/Return Requests",
+    "maintenance": "Book Maintenance",
+    "reviews": "Review Management",
+    "stats": "Revenue Statistics"
+  },
+  "common": {
+    "logout": "Logout",
+    "language": "Language"
+  }
+}

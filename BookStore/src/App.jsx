@@ -6,6 +6,7 @@ import { GlobalProvider } from "./GlobalContext";
 import { App as AntdApp } from "antd";
 import LoadingSpinner from "./components/LoadingSpinner";
 import PageTitle from "./components/PageTitle";
+import { useTranslation } from "react-i18next";
 
 // import { NV_Bangdieukhien } from "./page/nv_page/nv_bangdieukhien/NV_Bangdieukhien.jsx";
 // import { NV_Quanlydonhang } from "./page/nv_page/nv_quanlydonhang/NV_Quanlydonhang.jsx";
@@ -24,85 +25,102 @@ import PageTitle from "./components/PageTitle";
 // import { QTV_Lichsuchinhsua } from "./page/qtv_page/qtv_lichsuchinhsua/QTV_Lichsuchinhsua.jsx";
 // import { QTV_Themsachmoi } from "./page/qtv_page/qtv_quanlysach/qtv_themsachmoi/QTV_Themsachmoi.jsx";
 
+function AppRouter() {
+  const { t } = useTranslation();
+
+  const resolveTitle = (route) => {
+    // If titleKey is provided, resolve it using i18n
+    if (route.titleKey) {
+      return t(route.titleKey) + " - Bookstore";
+    }
+    // Otherwise use the title directly
+    return route.title;
+  };
+
+  return (
+    <Routes>
+      {routes.map((route, index) => (
+        <Route
+          key={index}
+          path={route.path}
+          element={
+            <PageTitle title={resolveTitle(route)}>{route.element}</PageTitle>
+          }
+        >
+          {route.children &&
+            route.children.map((child, childIndex) => (
+              <Route
+                key={childIndex}
+                index={child.index}
+                path={child.path}
+                element={
+                  <PageTitle title={resolveTitle(child)}>
+                    {child.element}
+                  </PageTitle>
+                }
+              >
+                {child.children &&
+                  child.children.map((childI, childIndexI) => (
+                    <Route
+                      key={childIndexI}
+                      index={childI.index}
+                      path={childI.path}
+                      element={
+                        <PageTitle title={resolveTitle(childI)}>
+                          {childI.element}
+                        </PageTitle>
+                      }
+                    />
+                  ))}
+              </Route>
+            ))}
+        </Route>
+      ))}
+      {/* 
+      <Route path="/bangdieukhien" element={<NV_Bangdieukhien />}></Route>
+      <Route path="/quanlydonhang" element={<NV_Quanlydonhang />}></Route>
+      <Route path="/huyvatrahang" element={<NV_Huyvatrahang />}></Route>
+      <Route path="/baotrisach" element={<NV_Baotrisach />}></Route>
+      <Route path="/quanlydanhgia" element={<NV_Quanlydanhgia />}></Route>
+      <Route path="/thongke" element={<NV_Thongke />}></Route>
+      <Route path="/chinhsuasach" element={<NV_Chinhsuasach />}></Route>
+      <Route
+        path="/chitietdonhang"
+        element={<NV_Chitietdonhang />}
+      ></Route> */}
+      {/* <Route
+        path="/qtvbangdieukhien"
+        element={<QTV_Bangdieukhien />}
+      ></Route>
+      <Route path="/qtvquanlysach" element={<QTV_Xemxoasach />}></Route>
+      <Route path="/qtvthemsachmoi" element={<QTV_Themsachmoi />}></Route>
+      <Route path="/qtvkhachhang" element={<QTV_KhachHang />}></Route>
+      <Route
+        path="/qtvquanlynhanvien"
+        element={<QTV_Quanlynhanvien />}
+      ></Route>
+      <Route
+        path="/qtvquanlytheloai"
+        element={<QTV_Quanlytheloai />}
+      ></Route>
+      <Route
+        path="/qtvquanlykhuyenmai"
+        element={<QTV_Quanlykhuyenmai />}
+      ></Route>
+      <Route
+        path="/qtvlichsuchinhsua"
+        element={<QTV_Lichsuchinhsua />}
+      ></Route> */}
+    </Routes>
+  );
+}
+
 function App() {
   return (
     <AntdApp>
       <GlobalProvider>
         <Suspense fallback={<LoadingSpinner />}>
-          <Routes>
-            {routes.map((route, index) => (
-              <Route
-                key={index}
-                path={route.path}
-                element={
-                  <PageTitle title={route.title}>{route.element}</PageTitle>
-                }
-              >
-                {route.children &&
-                  route.children.map((child, childIndex) => (
-                    <Route
-                      key={childIndex}
-                      index={child.index}
-                      path={child.path}
-                      element={
-                        <PageTitle title={child.title}>
-                          {child.element}
-                        </PageTitle>
-                      }
-                    >
-                      {child.children &&
-                        child.children.map((childI, childIndexI) => (
-                          <Route
-                            key={childIndexI}
-                            index={childI.index}
-                            path={childI.path}
-                            element={
-                              <PageTitle title={childI.title}>
-                                {childI.element}
-                              </PageTitle>
-                            }
-                          />
-                        ))}
-                    </Route>
-                  ))}
-              </Route>
-            ))}
-            {/* 
-            <Route path="/bangdieukhien" element={<NV_Bangdieukhien />}></Route>
-            <Route path="/quanlydonhang" element={<NV_Quanlydonhang />}></Route>
-            <Route path="/huyvatrahang" element={<NV_Huyvatrahang />}></Route>
-            <Route path="/baotrisach" element={<NV_Baotrisach />}></Route>
-            <Route path="/quanlydanhgia" element={<NV_Quanlydanhgia />}></Route>
-            <Route path="/thongke" element={<NV_Thongke />}></Route>
-            <Route path="/chinhsuasach" element={<NV_Chinhsuasach />}></Route>
-            <Route
-              path="/chitietdonhang"
-              element={<NV_Chitietdonhang />}
-            ></Route> */}
-            {/* <Route
-              path="/qtvbangdieukhien"
-              element={<QTV_Bangdieukhien />}
-            ></Route>
-            <Route path="/qtvquanlysach" element={<QTV_Xemxoasach />}></Route>
-            <Route path="/qtvthemsachmoi" element={<QTV_Themsachmoi />}></Route>
-            <Route path="/qtvkhachhang" element={<QTV_KhachHang />}></Route>
-            <Route
-              path="/qtvquanlynhanvien"
-              element={<QTV_Quanlynhanvien />}
-            ></Route>
-            <Route
-              path="/qtvquanlytheloai"
-              element={<QTV_Quanlytheloai />}
-            ></Route>
-            <Route
-              path="/qtvquanlykhuyenmai"
-              element={<QTV_Quanlykhuyenmai />}
-            ></Route>
-            <Route
-              path="/qtvlichsuchinhsua"
-              element={<QTV_Lichsuchinhsua />}
-            ></Route> */}
-          </Routes>
+          <AppRouter />
         </Suspense>
       </GlobalProvider>
     </AntdApp>

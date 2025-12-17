@@ -4,10 +4,12 @@ import BookCard from "../../../components/BookCard";
 import { useState, useEffect } from "react";
 import RequireLoginPage from "../../../components/RequireLoginPage/RequireLoginPage";
 import { useGlobalContext } from "../../../GlobalContext";
+import { useTranslation } from "react-i18next";
 
 const Favorite = () => {
   const { token } = useGlobalContext();
   const [books, setBooks] = useState([]);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const storedBooks = JSON.parse(localStorage.getItem("favoriteBooks")) || [];
@@ -18,7 +20,7 @@ const Favorite = () => {
     const updatedBooks = books.filter((book) => book.id !== id);
     setBooks(updatedBooks);
     localStorage.setItem("favoriteBooks", JSON.stringify(updatedBooks));
-    message.success("Đã xóa khỏi danh sách yêu thích");
+    message.success(t("common.message.removed_favorite"));
   };
 
   const handleAddToCart = (id) => {
@@ -35,15 +37,15 @@ const Favorite = () => {
         items={[
           {
             key: 1,
-            title: <Link to={"/home"}>Home</Link>,
+            title: <Link to={"/home"}>{t("home.name")}</Link>,
           },
           {
             key: 2,
-            title: "Favorite",
+            title: t("favorite.title"),
           },
         ]}
       />
-      <Typography.Title level={2}>Favorite</Typography.Title>
+      <Typography.Title level={2}>{t("favorite.title")}</Typography.Title>
       <Card>
         {books.length > 0 ? (
           <Flex wrap>
@@ -75,7 +77,7 @@ const Favorite = () => {
             ))}
           </Flex>
         ) : (
-          <Empty description="Chưa có sách yêu thích" />
+          <Empty description={t("favorite.empty")} />
         )}
       </Card>
     </div>

@@ -38,6 +38,7 @@ import RequireLoginPage from "../../components/RequireLoginPage/RequireLoginPage
 import { getListTheLoai } from "../../api/theLoaiService";
 import { suggestSach } from "../../api/sachService";
 import { useDebounce } from "../../hooks/useDebounce";
+import { useTranslation } from "react-i18next";
 
 const { Header, Content, Footer } = Layout;
 const { Title, Text, Link } = Typography;
@@ -119,6 +120,11 @@ const ProfileLayout = () => {
     setSelectedKey(location.pathname.replace("/profile/", ""));
   }, [location.pathname]);
 
+  const { t, i18n } = useTranslation();
+  const handleLanguageChange = (lang) => {
+    i18n.changeLanguage(lang);
+  };
+
   const userItem = [
     {
       key: 1,
@@ -136,10 +142,35 @@ const ProfileLayout = () => {
       type: "divider",
     },
     {
+      key: "lang_vi",
+      label: (
+        <div
+          onClick={() => handleLanguageChange("vi")}
+          style={{ cursor: "pointer" }}
+        >
+          {i18n?.language === "vi" ? "✓ " : ""}Tiếng Việt
+        </div>
+      ),
+    },
+    {
+      key: "lang_en",
+      label: (
+        <div
+          onClick={() => handleLanguageChange("en")}
+          style={{ cursor: "pointer" }}
+        >
+          {i18n?.language === "en" ? "✓ " : ""}English
+        </div>
+      ),
+    },
+    {
+      type: "divider",
+    },
+    {
       key: 2,
       label: (
         <a onClick={() => navigate("/profile")}>
-          <UserOutlined /> Profile
+          <UserOutlined /> {t("common.button.profile")}
         </a>
       ),
     },
@@ -147,7 +178,7 @@ const ProfileLayout = () => {
       key: 3,
       label: (
         <a onClick={() => navigate("/change-password")}>
-          <KeyOutlined /> Change password
+          <KeyOutlined /> {t("common.button.change-password")}
         </a>
       ),
     },
@@ -155,7 +186,7 @@ const ProfileLayout = () => {
       key: 4,
       label: (
         <div onClick={handleLogout} className="text-red-600">
-          <LogoutOutlined /> Log out
+          <LogoutOutlined /> {t("common.button.logout")}
         </div>
       ),
     },
@@ -209,7 +240,7 @@ const ProfileLayout = () => {
           <div style={{ position: "relative", flex: 1 }} ref={searchRef}>
             <Input
               prefix={<SearchOutlined />}
-              placeholder="Nhập tên sách bạn muốn tìm tại đây"
+              placeholder={t("common.search_placeholder")}
               style={{ flex: 1, marginTop: 10 }}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -230,7 +261,9 @@ const ProfileLayout = () => {
                 }}
               >
                 {loadingSuggest ? (
-                  <div className="px-4 py-2 text-gray-500">Đang tải...</div>
+                  <div className="px-4 py-2 text-gray-500">
+                    {t("common.loading")}
+                  </div>
                 ) : (
                   suggestions.slice(0, 4).map((book) => (
                     <div
@@ -250,7 +283,7 @@ const ProfileLayout = () => {
                       <div>
                         <p style={{ marginBottom: 1 }}>{book.tenSach}</p>
                         <Typography.Text type="secondary">
-                          Đơn giá: {book.donGia}
+                          {t("common.price_label")} {book.donGia}
                         </Typography.Text>
                       </div>
                     </div>
@@ -282,9 +315,11 @@ const ProfileLayout = () => {
               {!user ? (
                 <>
                   <Button type="primary" onClick={() => navigate("/login")}>
-                    Đăng nhập
+                    {t("common.button.login")}
                   </Button>
-                  <Button onClick={() => navigate("/register")}>Đăng ký</Button>
+                  <Button onClick={() => navigate("/register")}>
+                    {t("common.button.register")}
+                  </Button>
                 </>
               ) : (
                 <Dropdown
@@ -346,17 +381,17 @@ const ProfileLayout = () => {
                       {
                         key: "info",
                         icon: <UserOutlined />,
-                        label: "Thông tin tài khoản",
+                        label: t("profile.info.title"),
                       },
                       {
                         key: "update",
                         icon: <SettingOutlined />,
-                        label: "Cập nhật thông tin",
+                        label: t("profile.update_info.title"),
                       },
                       {
                         key: "change-password",
                         icon: <KeyOutlined />,
-                        label: "Đổi mật khẩu",
+                        label: t("profile.change_password.title"),
                       },
                     ]}
                   />

@@ -24,6 +24,7 @@ import { useNavigate } from "react-router";
 import { Logo } from "../../../assets";
 import { useGlobalContext } from "../../../GlobalContext";
 import { Link } from "react-router";
+import { useTranslation } from "react-i18next";
 import {
   getListProvinces,
   getProvinceDetail,
@@ -37,6 +38,7 @@ const Register = () => {
   const navigate = useNavigate();
   const { message } = App.useApp();
   const [form] = Form.useForm();
+  const { t } = useTranslation();
 
   const [agree, setAgree] = useState(false);
 
@@ -53,7 +55,7 @@ const Register = () => {
         maQuanHuyen: values.city,
       });
 
-      message.success("Đăng kí tài khoản thành công");
+      message.success(t("auth.register.success"));
       navigate("/login");
     } catch (err) {
       console.log("error >>>", err);
@@ -132,11 +134,10 @@ const Register = () => {
               </Space>
               <div className="-mt-30">
                 <h2 className="text-5xl font-bold leading-tight">
-                  Chào mừng bạn đến với trang web
+                  {t("auth.welcome.web_title")}
                 </h2>
                 <p className="text-lg text-white/90">
-                  Khám phá hàng nghìn cuốn sách, kết nối với những người yêu
-                  sách khác và khám phá những thế giới mới qua văn học.
+                  {t("auth.welcome.web_subtitle")}
                 </p>
               </div>
             </div>
@@ -146,19 +147,21 @@ const Register = () => {
                 <ReadOutlined className="text-xl mt-1" />
                 <div>
                   <h3 className="font-semibold text-lg">
-                    Bộ sưu tập được chọn lọc
+                    {t("auth.features.collection")}
                   </h3>
                   <p className="text-white/80">
-                    Những cuốn sách được tuyển chọn kỹ lưỡng từ mọi thể loại
+                    {t("auth.features.collection_desc")}
                   </p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
                 <GiftOutlined className="text-xl mt-1" />
                 <div>
-                  <h3 className="font-semibold text-lg">Ưu đãi độc quyền</h3>
+                  <h3 className="font-semibold text-lg">
+                    {t("auth.features.exclusive")}
+                  </h3>
                   <p className="text-white/80">
-                    Giảm giá đặc biệt dành cho thành viên
+                    {t("auth.features.exclusive_desc")}
                   </p>
                 </div>
               </div>
@@ -166,10 +169,10 @@ const Register = () => {
                 <ThunderboltOutlined className="text-xl mt-1" />
                 <div>
                   <h3 className="font-semibold text-lg">
-                    Giao hàng nhanh chóng
+                    {t("auth.features.fast_shipping")}
                   </h3>
                   <p className="text-white/80">
-                    Nhận sách của bạn một cách nhanh nhất
+                    {t("auth.features.fast_shipping_desc")}
                   </p>
                 </div>
               </div>
@@ -178,8 +181,7 @@ const Register = () => {
 
           <div className="relative z-10 border-t border-white/20 pt-6">
             <p className="text-white/80 italic">
-              “Người đọc sách sống được cả ngàn cuộc đời trước khi chết. Kẻ
-              không bao giờ đọc chỉ sống một lần.” — George R.R. Martin
+              “{t("auth.quote.content")}” — {t("auth.quote.author")}
             </p>
           </div>
         </div>
@@ -189,11 +191,9 @@ const Register = () => {
             <div className="space-y-8 max-w-md mx-auto">
               <div className="text-center space-y-1">
                 <Title level={2} className="!mb-0">
-                  Tạo tài khoản
+                  {t("auth.register.title")}
                 </Title>
-                <Text type="secondary">
-                  Tham gia BookHaven để bắt đầu hành trình đọc sách của bạn
-                </Text>
+                <Text type="secondary">{t("auth.register.subtitle")}</Text>
               </div>
 
               <Form
@@ -208,18 +208,22 @@ const Register = () => {
                   <Col span={12}>
                     <Form.Item
                       label={
-                        <span className="font-medium text-gray-700">Tên</span>
+                        <span className="font-medium text-gray-700">
+                          {t("common.form.name")}
+                        </span>
                       }
                       name="name"
                       rules={[
                         {
                           required: true,
-                          message: "Vui lòng nhập tên của bạn!",
+                          message: t("common.validation.required", {
+                            field: t("common.form.name"),
+                          }),
                         },
                       ]}
                     >
                       <Input
-                        placeholder="John"
+                        placeholder={t("common.form.placeholder.name")}
                         className="rounded-md border-gray-300 hover:border-blue-500 focus:ring-1 focus:ring-blue-500"
                         autoComplete="off"
                       />
@@ -229,19 +233,23 @@ const Register = () => {
                     <Form.Item
                       label={
                         <span className="font-medium text-gray-700">
-                          Tên đăng nhập
+                          {t("common.form.username")}
                         </span>
                       }
                       name="username"
                       rules={[
                         {
                           required: true,
-                          message: "Vui lòng nhập tên đăng nhập!",
+                          message: t("common.validation.required", {
+                            field: t("common.form.username"),
+                          }),
                         },
                       ]}
                     >
                       <Input
-                        placeholder="Nhập tên đăng nhập của bạn"
+                        placeholder={t(
+                          "common.form.placeholder.username_yours"
+                        )}
                         className="rounded-md border-gray-300 hover:border-blue-500 focus:ring-1 focus:ring-blue-500"
                         autoComplete="off"
                       />
@@ -251,23 +259,25 @@ const Register = () => {
                     <Form.Item
                       label={
                         <span className="font-medium text-gray-700">
-                          Địa chỉ Email
+                          {t("common.form.email")}
                         </span>
                       }
                       name="email"
                       rules={[
                         {
                           required: true,
-                          message: "Vui lòng nhập địa chỉ email của bạn!",
+                          message: t("common.validation.required", {
+                            field: t("common.form.email"),
+                          }),
                         },
                         {
                           type: "email",
-                          message: "Email của bạn không hợp lệ",
+                          message: t("common.validation.email_invalid"),
                         },
                       ]}
                     >
                       <Input
-                        placeholder="you@example.com"
+                        placeholder={t("common.form.placeholder.email")}
                         className="rounded-md border-gray-300 hover:border-blue-500 focus:ring-1 focus:ring-blue-500"
                         autoComplete="off"
                       />
@@ -277,23 +287,25 @@ const Register = () => {
                     <Form.Item
                       label={
                         <span className="font-medium text-gray-700">
-                          Số điện thoại
+                          {t("common.form.phoneNumber")}
                         </span>
                       }
                       name="phoneNumber"
                       rules={[
                         {
                           required: true,
-                          message: "Vui lòng nhập số điện thoại!",
+                          message: t("common.validation.required", {
+                            field: t("common.form.phoneNumber"),
+                          }),
                         },
                         {
                           pattern: /^[0-9]{9,11}$/,
-                          message: "Số điện thoại không hợp lệ (9–11 chữ số)",
+                          message: t("common.validation.phone_invalid"),
                         },
                       ]}
                     >
                       <Input
-                        placeholder="Ví dụ: 0987654321"
+                        placeholder={t("common.form.placeholder.phone")}
                         className="rounded-md border-gray-300 hover:border-blue-500 focus:ring-1 focus:ring-blue-500"
                         autoComplete="off"
                       />
@@ -303,19 +315,40 @@ const Register = () => {
                     <Form.Item
                       label={
                         <span className="font-medium text-gray-700">
-                          Mật khẩu
+                          {t("common.form.password")}
                         </span>
                       }
                       name="password"
                       rules={[
                         {
                           required: true,
-                          message: "Vui lòng nhập mật khẩu!",
+                          message: t("common.validation.required", {
+                            field: t("common.form.password"),
+                          }),
                         },
+                        {
+                          min: 8,
+                          message: t("common.validation.password_min_length"),
+                        },
+                        () => ({
+                          validator(_, value) {
+                            if (!value) return Promise.resolve();
+                            if (!/[A-Z]/.test(value)) {
+                              return Promise.reject(
+                                new Error(
+                                  t("common.validation.password_uppercase")
+                                )
+                              );
+                            }
+                            return Promise.resolve();
+                          },
+                        }),
                       ]}
                     >
                       <Input.Password
-                        placeholder="Nhập mật khẩu của bạn"
+                        placeholder={t(
+                          "common.form.placeholder.password_yours"
+                        )}
                         iconRender={(visible) =>
                           visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
                         }
@@ -328,7 +361,7 @@ const Register = () => {
                     <Form.Item
                       label={
                         <span className="font-medium text-gray-700">
-                          Xác nhận mật khẩu
+                          {t("common.form.confirm_password")}
                         </span>
                       }
                       name="confirmPassword"
@@ -336,7 +369,9 @@ const Register = () => {
                       rules={[
                         {
                           required: true,
-                          message: "Vui lòng xác nhận mật khẩu của bạn!",
+                          message: t("common.validation.required", {
+                            field: t("common.form.confirm_password"),
+                          }),
                         },
                         ({ getFieldValue }) => ({
                           validator(_, value) {
@@ -344,14 +379,18 @@ const Register = () => {
                               return Promise.resolve();
                             }
                             return Promise.reject(
-                              new Error("Mật khẩu không khớp!")
+                              new Error(
+                                t("common.validation.password_mismatch")
+                              )
                             );
                           },
                         }),
                       ]}
                     >
                       <Input.Password
-                        placeholder="Xác nhận mật khẩu của bạn"
+                        placeholder={t(
+                          "common.form.placeholder.confirm_password"
+                        )}
                         iconRender={(visible) =>
                           visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
                         }
@@ -365,19 +404,21 @@ const Register = () => {
                       name="city"
                       label={
                         <span className="font-medium text-gray-700">
-                          Thành phố
+                          {t("common.form.city")}
                         </span>
                       }
                       rules={[
                         {
                           required: true,
-                          message: "Vui lòng chọn thành phố của bạn!",
+                          message: t("common.validation.required_select", {
+                            field: t("common.form.city").toLowerCase(),
+                          }),
                         },
                       ]}
                     >
                       <Select
                         showSearch
-                        placeholder="Chọn thành phố"
+                        placeholder={t("common.form.placeholder.city")}
                         optionFilterProp="label"
                         onChange={handleChangeCity}
                         // onSearch={onSearch}
@@ -390,20 +431,22 @@ const Register = () => {
                       name="ward"
                       label={
                         <span className="font-medium text-gray-700">
-                          Phường/Xã
+                          {t("common.form.ward")}
                         </span>
                       }
                       rules={[
                         {
                           required: true,
-                          message: "Vui lòng chọn phường/xã của bạn",
+                          message: t("common.validation.required_select", {
+                            field: t("common.form.ward").toLowerCase(),
+                          }),
                         },
                       ]}
                     >
                       <Select
                         showSearch
                         virtual
-                        placeholder="Chọn phường xã"
+                        placeholder={t("common.form.placeholder.ward")}
                         optionFilterProp="label"
                         // onChange={(value) => setSelectedCity(value)}
                         // onSearch={onSearch}
@@ -415,19 +458,21 @@ const Register = () => {
                     <Form.Item
                       label={
                         <span className="font-medium text-gray-700">
-                          Địa chỉ
+                          {t("common.form.address")}
                         </span>
                       }
                       name="address"
                       rules={[
                         {
                           required: true,
-                          message: "Vui lòng nhập địa chỉ của bạn!",
+                          message: t("common.validation.required", {
+                            field: t("common.form.address"),
+                          }),
                         },
                       ]}
                     >
                       <Input
-                        placeholder="Nhập địa chỉ (số nhà, tên đường...)"
+                        placeholder={t("common.form.placeholder.address")}
                         className="rounded-md border-gray-300 hover:border-blue-500 focus:ring-1 focus:ring-blue-500"
                         autoComplete="off"
                       />
@@ -442,13 +487,13 @@ const Register = () => {
                       checked={agree}
                       onChange={(e) => setAgree(e.target.checked)}
                     >
-                      Tôi đồng ý với{" "}
+                      {t("auth.register.agree_checkbox")}{" "}
                       <Link href="#" className="text-blue-600">
-                        Điều khoản dịch vụ
+                        {t("auth.register.terms_service")}
                       </Link>{" "}
-                      và{" "}
+                      {t("auth.register.and")}{" "}
                       <Link href="#" className="text-blue-600">
-                        Chính sách bảo mật
+                        {t("auth.register.terms_privacy")}
                       </Link>
                     </Checkbox>
                   </Form.Item>
@@ -458,10 +503,7 @@ const Register = () => {
                     valuePropName="checked"
                     initialValue={true}
                   >
-                    <Checkbox>
-                      Đăng ký nhận bản tin của chúng tôi để nhận gợi ý sách và
-                      ưu đãi
-                    </Checkbox>
+                    <Checkbox>{t("auth.register.newsletter")}</Checkbox>
                   </Form.Item>
 
                   <Button
@@ -471,14 +513,14 @@ const Register = () => {
                     className="w-full h-11 font-semibold text-base bg-blue-600 hover:bg-blue-500"
                   >
                     <UserAddOutlined />
-                    Tạo tài khoản
+                    {t("auth.register.submit")}
                   </Button>
                 </Row>
               </Form>
 
               {/* Footer */}
               <Divider plain className="text-gray-400">
-                ĐÃ CÓ TÀI KHOẢN?
+                {t("auth.register.have_account")}
               </Divider>
 
               <Button
@@ -486,15 +528,15 @@ const Register = () => {
                 className="w-full h-11 border-2 border-blue-600 text-blue-600 font-semibold hover:bg-blue-50"
                 onClick={() => navigate("/login")}
               >
-                Đăng nhập
+                {t("auth.register.login_now")}
               </Button>
 
               <p className="text-center text-sm text-gray-500">
-                Bằng việc tạo tài khoản, bạn đồng ý với{" "}
+                {t("auth.register.terms_agree")}
                 <Link href="#" className="text-blue-600">
-                  Điều khoản dịch vụ
+                  {t("auth.register.terms_service")}
                 </Link>{" "}
-                của chúng tôi.
+                {t("common.of_us")}
               </p>
             </div>
           </div>

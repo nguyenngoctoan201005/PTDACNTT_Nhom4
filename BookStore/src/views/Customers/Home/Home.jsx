@@ -18,10 +18,12 @@ import { getSachByMaLoai } from "../../../api/sachService";
 import { getListTheLoai } from "../../../api/theLoaiService";
 import { useState, useEffect } from "react";
 import { getCategoryIcon } from "../../../hooks/formatIconTheLoai";
+import { useTranslation } from "react-i18next";
 
 const Home = () => {
   const navigate = useNavigate();
   const { addToCart } = useGlobalContext();
+  const { t } = useTranslation();
 
   const [genres, setGenres] = useState([]);
   const [genre1Books, setGenre1Books] = useState([]);
@@ -142,7 +144,7 @@ const Home = () => {
     ...genres.slice(0, 5),
     {
       icon: <EllipsisOutlined style={{ fontSize: 32, color: "#1677ff" }} />,
-      tenLoai: "Xem thêm",
+      tenLoai: t("home.genre.view_more"),
     },
   ];
 
@@ -164,31 +166,31 @@ const Home = () => {
           }}
         >
           <HomeBookCollection
-            tag="Bộ sưu tập đặc biệt"
-            title="Sách Bán Chạy Nhất"
-            subtitle="Được yêu thích nhất"
-            description="Khám phá những cuốn sách được độc giả tin tưởng và lựa chọn nhiều nhất"
+            tag={t("home.collection.bestseller.tag")}
+            title={t("home.collection.bestseller.title")}
+            subtitle={t("home.collection.bestseller.subtitle")}
+            description={t("home.collection.bestseller.description")}
             items={bestSellerBooks}
           />
           <HomeBookCollection
-            tag="Sách mới"
-            title="Ra Mắt Tuần Này"
-            subtitle="Cập nhật liên tục"
-            description="Những cuốn sách mới nhất vừa được phát hành, đừng bỏ lỡ"
+            tag={t("home.collection.new_release.tag")}
+            title={t("home.collection.new_release.title")}
+            subtitle={t("home.collection.new_release.subtitle")}
+            description={t("home.collection.new_release.description")}
             items={newReleaseBooks}
           />
           <HomeBookCollection
-            tag="Ưu đãi hấp dẫn"
-            title="Giảm Giá Đặc Biệt"
-            subtitle="Tiết kiệm đến 50%"
-            description="Cơ hội sở hữu sách yêu thích với mức giá tốt nhất"
+            tag={t("home.collection.deals.tag")}
+            title={t("home.collection.deals.title")}
+            subtitle={t("home.collection.deals.subtitle")}
+            description={t("home.collection.deals.description")}
             items={dealBooks}
           />
           <HomeBookCollection
-            tag="Độc quyền"
-            title="Bộ Sưu Tập Cao Cấp"
-            subtitle="Phiên bản giới hạn"
-            description="Sách cao cấp với chữ ký tác giả và bìa đặc biệt"
+            tag={t("home.collection.exclusive.tag")}
+            title={t("home.collection.exclusive.title")}
+            subtitle={t("home.collection.exclusive.subtitle")}
+            description={t("home.collection.exclusive.description")}
             items={exclusiveBooks}
           />
         </Carousel>
@@ -197,7 +199,7 @@ const Home = () => {
         <div className="flex">
           <Typography.Title level={3}>{genre1Name}</Typography.Title>
           <div className="flex-1" />
-          <Link to={`/books?genre=1`}>Xem tất cả</Link>
+          <Link to={`/books?genre=1`}>{t("common.button.view_all")}</Link>
         </div>
         {loading ? (
           <div className="flex justify-center py-10">
@@ -246,9 +248,9 @@ const Home = () => {
                         "favoriteBooks",
                         JSON.stringify([...favoriteBooks, newBook])
                       );
-                      message.success("Đã thêm vào yêu thích");
+                      message.success(t("common.message.added_favorite"));
                     } else {
-                      message.info("Sách đã có trong danh sách yêu thích");
+                      message.info(t("common.message.already_favorite"));
                     }
                   }}
                 />
@@ -261,7 +263,7 @@ const Home = () => {
         <div className="flex">
           <Typography.Title level={3}>{genre2Name}</Typography.Title>
           <div className="flex-1" />
-          <Link to={`/books?genre=2`}>Xem tất cả</Link>
+          <Link to={`/books?genre=2`}>{t("common.button.view_all")}</Link>
         </div>
         {loading ? (
           <div className="flex justify-center py-10">
@@ -310,9 +312,9 @@ const Home = () => {
                         "favoriteBooks",
                         JSON.stringify([...favoriteBooks, newBook])
                       );
-                      message.success("Đã thêm vào yêu thích");
+                      message.success(t("common.message.added_favorite"));
                     } else {
-                      message.info("Sách đã có trong danh sách yêu thích");
+                      message.info(t("common.message.already_favorite"));
                     }
                   }}
                 />
@@ -323,7 +325,7 @@ const Home = () => {
       </div>
       <div className="px-[80px] py-10 bg-blue-50">
         <Typography.Title level={2} className="text-center">
-          Khám phá theo thể loại
+          {t("home.genre.title")}
         </Typography.Title>
         <Row gutter={[16, 16]} justify="center">
           {genresList.map((genre, index) => (
@@ -344,7 +346,9 @@ const Home = () => {
                 <div className="text-2xl text-blue-500">{genre.icon}</div>
                 <h3 style={{ marginTop: 12 }}>{genre.tenLoai}</h3>
                 <p style={{ color: "#888" }}>
-                  {Math.round(Math.random() * 100)} cuốn sách
+                  {t("home.genre.book_count", {
+                    count: Math.round(Math.random() * 100),
+                  })}
                 </p>
               </Card>
             </Col>

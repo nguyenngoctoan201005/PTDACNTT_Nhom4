@@ -1,0 +1,230 @@
+{
+  "dashboard": {
+    "title": "System Overview",
+    "stats": {
+      "revenue": "Total Revenue",
+      "orders": "Total Orders",
+      "new_customers": "New Customers",
+      "books": "Active Books",
+      "vs_last_month": "vs last month",
+      "updating": "Updating"
+    },
+    "charts": {
+      "revenue_title": "Revenue Chart {{year}}",
+      "filter": "Filter:",
+      "revenue": "Revenue",
+      "profit": "Profit",
+      "category_ratio": "Category Ratio"
+    },
+    "recent_orders": {
+      "title": "Recent Orders",
+      "columns": {
+        "id": "Order ID",
+        "customer": "Customer",
+        "date": "Date",
+        "amount": "Total",
+        "status": "Status"
+      }
+    },
+    "top_books": {
+      "title": "Best Selling Books",
+      "sold": "Sold: {{count}}"
+    }
+  },
+  "customer": {
+    "title": "Customers",
+    "add_button": "Add Customer",
+    "search_placeholder": "Search by name...",
+    "columns": {
+      "stt": "#",
+      "name": "CUSTOMER",
+      "email": "EMAIL",
+      "phone": "PHONE",
+      "address": "ADDRESS",
+      "action": "ACTION"
+    },
+    "detail": {
+      "title": "Customer Details",
+      "code": "Customer ID",
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "address": "Address",
+      "total_orders": "Total Orders",
+      "total_spend": "Total Spend"
+    },
+    "delete": {
+      "title": "Delete Customer",
+      "confirm": "Are you sure you want to delete this customer?",
+      "success": "Customer deleted successfully",
+      "error": "Failed to delete customer"
+    },
+    "error": {
+      "fetch_list": "Failed to fetch customer list"
+    }
+  },
+  "status": {
+    "completed": "Completed",
+    "pending": "Pending",
+    "processing": "Processing",
+    "cancelled": "Cancelled"
+  },
+  "book": {
+    "title": "Book Management",
+    "add_button": "Add New Book",
+    "filter": {
+      "title": "Filter",
+      "name_label": "Book Name",
+      "name_placeholder": "Search by name",
+      "genre_label": "Genre",
+      "genre_placeholder": "Select genre",
+      "price_label": "Price Range",
+      "search_button": "Search"
+    },
+    "columns": {
+      "stt": "No.",
+      "image": "Image",
+      "name": "Book Name",
+      "price": "Price",
+      "stock": "Stock",
+      "status": "Status",
+      "action": "Action"
+    },
+    "status": {
+      "in_stock": "In Stock",
+      "out_of_stock": "Out of Stock"
+    },
+    "delete": {
+      "title": "Delete Book",
+      "confirm": "Are you sure you want to delete book {{name}}?",
+      "success": "Deleted successfully",
+      "error": "Delete failed"
+    },
+    "error": {
+      "fetch_list": "Error fetching/searching books"
+    }
+  },
+  "genre": {
+    "title": "Genre Management",
+    "add_button": "Add New Genre",
+    "search_placeholder": "Search genre...",
+    "columns": {
+      "stt": "No.",
+      "name": "GENRE NAME",
+      "action": "ACTION"
+    },
+    "delete": {
+      "title": "Delete Genre",
+      "confirm": "Are you sure you want to delete genre {{name}}?",
+      "success": "Deleted successfully",
+      "error": "Delete failed"
+    },
+    "error": {
+      "fetch_list": "Error fetching genres"
+    }
+  },
+  "author": {
+    "title": "Author Management",
+    "add_button": "Add New Author",
+    "search_placeholder": "Search author...",
+    "columns": {
+      "stt": "No.",
+      "name": "AUTHOR NAME",
+      "bio": "BIOGRAPHY",
+      "action": "ACTION"
+    },
+    "default_bio": "Updating",
+    "delete": {
+      "title": "Delete Author",
+      "confirm": "Are you sure you want to delete author {{name}}?",
+      "success": "Deleted successfully",
+      "error": "Delete failed"
+    },
+    "error": {
+      "fetch_list": "Error fetching authors"
+    }
+  },
+  "employee": {
+    "title": "Employee Management",
+    "add_button": "Add Employee",
+    "search_placeholder": "Search by name...",
+    "search_button": "Search",
+    "columns": {
+      "stt": "No.",
+      "name": "EMPLOYEE",
+      "cccd": "ID CARD NO.",
+      "username": "USERNAME",
+      "password": "PASSWORD",
+      "action": "ACTION"
+    },
+    "delete": {
+      "title": "Delete Employee",
+      "confirm": "Are you sure you want to delete employee {{name}}?",
+      "success": "Deleted successfully",
+      "error": "Delete failed"
+    },
+    "error": {
+      "fetch_list": "Error fetching employees"
+    }
+  },
+  "promotion": {
+    "title": "Promotion Management",
+    "add_button": "Add Promotion",
+    "search_placeholder": "Search discount code...",
+    "columns": {
+      "stt": "No.",
+      "code": "DISCOUNT CODE",
+      "description": "DESCRIPTION",
+      "expiry": "EXPIRY DATE",
+      "discount": "DISCOUNT (%)",
+      "action": "ACTION"
+    },
+    "delete": {
+      "title": "Delete Promotion",
+      "confirm": "Are you sure you want to delete promotion {{name}}?",
+      "success": "Deleted successfully",
+      "error": "Delete failed"
+    },
+    "error": {
+      "fetch_list": "Error fetching promotions"
+    }
+  },
+  "add_book_page": {
+    "title": "Add New Book",
+    "section_info": "Book Information",
+    "labels": {
+      "name": "Book Name*",
+      "price": "Price*",
+      "stock": "Stock Quantity*",
+      "genre": "Genre*",
+      "description": "Description*",
+      "image": "Choose Image*",
+      "author": "Author*",
+      "translator": "Translator*",
+      "publisher": "Publisher*",
+      "product_type": "Product Type*",
+      "size": "Size*",
+      "pages": "Pages*"
+    },
+    "placeholders": {
+      "name": "Enter book name",
+      "price": "Enter price",
+      "stock": "Enter stock quantity",
+      "translator": "Enter translator",
+      "size": "Example: 19 x 10cm",
+      "pages": "Enter number of pages"
+    },
+    "section_detail": "Detailed Description:",
+    "options": {
+      "soft_cover": "Soft Cover",
+      "hard_cover": "Hard Cover"
+    },
+    "buttons": {
+      "save": "Save Changes",
+      "cancel": "Cancel"
+    }
+  },
+  "edit_history": {
+    "title": "Edit History"
+  }
+}

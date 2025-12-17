@@ -1,0 +1,101 @@
+{
+  "dashboard": {
+    "title": "System Overview",
+    "revenue": "Total Revenue",
+    "orders": "Total Orders",
+    "return_requests": "Return Requests",
+    "new_reviews": "New Reviews",
+    "charts": {
+      "revenue": "Revenue Chart",
+      "category": "Category Ratio"
+    },
+    "tables": {
+      "recent_orders": {
+        "title": "Recent Orders",
+        "view_all": "View All",
+        "columns": {
+          "id": "Order ID",
+          "customer": "Customer",
+          "date": "Date",
+          "amount": "Amount",
+          "status": "Status"
+        }
+      },
+      "low_stock": {
+        "title": "Low Stock Alert",
+        "columns": {
+          "product": "Product",
+          "code": "Code",
+          "stock": "Stock",
+          "action": "Action"
+        },
+        "import_stk": "Import"
+      }
+    },
+    "filter": "Filter",
+    "compare": {
+      "month": "vs last month",
+      "none": "No requests",
+      "urgent": "Needs attention",
+      "days": "Last 7 days"
+    }
+  },
+  "book_maintenance": {
+    "title": "Book Maintenance",
+    "add_button": "Add Book",
+    "search_placeholder": "Search by book name...",
+    "columns": {
+      "stt": "No.",
+      "code": "Book Code",
+      "name": "Book Name",
+      "author": "Author",
+      "price": "Price",
+      "stock": "Stock",
+      "action": "Action"
+    },
+    "delete": {
+      "title": "Delete Book",
+      "confirm": "Are you sure you want to delete book <b>{{name}}</b>?",
+      "success": "Book deleted successfully",
+      "error": "Error deleting book"
+    },
+    "error": {
+      "fetch_list": "Error fetching book list"
+    }
+  },
+  "edit_book": {
+    "title": "Edit Book Information",
+    "section_info": "Book Information",
+    "labels": {
+      "name": "Book Name*",
+      "price": "Price*",
+      "stock": "Stock Quantity*",
+      "genre": "Genre*",
+      "description": "Description*",
+      "image": "Choose Image*",
+      "author": "Author*",
+      "translator": "Translator*",
+      "publisher": "Publisher*",
+      "product_type": "Product Type*",
+      "size": "Size*",
+      "pages": "Pages*"
+    },
+    "placeholders": {
+      "name": "Enter book name",
+      "price": "Enter price",
+      "stock": "Enter stock quantity",
+      "translator": "Enter translator",
+      "size": "Example: 19 x 10cm",
+      "pages": "Enter number of pages"
+    },
+    "section_detail": "Detailed Description:",
+    "buttons": {
+      "save": "Save Changes",
+      "cancel": "Cancel"
+    },
+    "options": {
+      "soft_cover": "Soft Cover",
+      "hard_cover": "Hard Cover"
+    }
+  }
+}

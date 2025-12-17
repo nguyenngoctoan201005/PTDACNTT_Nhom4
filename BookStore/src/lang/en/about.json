@@ -1,0 +1,39 @@
+{
+  "title": "About Bookstore",
+  "intro_1": "ABC Bookstore",
+  "intro_2": " – Not just a place to buy books, but also a ",
+  "intro_3": "space for knowledge and learning inspiration",
+  "intro_4": " for all ages. We believe that ",
+  "intro_5": "“a good book can change a person's life”",
+  "intro_6": ", and our mission is to bring that knowledge closer to readers everywhere.",
+  "mission": {
+    "title": "🌟 Mission",
+    "items": [
+      "Providing high-quality books in diverse genres: education, literature, life skills, business, technology, children...",
+      "Building a friendly, fast, and convenient shopping environment.",
+      "Encouraging reading culture and community knowledge development."
+    ]
+  },
+  "quality": {
+    "title": "📚 Quality Policy",
+    "items": [
+      "Products are imported genuinely or published by reputable publishers.",
+      "Commitment to 100% new books, careful packaging, fast delivery nationwide.",
+      "Support returns within 7 days if products are defective or have shipping errors."
+    ]
+  },
+  "customer": {
+    "title": "💬 Customer Policy",
+    "items": [
+      "Consulting on book selection by age, preference, and learning goals.",
+      "Members registering accounts receive regular discounts and promotional codes.",
+      "Absolute confidentiality of customer personal information."
+    ]
+  },
+  "commitment": {
+    "title": "❤️ Our Commitment",
+    "text_1": "With the motto ",
+    "text_2": "“Every book – A companion”",
+    "text_3": ", ABC Bookstore always strives to bring a great, reliable, and inspiring shopping experience to readers nationwide."
+  }
+}

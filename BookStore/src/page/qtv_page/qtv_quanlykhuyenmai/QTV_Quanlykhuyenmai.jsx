@@ -15,8 +15,10 @@ import {
 import ModalKhuyenMai from "./components/ModalKhuyenMai";
 import { useDebounce } from "../../../hooks/useDebounce";
 import dayjs from "dayjs";
+import { useTranslation } from "react-i18next";
 
 export default function QTV_Quanlykhuyenmai() {
+  const { t } = useTranslation();
   const [listKhuyenMai, setListKhuyenMai] = useState([]);
   const [selectedKhuyenMai, setSelectedKhuyenMai] = useState(null);
   const [modalState, setModalState] = useState({
@@ -33,7 +35,7 @@ export default function QTV_Quanlykhuyenmai() {
       setListKhuyenMai(res.result || []);
     } catch (error) {
       console.error(error);
-      message.error("Lỗi khi lấy danh sách khuyến mãi");
+      message.error(t("admin.promotion.error.fetch_list"));
     }
   };
 
@@ -44,13 +46,13 @@ export default function QTV_Quanlykhuyenmai() {
   const handleDelete = async () => {
     try {
       await deleteKhuyenMai(selectedKhuyenMai.maGiamGia);
-      message.success("Xóa khuyến mãi thành công");
+      message.success(t("admin.promotion.delete.success"));
       fetchKhuyenMai();
       setShowModalDelete(false);
       setSelectedKhuyenMai(null);
     } catch (error) {
       console.error(error);
-      message.error("Lỗi khi xóa khuyến mãi");
+      message.error(t("admin.promotion.delete.error"));
     }
   };
 
@@ -81,25 +83,25 @@ export default function QTV_Quanlykhuyenmai() {
 
   const columns = [
     {
-      title: "STT",
+      title: t("admin.promotion.columns.stt"),
       key: "stt",
       render: (text, record, index) => index + 1,
       width: 60,
     },
     {
-      title: "MÃ GIẢM GIÁ",
+      title: t("admin.promotion.columns.code"),
       dataIndex: "maGiamGia",
       key: "maGiamGia",
       width: 150,
     },
     {
-      title: "MÔ TẢ",
+      title: t("admin.promotion.columns.description"),
       dataIndex: "moTa",
       key: "moTa",
       ellipsis: true,
     },
     {
-      title: "HẠN SỬ DỤNG",
+      title: t("admin.promotion.columns.expiry"),
       key: "hanSuDung",
       width: 200,
       render: (_, record) => {
@@ -113,14 +115,14 @@ export default function QTV_Quanlykhuyenmai() {
       },
     },
     {
-      title: "CHIẾT KHẤU (%)",
+      title: t("admin.promotion.columns.discount"),
       dataIndex: "chietKhau",
       key: "chietKhau",
       width: 120,
       render: (text) => `${text}%`,
     },
     {
-      title: "THAO TÁC",
+      title: t("admin.promotion.columns.action"),
       key: "action",
       width: 120,
       render: (_, record) => (
@@ -148,19 +150,19 @@ export default function QTV_Quanlykhuyenmai() {
       <QTV_Nav />
       <main className="qtv_quanlykhuyenmai_main">
         <div className="qtv_quanlykhuyenmai_header mx-4 mt-4 rounded-lg flex items-center justify-between">
-          <div>Quản lý khuyến mãi</div>
+          <div>{t("admin.promotion.title")}</div>
           <Button
             type="primary"
             icon={<PlusOutlined />}
             onClick={openCreateModal}
           >
-            Thêm khuyến mãi
+            {t("admin.promotion.add_button")}
           </Button>
         </div>
 
         <div className="flex flex-col md:flex-row gap-4 p-4 mx-4 bg-white rounded-lg shadow-md my-4 items-center">
           <Input
-            placeholder="Tìm kiếm mã giảm giá..."
+            placeholder={t("admin.promotion.search_placeholder")}
             allowClear
             className="w-full md:w-96"
             onChange={(e) => setSearchText(e.target.value)}
@@ -191,14 +193,15 @@ export default function QTV_Quanlykhuyenmai() {
         />
 
         <Modal
-          title="Xóa khuyến mãi"
+          title={t("admin.promotion.delete.title")}
           open={showModalDelete}
           onOk={handleDelete}
           onCancel={() => setShowModalDelete(false)}
         >
           <p>
-            Bạn có chắc chắn muốn xóa khuyến mãi{" "}
-            <strong>{selectedKhuyenMai?.maGiamGia}</strong>?
+            {t("admin.promotion.delete.confirm", {
+              name: selectedKhuyenMai?.maGiamGia,
+            })}
           </p>
         </Modal>
       </main>

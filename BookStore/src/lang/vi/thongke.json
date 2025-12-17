@@ -1,0 +1,46 @@
+{
+  "statistics": {
+    "title": "Thống Kê",
+    "total_revenue": "Tổng Doanh Thu",
+    "total_orders": "Tổng Đơn Hàng",
+    "total_books_sold": "Tổng Sách Bán Ra",
+    "total_customers": "Tổng Khách Hàng",
+    "revenue_this_month": "Doanh Thu Tháng Này",
+    "growth_rate": "Tỷ Lệ Tăng Trưởng",
+    "charts": {
+      "monthly_revenue": "Doanh Thu Theo Tháng",
+      "books_sold": "Top Sách Bán Chạy",
+      "order_status": "Trạng Thái Đơn Hàng",
+      "category_sales": "Bán Hàng Theo Danh Mục"
+    },
+    "tables": {
+      "books_sold": {
+        "title": "Top 5 Sách Bán Chạy",
+        "columns": {
+          "rank": "Xếp Hạng",
+          "code": "Mã Sách",
+          "name": "Tên Sách",
+          "quantity": "Số Lượng",
+          "total": "Doanh Thu"
+        },
+        "no_data": "Không có dữ liệu"
+      },
+      "orders": {
+        "title": "Đơn Hàng Gần Đây",
+        "columns": {
+          "order_id": "Mã Đơn Hàng",
+          "customer": "Khách Hàng",
+          "date": "Ngày Đặt",
+          "amount": "Tổng Tiền",
+          "status": "Trạng Thái"
+        },
+        "no_data": "Không có dữ liệu"
+      }
+    },
+    "currency": "VNĐ",
+    "format_vnd": "đ",
+    "loading": "Đang tải...",
+    "no_data": "Không có dữ liệu",
+    "error": "Lỗi khi tải thống kê"
+  }
+}

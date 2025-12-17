@@ -1,20 +1,26 @@
 import "./NV_Nav.css";
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
-import { Dropdown, Avatar } from "antd";
+import { Dropdown, Avatar, Button } from "antd";
 import { UserOutlined, LogoutOutlined } from "@ant-design/icons";
 import { useGlobalContext } from "../GlobalContext";
+import { useTranslation } from "react-i18next";
 
 export function NV_Nav() {
+  const { t, i18n } = useTranslation();
   const location = useLocation();
   const { user, handleLogout } = useGlobalContext();
   const [selected, setSelected] = useState(
     location.pathname.replace("/nhanvien/", "")
   );
 
+  const handleLanguageChange = (lang) => {
+    i18n.changeLanguage(lang);
+  };
+
   return (
     <nav className="nv_nav">
-      <div className="nav_tieude">Nhân viên</div>
+      <div className="nav_tieude">{t("nav.staff.title")}</div>
       <hr
         style={{
           border: "1px solid rgb(210, 206, 206)",
@@ -48,7 +54,7 @@ export function NV_Nav() {
           to="/nhanvien/bangdieukhien"
           onClick={() => setSelected("bangdieukhien")}
         >
-          <div>Bảng điều khiển</div>
+          <div>{t("nav.staff.dashboard")}</div>
         </Link>
       </div>
 
@@ -70,7 +76,7 @@ export function NV_Nav() {
           to="/nhanvien/quanlydonhang"
           onClick={() => setSelected("quanlydonhang")}
         >
-          <div>Quản lý đơn hàng</div>
+          <div>{t("nav.staff.orders")}</div>
         </Link>
       </div>
 
@@ -95,7 +101,7 @@ export function NV_Nav() {
           to="/nhanvien/huyvatrahang"
           onClick={() => setSelected("huyvatrahang")}
         >
-          <div>Huỷ/Yêu cầu trả hàng</div>
+          <div>{t("nav.staff.returns")}</div>
         </Link>
       </div>
 
@@ -124,7 +130,7 @@ export function NV_Nav() {
           to="/nhanvien/baotrisach"
           onClick={() => setSelected("baotrisach")}
         >
-          <div>Bảo trì sách</div>
+          <div>{t("nav.staff.maintenance")}</div>
         </Link>
       </div>
 
@@ -146,7 +152,7 @@ export function NV_Nav() {
           to="/nhanvien/quanlydanhgia"
           onClick={() => setSelected("quanlydanhgia")}
         >
-          <div>Quản lý đánh giá</div>
+          <div>{t("nav.staff.reviews")}</div>
         </Link>
       </div>
 
@@ -171,7 +177,7 @@ export function NV_Nav() {
           </g>
         </svg>
         <Link to="/nhanvien/thongke" onClick={() => setSelected("thongke")}>
-          <div>Thống kê doanh thu</div>
+          <div>{t("nav.staff.stats")}</div>
         </Link>
       </div>
 
@@ -188,9 +194,22 @@ export function NV_Nav() {
                 type: "divider",
               },
               {
+                key: "vi",
+                label: `${i18n.language === "vi" ? "✓ " : ""}Tiếng Việt`,
+                onClick: () => handleLanguageChange("vi"),
+              },
+              {
+                key: "en",
+                label: `${i18n.language === "en" ? "✓ " : ""}English`,
+                onClick: () => handleLanguageChange("en"),
+              },
+              {
+                type: "divider",
+              },
+              {
                 key: "logout",
                 icon: <LogoutOutlined style={{ color: "red" }} />,
-                label: "Đăng xuất",
+                label: t("nav.common.logout"),
                 onClick: handleLogout,
               },
             ],

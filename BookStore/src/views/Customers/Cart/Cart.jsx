@@ -16,9 +16,11 @@ import { UnorderedListOutlined } from "@ant-design/icons";
 import { useGlobalContext } from "../../../GlobalContext";
 import { formatCurrency } from "../../../hooks/formatCurrentcy";
 import RequireLoginPage from "../../../components/RequireLoginPage/RequireLoginPage";
+import { useTranslation } from "react-i18next";
 
 const Cart = () => {
   const { cart, fetchCart, token } = useGlobalContext();
+  const { t } = useTranslation();
 
   if (!token) {
     return <RequireLoginPage />;
@@ -71,7 +73,7 @@ const Cart = () => {
               <div className="text-2xl bg-blue-500 p-2 rounded-md flex items-center justify-center text-white">
                 <ShoppingCartOutlined />
               </div>
-              Giỏ hàng
+              {t("cart.title")}
             </Typography.Title>
           </Card>
         </Col>
@@ -90,7 +92,7 @@ const Cart = () => {
           ) : (
             <Card className="flex flex-col items-center justify-center py-12">
               <Empty
-                description="Giỏ hàng của bạn đang trống"
+                description={t("cart.empty")}
                 image={Empty.PRESENTED_IMAGE_SIMPLE}
               />
             </Card>
@@ -101,7 +103,7 @@ const Cart = () => {
             <Card>
               <div className="flex justify-between items-center mb-8">
                 <Typography.Title level={5} style={{ marginBottom: 0 }}>
-                  Tổng tiền
+                  {t("cart.total")}
                 </Typography.Title>
                 <Button
                   icon={<UnorderedListOutlined />}
@@ -112,7 +114,7 @@ const Cart = () => {
                 />
               </div>
               <Typography.Title level={4} className="flex justify-between">
-                <div>Tổng tiền</div>
+                <div>{t("cart.total")}</div>
                 <span>{formatCurrency(totalPrice)}</span>
               </Typography.Title>
               <Divider />
@@ -122,10 +124,10 @@ const Cart = () => {
                   block
                   onClick={() => navigate("/checkout")}
                 >
-                  Thanh toán
+                  {t("cart.checkout")}
                 </Button>
                 <Button block onClick={() => navigate("/home")}>
-                  Tiếp tục mua sắm
+                  {t("cart.continue_shopping")}
                 </Button>
               </div>
             </Card>

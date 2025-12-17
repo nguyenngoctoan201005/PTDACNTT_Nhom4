@@ -1,0 +1,49 @@
+{
+  "order_management": {
+    "title": "Order Management",
+    "search_placeholder": "Search orders...",
+    "columns": {
+      "stt": "No.",
+      "order_id": "Order ID",
+      "customer": "Customer",
+      "order_date": "Order Date",
+      "amount": "Total Amount",
+      "status": "Status",
+      "action": "Action"
+    },
+    "modal_detail": {
+      "title": "Order Details",
+      "order_id": "Order ID:",
+      "customer": "Customer:",
+      "recipient": "Recipient:",
+      "address": "Address:",
+      "phone": "Phone:",
+      "order_date": "Order Date:",
+      "status": "Status:",
+      "subtotal": "Subtotal:",
+      "discount": "Discount:",
+      "shipping": "Shipping Fee:",
+      "total": "Total:",
+      "items": "Order Items",
+      "item_table": {
+        "book": "Book Name",
+        "quantity": "Quantity",
+        "price": "Price",
+        "subtotal": "Subtotal"
+      },
+      "close": "Close"
+    },
+    "status": {
+      "pending": "Pending Confirmation",
+      "confirmed": "Confirmed",
+      "shipping": "Shipping",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled",
+      "return": "Return"
+    },
+    "view_btn": "View",
+    "no_data": "No order data",
+    "loading": "Loading...",
+    "error": "Error loading orders"
+  }
+}

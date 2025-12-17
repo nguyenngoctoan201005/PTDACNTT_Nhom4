@@ -1,0 +1,29 @@
+{
+  "detail": {
+    "title": "Book Detail",
+    "description": "Description",
+    "info": "Details",
+    "reviews": "Reviews",
+    "publisher": "Publisher",
+    "author": "Author",
+    "related_books": "Related Books",
+    "stock_quantity": "In stock ({{count}} items)",
+    "quantity": "Quantity:",
+    "add_to_cart": "Add to Cart",
+    "added_to_cart": "Added to cart successfully",
+    "error_fetch": "Error fetching book details"
+  },
+  "list": {
+    "title": "All Books",
+    "filter": "Filter",
+    "search": "Search",
+    "search_placeholder": "Search books",
+    "genre": "Genre",
+    "genre_placeholder": "Select a genre",
+    "price_range": "Price Range",
+    "price_placeholder": "Select price range",
+    "search_button": "Search",
+    "error_genre": "Error loading genres",
+    "error_search": "Error filtering/searching books"
+  }
+}

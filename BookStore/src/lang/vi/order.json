@@ -1,0 +1,35 @@
+{
+  "title": "Đơn hàng của tôi",
+  "tabs": {
+    "all": "Tất cả",
+    "pending": "Chờ xác nhận",
+    "confirmed": "Đã xác nhận",
+    "shipping": "Đang giao",
+    "completed": "Hoàn thành",
+    "cancelled": "Đã hủy"
+  },
+  "columns": {
+    "id": "Mã đơn hàng",
+    "date": "Ngày đặt",
+    "total": "Tổng tiền",
+    "status": "Trạng thái",
+    "action": "Hành động"
+  },
+  "detail": {
+    "title": "Chi tiết đơn hàng",
+    "product": "Sản phẩm",
+    "image": "Hình ảnh",
+    "quantity": "Số lượng",
+    "price": "Đơn giá",
+    "total": "Thành tiền",
+    "cancel_warning": "Chức năng hủy đơn hàng đang được cập nhật."
+  },
+  "action": {
+    "view": "Xem chi tiết",
+    "cancel": "Hủy đơn"
+  },
+  "error": {
+    "fetch_list": "Không thể tải danh sách đơn hàng.",
+    "fetch_detail": "Không thể lấy chi tiết đơn hàng."
+  }
+}

@@ -26,9 +26,11 @@ import {
   getSachByMaLoai,
 } from "../../../api/sachService";
 import { getListTheLoai } from "../../../api/theLoaiService";
+import { useTranslation } from "react-i18next";
 
 const Books = () => {
   const [genreList, setGenreList] = useState([]);
+  const { t } = useTranslation();
 
   const [searchParams] = useSearchParams();
   const keyword = searchParams.get("keyword");
@@ -49,7 +51,7 @@ const Books = () => {
         }));
         setGenreList(formattedGenres);
       } catch (err) {
-        message.error("Lỗi khi tải danh sách thể loại");
+        message.error(t("book.list.error_genre"));
       }
     };
     fetchGenres();
@@ -196,7 +198,7 @@ const Books = () => {
     } catch (err) {
       setLoadingSearch(false);
       console.error(err);
-      message.error("Lỗi khi lọc / tìm kiếm sách");
+      message.error(t("book.list.error_search"));
     }
   };
 
@@ -214,10 +216,10 @@ const Books = () => {
       <Breadcrumb
         items={[
           {
-            title: <Link to="/home">Home</Link>,
+            title: <Link to="/home">{t("home.name")}</Link>,
           },
           {
-            title: "Books",
+            title: t("book.list.title"),
           },
         ]}
         style={{ marginBottom: 10 }}
@@ -228,7 +230,7 @@ const Books = () => {
             <div className="flex gap-3">
               <FilterOutlined style={{ fontSize: 20 }} />
               <Typography.Title level={4} style={{ marginBottom: 0 }}>
-                Filter
+                {t("book.list.filter")}
               </Typography.Title>
             </div>
             <Divider />
@@ -241,21 +243,30 @@ const Books = () => {
               <div className="flex gap-3 items-center">
                 <Form.Item
                   name="name"
-                  label={<Typography.Title level={5}>Search</Typography.Title>}
+                  label={
+                    <Typography.Title level={5}>
+                      {t("book.list.search")}
+                    </Typography.Title>
+                  }
                   className="flex-1"
                 >
-                  <Input prefix={<SearchOutlined />} placeholder="Tìm sách" />
+                  <Input
+                    prefix={<SearchOutlined />}
+                    placeholder={t("book.list.search_placeholder")}
+                  />
                 </Form.Item>
                 <Form.Item
                   name="genres"
                   label={
-                    <Typography.Title level={5}>Thể loại</Typography.Title>
+                    <Typography.Title level={5}>
+                      {t("book.list.genre")}
+                    </Typography.Title>
                   }
                   className="min-w-3xs"
                 >
                   <Select
                     showSearch
-                    placeholder="Chọn 1 thể loại"
+                    placeholder={t("book.list.genre_placeholder")}
                     optionFilterProp="label"
                     options={genreList}
                     allowClear
@@ -264,10 +275,12 @@ const Books = () => {
                 <Form.Item
                   name="price"
                   label={
-                    <Typography.Title level={5}>Price Range</Typography.Title>
+                    <Typography.Title level={5}>
+                      {t("book.list.price_range")}
+                    </Typography.Title>
                   }
                   className="min-w-3xs"
-                  placeholder="Chọn 1 khoảng giá"
+                  placeholder={t("book.list.price_placeholder")}
                 >
                   <Slider
                     range
@@ -285,7 +298,7 @@ const Books = () => {
                   icon={<SearchOutlined />}
                   loading={loadingSearch}
                 >
-                  Tìm kiếm
+                  {t("book.list.search_button")}
                 </Button>
               </Form.Item>
             </Form>
@@ -335,9 +348,9 @@ const Books = () => {
                             "favoriteBooks",
                             JSON.stringify([...favoriteBooks, newBook])
                           );
-                          message.success("Đã thêm vào yêu thích");
+                          message.success(t("common.message.added_favorite"));
                         } else {
-                          message.info("Sách đã có trong danh sách yêu thích");
+                          message.info(t("common.message.already_favorite"));
                         }
                       }}
                     />

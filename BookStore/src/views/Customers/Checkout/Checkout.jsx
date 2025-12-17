@@ -22,6 +22,7 @@ import { useGlobalContext } from "../../../GlobalContext";
 import { insertDonHang } from "../../../api/donHangService";
 import { formatCurrency } from "../../../hooks/formatCurrentcy";
 import RequireLoginPage from "../../../components/RequireLoginPage/RequireLoginPage";
+import { useTranslation } from "react-i18next";
 
 const { Option } = Select;
 
@@ -29,6 +30,7 @@ const Checkout = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const { user, cart, fetchCart, token } = useGlobalContext();
+  const { t } = useTranslation();
 
   const [discount, setDiscount] = useState(0);
   const [discountCode, setDiscountCode] = useState("");
@@ -110,10 +112,10 @@ const Checkout = () => {
     if (discountCode === "123456789") {
       const newDiscount = 8500;
       setDiscount(newDiscount);
-      message.success("Áp dụng mã giảm giá thành công!");
+      message.success(t("cart.checkout_page.discount.success"));
     } else {
       setDiscount(0);
-      message.warning("Mã giảm giá không hợp lệ!");
+      message.warning(t("cart.checkout_page.discount.invalid"));
     }
   };
 
@@ -156,12 +158,14 @@ const Checkout = () => {
 
       await insertDonHang(payload);
 
-      message.success("Đặt hàng thành công!");
+      await insertDonHang(payload);
+
+      message.success(t("cart.checkout_page.success"));
       fetchCart();
       navigate("/orders");
     } catch (error) {
       console.error("Lỗi đặt hàng:", error);
-      message.error("Đặt hàng thất bại, vui lòng thử lại!");
+      message.error(t("cart.checkout_page.error"));
     }
   };
 
@@ -180,64 +184,95 @@ const Checkout = () => {
         items={[
           {
             key: 1,
-            title: <Link to={"/home"}>Home</Link>,
+            title: <Link to={"/home"}>{t("home.name")}</Link>,
           },
           {
             key: 2,
-            title: <Link to={"/cart"}>Giỏ hàng</Link>,
+            title: <Link to={"/cart"}>{t("cart.title")}</Link>,
           },
           {
             key: 3,
-            title: "Đặt hàng",
+            title: t("cart.checkout_page.title"),
           },
         ]}
       />
-      <Typography.Title level={2}>Đặt hàng</Typography.Title>
+      <Typography.Title level={2}>
+        {t("cart.checkout_page.title")}
+      </Typography.Title>
       <Form form={form} layout="vertical" onFinish={handleFinish}>
         <Row gutter={[16, 16]}>
           <Col span={16}>
             <Card>
               <h3 className="font-semibold text-lg mb-2">
-                Thông tin khách hàng
+                {t("cart.checkout_page.customer_info")}
               </h3>
               <Form.Item
                 name="hoTen"
-                label="Họ và tên"
-                rules={[{ required: true, message: "Vui lòng nhập họ và tên" }]}
+                label={t("cart.checkout_page.form.name")}
+                rules={[
+                  {
+                    required: true,
+                    message: t("common.validation.required", {
+                      field: t("cart.checkout_page.form.name").toLowerCase(),
+                    }),
+                  },
+                ]}
               >
-                <Input placeholder="Nhập họ và tên" />
+                <Input
+                  placeholder={t("cart.checkout_page.form.placeholder.name")}
+                />
               </Form.Item>
               <Form.Item
                 name="email"
-                label="Email"
-                rules={[{ required: true, message: "Vui lòng nhập email" }]}
+                label={t("cart.checkout_page.form.email")}
+                rules={[
+                  {
+                    required: true,
+                    message: t("common.validation.required", {
+                      field: t("cart.checkout_page.form.email").toLowerCase(),
+                    }),
+                  },
+                ]}
               >
-                <Input placeholder="Nhập email" />
+                <Input
+                  placeholder={t("cart.checkout_page.form.placeholder.email")}
+                />
               </Form.Item>
               <Form.Item
                 name="soDT"
-                label="Điện thoại"
+                label={t("cart.checkout_page.form.phone")}
                 rules={[
-                  { required: true, message: "Vui lòng nhập số điện thoại" },
+                  {
+                    required: true,
+                    message: t("common.validation.required", {
+                      field: t("cart.checkout_page.form.phone").toLowerCase(),
+                    }),
+                  },
                 ]}
               >
-                <Input placeholder="Nhập số điện thoại" />
+                <Input
+                  placeholder={t("cart.checkout_page.form.placeholder.phone")}
+                />
               </Form.Item>
               <Form.Item
                 name="city"
                 label={
-                  <span className="font-medium text-gray-700">Thành phố</span>
+                  <span className="font-medium text-gray-700">
+                    {t("cart.checkout_page.form.city")}
+                  </span>
                 }
                 rules={[
                   {
                     required: true,
-                    message: "Vui lòng chọn thành phố của bạn!",
+                    message: t("common.validation.required", {
+                      field: t("cart.checkout_page.form.city").toLowerCase(),
+                    }),
                   },
                 ]}
               >
                 <Select
                   showSearch
-                  placeholder="Chọn thành phố"
+                  placeholder={t("cart.checkout_page.form.placeholder.city")}
                   optionFilterProp="label"
                   onChange={handleChangeCity}
                   // onSearch={onSearch}
@@ -247,19 +282,23 @@ const Checkout = () => {
               <Form.Item
                 name="ward"
                 label={
-                  <span className="font-medium text-gray-700">Phường/Xã</span>
+                  <span className="font-medium text-gray-700">
+                    {t("cart.checkout_page.form.ward")}
+                  </span>
                 }
                 rules={[
                   {
                     required: true,
-                    message: "Vui lòng chọn phường/xã của bạn",
+                    message: t("common.validation.required", {
+                      field: t("cart.checkout_page.form.ward").toLowerCase(),
+                    }),
                   },
                 ]}
               >
                 <Select
                   showSearch
                   virtual
-                  placeholder="Chọn phường xã"
+                  placeholder={t("cart.checkout_page.form.placeholder.ward")}
                   optionFilterProp="label"
                   // onChange={(value) => setSelectedCity(value)}
                   // onSearch={onSearch}
@@ -268,44 +307,61 @@ const Checkout = () => {
               </Form.Item>
               <Form.Item
                 name="address"
-                label="Địa chỉ cụ thể"
-                rules={[{ required: true, message: "Vui lòng nhập địa chỉ" }]}
+                label={t("cart.checkout_page.form.address")}
+                rules={[
+                  {
+                    required: true,
+                    message: t("common.validation.required", {
+                      field: t("cart.checkout_page.form.address").toLowerCase(),
+                    }),
+                  },
+                ]}
               >
-                <Input.TextArea placeholder="Nhập địa chỉ cụ thể" rows={2} />
+                <Input.TextArea
+                  placeholder={t("cart.checkout_page.form.placeholder.address")}
+                  rows={2}
+                />
               </Form.Item>
             </Card>
           </Col>
 
           <Col span={8}>
             <Card className="h-full">
-              <h3 className="font-semibold text-lg mb-2">Mã giảm giá</h3>
+              <h3 className="font-semibold text-lg mb-2">
+                {t("cart.checkout_page.discount.title")}
+              </h3>
               <div className="flex gap-2 mb-4">
                 <Input
-                  placeholder="Nhập mã giảm giá"
+                  placeholder={t(
+                    "cart.checkout_page.form.placeholder.discount"
+                  )}
                   value={discountCode}
                   onChange={(e) => setDiscountCode(e.target.value)}
                 />
                 <Button type="primary" onClick={handleApplyDiscount}>
-                  Áp dụng
+                  {t("cart.checkout_page.discount.apply")}
                 </Button>
               </div>
 
               {/* Card Đơn hàng */}
               <Card className="shadow-md bg-gray-50 border border-gray-200">
                 <p>
-                  <b>Số lượng sản phẩm:</b>{" "}
-                  {products.reduce((sum, item) => sum + item.soLuong, 0)} sản
-                  phẩm
+                  <b>{t("cart.checkout_page.summary.quantity")}:</b>{" "}
+                  {products.reduce((sum, item) => sum + item.soLuong, 0)}{" "}
+                  {t("cart.checkout_page.summary.items")}
                 </p>
                 <p>
-                  <b>Thành tiền:</b> {formatCurrency(orderSummary.subtotal)}
+                  <b>{t("cart.checkout_page.summary.subtotal")}:</b>{" "}
+                  {formatCurrency(orderSummary.subtotal)}
                 </p>
                 <p>
-                  <b>Giảm giá:</b> {discount.toLocaleString()}đ
+                  <b>{t("cart.checkout_page.summary.discount")}:</b>{" "}
+                  {discount.toLocaleString()}đ
                 </p>
                 <hr className="my-2" />
                 <p className="text-lg font-semibold">
-                  Tổng cộng: {formatCurrency(orderSummary.total)}
+                  {t("cart.checkout_page.summary.total")}:{" "}
+                  {formatCurrency(orderSummary.total)}
                 </p>
                 <Button
                   type="primary"
@@ -313,7 +369,7 @@ const Checkout = () => {
                   className="w-full mt-4"
                   size="large"
                 >
-                  Đặt mua
+                  {t("cart.checkout_page.summary.submit")}
                 </Button>
                 <Button
                   size="large"
@@ -321,7 +377,7 @@ const Checkout = () => {
                   className="w-full"
                   style={{ marginTop: 8 }}
                 >
-                  Quay về giỏ hàng
+                  {t("cart.checkout_page.summary.back_to_cart")}
                 </Button>
               </Card>
             </Card>
@@ -332,11 +388,11 @@ const Checkout = () => {
       <Card style={{ marginTop: 16 }}>
         <Row gutter={[16, 16]}>
           <Typography.Title level={2} style={{ margin: "0 20px" }}>
-            Sản phẩm
+            {t("cart.checkout_page.products")}
           </Typography.Title>
           <Col span={24}>
             {orderBooks.length === 0 ? (
-              <p>Giỏ hàng trống.</p>
+              <p>{t("cart.checkout_page.empty_cart")}</p>
             ) : (
               orderBooks.map((item) => (
                 <OrderCard

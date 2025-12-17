@@ -22,6 +22,7 @@ import {
 import { useNavigate } from "react-router";
 import { Logo } from "../../../assets";
 import { useGlobalContext } from "../../../GlobalContext";
+import { useTranslation } from "react-i18next";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -30,6 +31,7 @@ const Login = () => {
   const navigate = useNavigate();
   const { login } = useGlobalContext();
   const { message } = App.useApp();
+  const { t } = useTranslation();
 
   const onFinish = async (values) => {
     try {
@@ -41,7 +43,7 @@ const Login = () => {
       });
     } catch (err) {
       console.log(">>>>>>>>>>>>", err.message);
-      message.error("Sai tên đăng nhập hoặc mật khẩu");
+      message.error(t("auth.login.error_login"));
     } finally {
       setLoading(false);
     }
@@ -76,11 +78,10 @@ const Login = () => {
               </Space>
               <div className="-mt-30">
                 <h2 className="text-5xl font-bold leading-tight">
-                  Chào mừng đến với hành trình văn học
+                  {t("auth.welcome.title")}
                 </h2>
                 <p className="text-lg text-white/90">
-                  Khám phá hàng ngàn cuốn sách, kết nối với cộng đồng và trải
-                  nghiệm những thế giới mới.
+                  {t("auth.welcome.subtitle")}
                 </p>
               </div>
             </div>
@@ -90,27 +91,33 @@ const Login = () => {
                 <ReadOutlined className="text-xl mt-1" />
                 <div>
                   <h3 className="font-semibold text-lg">
-                    Bộ Sưu Tập Tuyển Chọn
+                    {t("auth.features.collection")}
                   </h3>
                   <p className="text-white/80">
-                    Sách được tuyển chọn kỹ lưỡng theo mọi thể loại
+                    {t("auth.features.collection_desc")}
                   </p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
                 <GiftOutlined className="text-xl mt-1" />
                 <div>
-                  <h3 className="font-semibold text-lg">Ưu Đãi Đặc Quyền</h3>
+                  <h3 className="font-semibold text-lg">
+                    {t("auth.features.exclusive")}
+                  </h3>
                   <p className="text-white/80">
-                    Giảm giá dành riêng cho thành viên
+                    {t("auth.features.exclusive_desc")}
                   </p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
                 <ThunderboltOutlined className="text-xl mt-1" />
                 <div>
-                  <h3 className="font-semibold text-lg">Giao Hàng Nhanh</h3>
-                  <p className="text-white/80">Giao sách nhanh chóng tận tay</p>
+                  <h3 className="font-semibold text-lg">
+                    {t("auth.features.fast_shipping")}
+                  </h3>
+                  <p className="text-white/80">
+                    {t("auth.features.fast_shipping_desc")}
+                  </p>
                 </div>
               </div>
             </div>
@@ -129,25 +136,30 @@ const Login = () => {
             <div className="space-y-8">
               <div className="text-center lg:text-left space-y-1">
                 <Title level={2} className="!mb-0">
-                  Chào Mừng Trở Lại
+                  {t("auth.login.title")}
                 </Title>
-                <Text type="secondary">Đăng nhập để tiếp tục mua sắm</Text>
+                <Text type="secondary">{t("auth.login.subtitle")}</Text>
               </div>
 
               <Form layout="vertical" onFinish={onFinish} className="space-y-4">
                 <Form.Item
                   label={
                     <span className="font-medium text-gray-700">
-                      Tên đăng nhập
+                      {t("common.form.username")}
                     </span>
                   }
                   name="username"
                   rules={[
-                    { required: true, message: "Vui lòng nhập tên đăng nhập!" },
+                    {
+                      required: true,
+                      message: t("common.validation.required", {
+                        field: t("common.form.username"),
+                      }),
+                    },
                   ]}
                 >
                   <Input
-                    placeholder="Nhập tên đăng nhập"
+                    placeholder={t("common.form.placeholder.username")}
                     size="large"
                     className="rounded-md border-gray-300 hover:border-blue-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   />
@@ -155,15 +167,22 @@ const Login = () => {
 
                 <Form.Item
                   label={
-                    <span className="font-medium text-gray-700">Mật khẩu</span>
+                    <span className="font-medium text-gray-700">
+                      {t("common.form.password")}
+                    </span>
                   }
                   name="password"
                   rules={[
-                    { required: true, message: "Vui lòng nhập mật khẩu!" },
+                    {
+                      required: true,
+                      message: t("common.validation.required", {
+                        field: t("common.form.password"),
+                      }),
+                    },
                   ]}
                 >
                   <Input.Password
-                    placeholder="Nhập mật khẩu"
+                    placeholder={t("common.form.placeholder.password")}
                     size="large"
                     iconRender={(visible) =>
                       visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
@@ -178,12 +197,12 @@ const Login = () => {
                   loading={loading}
                   className="w-full h-11 font-semibold text-base bg-blue-600 hover:bg-blue-50"
                 >
-                  Đăng Nhập
+                  {t("common.button.login")}
                 </Button>
               </Form>
 
               <Divider plain className="text-gray-400">
-                Chưa có tài khoản?
+                {t("auth.login.no_account")}
               </Divider>
 
               <Button
@@ -191,12 +210,11 @@ const Login = () => {
                 className="w-full h-11 border-2 border-blue-600 text-blue-600 font-semibold hover:bg-blue-50"
                 onClick={() => navigate("/register")}
               >
-                Đăng Ký Ngay
+                {t("auth.login.register_now")}
               </Button>
 
               <p className="text-center text-sm text-gray-500">
-                Bằng cách đăng nhập, bạn đồng ý với Điều khoản dịch vụ của chúng
-                tôi
+                {t("auth.login.terms_agree")}
               </p>
             </div>
           </div>

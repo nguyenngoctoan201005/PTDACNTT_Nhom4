@@ -26,8 +26,10 @@ import {
   deleteSach,
 } from "../../../../api/sachService";
 import ModalSach from "./components/ModalSach";
+import { useTranslation } from "react-i18next";
 
 export default function QTV_Xemxoasach() {
+  const { t } = useTranslation();
   const [listSach, setListSach] = useState([]);
   const [selectedSach, setSelectedSach] = useState(null);
   const [modalState, setModalState] = useState({
@@ -119,7 +121,7 @@ export default function QTV_Xemxoasach() {
       }
     } catch (err) {
       console.error(err);
-      message.error("Lỗi khi lọc / tìm kiếm sách");
+      message.error(t("admin.book.error.fetch_list"));
     } finally {
       setLoadingSearch(false);
     }
@@ -147,24 +149,24 @@ export default function QTV_Xemxoasach() {
   const handleDelete = async () => {
     try {
       await deleteSach(selectedSach.maSach || selectedSach.id);
-      message.success("Xóa sách thành công");
+      message.success(t("admin.book.delete.success"));
       form.submit();
       setShowModalDelete(false);
     } catch (error) {
-      message.error("Lỗi khi xóa sách");
+      message.error(t("admin.book.delete.error"));
     }
   };
 
   const columns = [
     {
-      title: "STT",
+      title: t("admin.book.columns.stt"),
       dataIndex: "stt",
       key: "stt",
       width: 60,
       render: (text, record, index) => index + 1,
     },
     {
-      title: "Hình ảnh",
+      title: t("admin.book.columns.image"),
       dataIndex: "hinhAnh",
       key: "hinhAnh",
       width: 100,
@@ -177,13 +179,13 @@ export default function QTV_Xemxoasach() {
       ),
     },
     {
-      title: "Tên sách",
+      title: t("admin.book.columns.name"),
       dataIndex: "tenSach",
       key: "tenSach",
       render: (text, record) => text || record.name, // Compatible with different API responses
     },
     {
-      title: "Giá",
+      title: t("admin.book.columns.price"),
       dataIndex: "gia", // Note: Books.jsx uses 'price' or 'donGia'? book.donGia
       key: "gia",
       render: (value, record) => {
@@ -195,13 +197,13 @@ export default function QTV_Xemxoasach() {
       },
     },
     {
-      title: "Tồn kho",
+      title: t("admin.book.columns.stock"),
       dataIndex: "soLuongTon",
       key: "soLuongTon",
       render: (value) => (value !== undefined ? value : "N/A"),
     },
     {
-      title: "Trạng thái",
+      title: t("admin.book.columns.status"),
       key: "trangThai",
       render: (_, record) => (
         <Tag
@@ -212,13 +214,13 @@ export default function QTV_Xemxoasach() {
           }
         >
           {record.soLuongTon > 0 || record.soLuongTon === undefined
-            ? "Còn hàng"
-            : "Hết hàng"}
+            ? t("admin.book.status.in_stock")
+            : t("admin.book.status.out_of_stock")}
         </Tag>
       ),
     },
     {
-      title: "Thao tác",
+      title: t("admin.book.columns.action"),
       key: "action",
       width: 150,
       render: (_, record) => (
@@ -246,13 +248,13 @@ export default function QTV_Xemxoasach() {
       <QTV_Nav />
       <main className="qtv_trangqls_main p-4 bg-gray-50 min-h-screen">
         <div className="qtv_trangqls_header mx-4 mt-4 rounded-lg flex items-center justify-between bg-white p-4 shadow-sm mb-4">
-          <div className="text-xl font-bold">Quản lý sách</div>
+          <div className="text-xl font-bold">{t("admin.book.title")}</div>
           <Button
             type="primary"
             icon={<PlusOutlined />}
             onClick={openCreateModal}
           >
-            Thêm sách mới
+            {t("admin.book.add_button")}
           </Button>
         </div>
 
@@ -260,7 +262,7 @@ export default function QTV_Xemxoasach() {
           <div className="flex gap-3 mb-4 items-center">
             <FilterOutlined style={{ fontSize: 20 }} />
             <Typography.Title level={5} style={{ margin: 0 }}>
-              Bộ lọc
+              {t("admin.book.filter.title")}
             </Typography.Title>
           </div>
           <Form
@@ -269,17 +271,25 @@ export default function QTV_Xemxoasach() {
             layout="inline"
             className="w-full flex-wrap gap-4"
           >
-            <Form.Item name="name" label="Tên sách" className="min-w-[200px]">
+            <Form.Item
+              name="name"
+              label={t("admin.book.filter.name_label")}
+              className="min-w-[200px]"
+            >
               <Input
                 prefix={<SearchOutlined />}
-                placeholder="Tìm theo tên sách"
+                placeholder={t("admin.book.filter.name_placeholder")}
               />
             </Form.Item>
-            <Form.Item name="genres" label="Thể loại" className="min-w-[200px]">
+            <Form.Item
+              name="genres"
+              label={t("admin.book.filter.genre_label")}
+              className="min-w-[200px]"
+            >
               <Select
                 showSearch
                 mode="multiple"
-                placeholder="Chọn thể loại"
+                placeholder={t("admin.book.filter.genre_placeholder")}
                 optionFilterProp="label"
                 options={genreList}
                 style={{ width: 200 }}
@@ -288,7 +298,7 @@ export default function QTV_Xemxoasach() {
             </Form.Item>
             <Form.Item
               name="price"
-              label="Khoảng giá"
+              label={t("admin.book.filter.price_label")}
               className="min-w-[300px] flex-1"
             >
               <Slider
@@ -307,7 +317,7 @@ export default function QTV_Xemxoasach() {
                 icon={<SearchOutlined />}
                 loading={loadingSearch}
               >
-                Tìm kiếm
+                {t("admin.book.filter.search_button")}
               </Button>
             </Form.Item>
           </Form>
@@ -336,14 +346,15 @@ export default function QTV_Xemxoasach() {
         />
 
         <Modal
-          title="Xóa sách"
+          title={t("admin.book.delete.title")}
           open={showModalDelete}
           onOk={handleDelete}
           onCancel={() => setShowModalDelete(false)}
         >
           <p>
-            Bạn có chắc chắn muốn xóa sách{" "}
-            <strong>{selectedSach?.tenSach || selectedSach?.name}</strong>?
+            {t("admin.book.delete.confirm", {
+              name: selectedSach?.tenSach || selectedSach?.name,
+            })}
           </p>
         </Modal>
       </main>

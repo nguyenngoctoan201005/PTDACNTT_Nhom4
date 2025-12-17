@@ -8,11 +8,13 @@ import {
 } from "../../../api/provinceService";
 import { updateKhachHang } from "../../../api/khachHangService";
 import { useNavigate } from "react-router";
+import { useTranslation } from "react-i18next";
 
 const UpdateProfile = () => {
   const [form] = Form.useForm();
   const { user } = useGlobalContext();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   console.log("user", user);
 
@@ -36,11 +38,13 @@ const UpdateProfile = () => {
       };
 
       await updateKhachHang(payload);
-      message.success("Cập nhật thông tin thành công!");
+      message.success(t("profile.update_info.success"));
       navigate("/profile/info");
     } catch (err) {
       console.error(err);
-      message.error(err.response?.data?.message || "Cập nhật thất bại");
+      message.error(
+        err.response?.data?.message || t("profile.update_info.fail")
+      );
     } finally {
       setLoading(false);
     }
@@ -99,22 +103,28 @@ const UpdateProfile = () => {
   };
 
   return (
-    <Card title="Cập nhật thông tin" className="flex-1">
+    <Card title={t("profile.update_info.title")} className="flex-1">
       <Form form={form} layout="vertical" onFinish={handleFinish}>
         <Row gutter={8}>
           <Col span={12}>
             <Form.Item
-              label={<span className="font-medium text-gray-700">Tên</span>}
+              label={
+                <span className="font-medium text-gray-700">
+                  {t("common.form.name")}
+                </span>
+              }
               name="hoTen"
               rules={[
                 {
                   required: true,
-                  message: "Vui lòng nhập tên của bạn!",
+                  message: t("common.validation.required", {
+                    field: t("common.form.name"),
+                  }),
                 },
               ]}
             >
               <Input
-                placeholder="John"
+                placeholder={t("common.form.placeholder.name")}
                 className="rounded-md border-gray-300 hover:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 autoComplete="off"
               />
@@ -123,18 +133,22 @@ const UpdateProfile = () => {
           <Col span={12}>
             <Form.Item
               label={
-                <span className="font-medium text-gray-700">Tên đăng nhập</span>
+                <span className="font-medium text-gray-700">
+                  {t("common.form.username")}
+                </span>
               }
               name="userName"
               rules={[
                 {
                   required: true,
-                  message: "Vui lòng nhập tên đăng nhập!",
+                  message: t("common.validation.required", {
+                    field: t("common.form.username"),
+                  }),
                 },
               ]}
             >
               <Input
-                placeholder="Nhập tên đăng nhập của bạn"
+                placeholder={t("common.form.placeholder.username_yours")}
                 className="rounded-md border-gray-300 hover:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 autoComplete="off"
                 disabled
@@ -144,22 +158,26 @@ const UpdateProfile = () => {
           <Col span={12}>
             <Form.Item
               label={
-                <span className="font-medium text-gray-700">Địa chỉ Email</span>
+                <span className="font-medium text-gray-700">
+                  {t("common.form.email")}
+                </span>
               }
               name="email"
               rules={[
                 {
                   required: true,
-                  message: "Vui lòng nhập địa chỉ email của bạn!",
+                  message: t("common.validation.required", {
+                    field: t("common.form.email"),
+                  }),
                 },
                 {
                   type: "email",
-                  message: "Email của bạn không hợp lệ",
+                  message: t("common.validation.email_invalid"),
                 },
               ]}
             >
               <Input
-                placeholder="you@example.com"
+                placeholder={t("common.form.placeholder.email")}
                 className="rounded-md border-gray-300 hover:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 autoComplete="off"
               />
@@ -168,22 +186,26 @@ const UpdateProfile = () => {
           <Col span={12}>
             <Form.Item
               label={
-                <span className="font-medium text-gray-700">Số điện thoại</span>
+                <span className="font-medium text-gray-700">
+                  {t("common.form.phoneNumber")}
+                </span>
               }
               name="phoneNumber"
               rules={[
                 {
                   required: true,
-                  message: "Vui lòng nhập số điện thoại!",
+                  message: t("common.validation.required", {
+                    field: t("common.form.phoneNumber"),
+                  }),
                 },
                 {
                   pattern: /^[0-9]{9,11}$/,
-                  message: "Số điện thoại không hợp lệ (9–11 chữ số)",
+                  message: t("common.validation.phone_invalid"),
                 },
               ]}
             >
               <Input
-                placeholder="Ví dụ: 0987654321"
+                placeholder={t("common.form.placeholder.phone")}
                 className="rounded-md border-gray-300 hover:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 autoComplete="off"
               />
@@ -193,18 +215,22 @@ const UpdateProfile = () => {
             <Form.Item
               name="city_code"
               label={
-                <span className="font-medium text-gray-700">Thành phố</span>
+                <span className="font-medium text-gray-700">
+                  {t("common.form.city")}
+                </span>
               }
               rules={[
                 {
                   required: true,
-                  message: "Vui lòng chọn thành phố của bạn!",
+                  message: t("common.validation.required_select", {
+                    field: t("common.form.city").toLowerCase(),
+                  }),
                 },
               ]}
             >
               <Select
                 showSearch
-                placeholder="Chọn thành phố"
+                placeholder={t("common.form.placeholder.city")}
                 optionFilterProp="label"
                 onChange={handleChangeCity}
                 // onSearch={onSearch}
@@ -216,19 +242,23 @@ const UpdateProfile = () => {
             <Form.Item
               name="ward_code"
               label={
-                <span className="font-medium text-gray-700">Phường/Xã</span>
+                <span className="font-medium text-gray-700">
+                  {t("common.form.ward")}
+                </span>
               }
               rules={[
                 {
                   required: true,
-                  message: "Vui lòng chọn phường/xã của bạn",
+                  message: t("common.validation.required_select", {
+                    field: t("common.form.ward").toLowerCase(),
+                  }),
                 },
               ]}
             >
               <Select
                 showSearch
                 virtual
-                placeholder="Chọn phường xã"
+                placeholder={t("common.form.placeholder.ward")}
                 optionFilterProp="label"
                 // onChange={(value) => setSelectedCity(value)}
                 // onSearch={onSearch}
@@ -238,17 +268,23 @@ const UpdateProfile = () => {
           </Col>
           <Col span={24}>
             <Form.Item
-              label={<span className="font-medium text-gray-700">Địa chỉ</span>}
+              label={
+                <span className="font-medium text-gray-700">
+                  {t("common.form.address")}
+                </span>
+              }
               name="address"
               rules={[
                 {
                   required: true,
-                  message: "Vui lòng nhập địa chỉ của bạn!",
+                  message: t("common.validation.required", {
+                    field: t("common.form.address"),
+                  }),
                 },
               ]}
             >
               <Input
-                placeholder="Nhập địa chỉ (số nhà, tên đường...)"
+                placeholder={t("common.form.placeholder.address")}
                 className="rounded-md border-gray-300 hover:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 autoComplete="off"
               />
@@ -257,7 +293,7 @@ const UpdateProfile = () => {
         </Row>
         <div className="flex justify-end w-full">
           <Button type="primary" htmlType="submit" loading={loading}>
-            Xác nhận
+            {t("common.button.confirm")}
           </Button>
         </div>
       </Form>

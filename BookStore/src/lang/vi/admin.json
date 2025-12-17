@@ -1,0 +1,230 @@
+{
+  "dashboard": {
+    "title": "Tổng quan hệ thống",
+    "stats": {
+      "revenue": "Tổng doanh thu",
+      "orders": "Tổng đơn hàng",
+      "new_customers": "Khách hàng mới",
+      "books": "Sách đang bán",
+      "vs_last_month": "so với tháng trước",
+      "updating": "Đang cập nhật thêm"
+    },
+    "charts": {
+      "revenue_title": "Biểu đồ doanh thu năm {{year}}",
+      "filter": "Lọc:",
+      "revenue": "Doanh thu",
+      "profit": "Lợi nhuận",
+      "category_ratio": "Tỷ lệ theo thể loại"
+    },
+    "recent_orders": {
+      "title": "Đơn hàng gần đây",
+      "columns": {
+        "id": "Mã ĐH",
+        "customer": "Khách hàng",
+        "date": "Ngày đặt",
+        "amount": "Tổng tiền",
+        "status": "Trạng thái"
+      }
+    },
+    "top_books": {
+      "title": "Sách bán chạy",
+      "sold": "Đã bán: {{count}} cuốn"
+    }
+  },
+  "customer": {
+    "title": "Khách Hàng",
+    "add_button": "Thêm khách hàng",
+    "search_placeholder": "Tìm kiếm theo tên...",
+    "columns": {
+      "stt": "STT",
+      "name": "KHÁCH HÀNG",
+      "email": "EMAIL",
+      "phone": "SĐT",
+      "address": "ĐỊA CHỈ",
+      "action": "THAO TÁC"
+    },
+    "detail": {
+      "title": "Chi tiết khách hàng",
+      "code": "Mã Khách hàng",
+      "name": "Tên",
+      "email": "Email",
+      "phone": "SĐT",
+      "address": "Địa chỉ",
+      "total_orders": "Tổng đơn hàng",
+      "total_spend": "Tổng chi tiêu"
+    },
+    "delete": {
+      "title": "Xóa khách hàng",
+      "confirm": "Bạn có chắc chắn muốn xóa khách hàng này?",
+      "success": "Xóa khách hàng thành công",
+      "error": "Lỗi khi xóa khách hàng"
+    },
+    "error": {
+      "fetch_list": "Lỗi khi lấy danh sách khách hàng"
+    }
+  },
+  "status": {
+    "completed": "Hoàn thành",
+    "pending": "Chờ xử lý",
+    "processing": "Đang xử lý",
+    "cancelled": "Đã hủy"
+  },
+  "book": {
+    "title": "Quản lý sách",
+    "add_button": "Thêm sách mới",
+    "filter": {
+      "title": "Bộ lọc",
+      "name_label": "Tên sách",
+      "name_placeholder": "Tìm theo tên sách",
+      "genre_label": "Thể loại",
+      "genre_placeholder": "Chọn thể loại",
+      "price_label": "Khoảng giá",
+      "search_button": "Tìm kiếm"
+    },
+    "columns": {
+      "stt": "STT",
+      "image": "Hình ảnh",
+      "name": "Tên sách",
+      "price": "Giá",
+      "stock": "Tồn kho",
+      "status": "Trạng thái",
+      "action": "Thao tác"
+    },
+    "status": {
+      "in_stock": "Còn hàng",
+      "out_of_stock": "Hết hàng"
+    },
+    "delete": {
+      "title": "Xóa sách",
+      "confirm": "Bạn có chắc chắn muốn xóa sách {{name}}?",
+      "success": "Xóa sách thành công",
+      "error": "Lỗi khi xóa sách"
+    },
+    "error": {
+      "fetch_list": "Lỗi khi lọc / tìm kiếm sách"
+    }
+  },
+  "genre": {
+    "title": "Quản lý thể loại",
+    "add_button": "Thêm thể loại mới",
+    "search_placeholder": "Tìm kiếm thể loại...",
+    "columns": {
+      "stt": "STT",
+      "name": "TÊN THỂ LOẠI",
+      "action": "THAO TÁC"
+    },
+    "delete": {
+      "title": "Xóa thể loại",
+      "confirm": "Bạn có chắc chắn muốn xóa thể loại {{name}}?",
+      "success": "Xóa thể loại thành công",
+      "error": "Lỗi khi xóa thể loại"
+    },
+    "error": {
+      "fetch_list": "Lỗi khi lấy danh sách thể loại"
+    }
+  },
+  "author": {
+    "title": "Quản lý tác giả",
+    "add_button": "Thêm tác giả mới",
+    "search_placeholder": "Tìm kiếm tác giả...",
+    "columns": {
+      "stt": "STT",
+      "name": "TÊN TÁC GIẢ",
+      "bio": "TIỂU SỬ",
+      "action": "THAO TÁC"
+    },
+    "default_bio": "Đang cập nhật",
+    "delete": {
+      "title": "Xóa tác giả",
+      "confirm": "Bạn có chắc chắn muốn xóa tác giả {{name}}?",
+      "success": "Xóa tác giả thành công",
+      "error": "Lỗi khi xóa tác giả"
+    },
+    "error": {
+      "fetch_list": "Lỗi khi lấy danh sách tác giả"
+    }
+  },
+  "employee": {
+    "title": "Quản Lý Nhân Viên",
+    "add_button": "Thêm nhân viên",
+    "search_placeholder": "Tìm kiếm theo tên...",
+    "search_button": "Tìm kiếm",
+    "columns": {
+      "stt": "STT",
+      "name": "NHÂN VIÊN",
+      "cccd": "SỐ CCCD",
+      "username": "TÊN ĐĂNG NHẬP",
+      "password": "MẬT KHẨU",
+      "action": "THAO TÁC"
+    },
+    "delete": {
+      "title": "Xóa nhân viên",
+      "confirm": "Bạn có chắc chắn muốn xóa nhân viên {{name}}?",
+      "success": "Xóa nhân viên thành công",
+      "error": "Lỗi khi xóa nhân viên"
+    },
+    "error": {
+      "fetch_list": "Lỗi khi lấy danh sách nhân viên"
+    }
+  },
+  "promotion": {
+    "title": "Quản lý khuyến mãi",
+    "add_button": "Thêm khuyến mãi",
+    "search_placeholder": "Tìm kiếm mã giảm giá...",
+    "columns": {
+      "stt": "STT",
+      "code": "MÃ GIẢM GIÁ",
+      "description": "MÔ TẢ",
+      "expiry": "HẠN SỬ DỤNG",
+      "discount": "CHIẾT KHẤU (%)",
+      "action": "THAO TÁC"
+    },
+    "delete": {
+      "title": "Xóa khuyến mãi",
+      "confirm": "Bạn có chắc chắn muốn xóa khuyến mãi {{name}}?",
+      "success": "Xóa khuyến mãi thành công",
+      "error": "Lỗi khi xóa khuyến mãi"
+    },
+    "error": {
+      "fetch_list": "Lỗi khi lấy danh sách khuyến mãi"
+    }
+  },
+  "add_book_page": {
+    "title": "Thêm sách mới",
+    "section_info": "Thông tin sách",
+    "labels": {
+      "name": "Tên sách*",
+      "price": "Giá bán*",
+      "stock": "Số lượng tồn kho*",
+      "genre": "Thể loại*",
+      "description": "Mô tả*",
+      "image": "Chọn hình ảnh*",
+      "author": "Tác giả*",
+      "translator": "Dịch giả*",
+      "publisher": "Nhà xuất bản*",
+      "product_type": "Loại sản phẩm*",
+      "size": "Kích thước*",
+      "pages": "Số trang*"
+    },
+    "placeholders": {
+      "name": "Nhập tên sách",
+      "price": "Nhập giá bán",
+      "stock": "Nhập số lượng tồn kho",
+      "translator": "Nhập dịch giả",
+      "size": "Ví dụ : 19 x 10cm",
+      "pages": "Nhập số trang"
+    },
+    "section_detail": "Mô tả chi tiết :",
+    "options": {
+      "soft_cover": "Bìa mềm",
+      "hard_cover": "Bìa cứng"
+    },
+    "buttons": {
+      "save": "Lưu thay đổi",
+      "cancel": "Hủy"
+    }
+  },
+  "edit_history": {
+    "title": "Lịch sử chỉnh sửa"
+  }
+}

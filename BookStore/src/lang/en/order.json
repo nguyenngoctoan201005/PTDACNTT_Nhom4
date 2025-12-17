@@ -1,0 +1,35 @@
+{
+  "title": "My Orders",
+  "tabs": {
+    "all": "All",
+    "pending": "Pending",
+    "confirmed": "Confirmed",
+    "shipping": "Shipping",
+    "completed": "Completed",
+    "cancelled": "Cancelled"
+  },
+  "columns": {
+    "id": "Order ID",
+    "date": "Date",
+    "total": "Total",
+    "status": "Status",
+    "action": "Action"
+  },
+  "detail": {
+    "title": "Order Details",
+    "product": "Product",
+    "image": "Image",
+    "quantity": "Quantity",
+    "price": "Price",
+    "total": "Total",
+    "cancel_warning": "Cancel order function is being updated."
+  },
+  "action": {
+    "view": "View Details",
+    "cancel": "Cancel Order"
+  },
+  "error": {
+    "fetch_list": "Failed to fetch orders.",
+    "fetch_detail": "Failed to fetch order details."
+  }
+}

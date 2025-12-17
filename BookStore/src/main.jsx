@@ -5,6 +5,7 @@ import App from "./App.jsx";
 import { BrowserRouter } from "react-router-dom";
 import "antd/dist/reset.css";
 import "@ant-design/v5-patch-for-react-19";
+import "./lang";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

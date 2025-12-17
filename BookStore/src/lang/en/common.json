@@ -1,0 +1,63 @@
+{
+  "button": {
+    "create": "Create",
+    "cancel": "Close",
+    "delete": "Delete",
+    "edit": "Edit",
+    "confirm": "Confirm",
+    "search": "Search",
+    "view": "View",
+    "ok": "OK",
+    "add": "Add",
+    "update": "Update",
+    "login": "Login",
+    "view_all": "View All",
+    "logout": "Logout",
+    "profile": "Profile",
+    "change-password": "Change Password",
+    "register": "Register"
+  },
+  "search_placeholder": "Enter the book name you're looking for",
+  "loading": "Loading...",
+  "price_label": "Price:",
+  "of_us": "of us",
+  "empty": "No data",
+  "form": {
+    "username": "Username",
+    "name": "Name",
+    "password": "Password",
+    "confirm_password": "Confirm Password",
+    "email": "Email Address",
+    "phoneNumber": "Phone Number",
+    "address": "Address",
+    "city": "City",
+    "ward": "Ward",
+    "placeholder": {
+      "username": "Enter username",
+      "username_yours": "Enter your username",
+      "password": "Enter password",
+      "password_yours": "Enter your password",
+      "confirm_password": "Confirm your password",
+      "name": "John",
+      "email": "you@example.com",
+      "phone": "Ex: 0987654321",
+      "address": "Enter address (house number, street...)",
+      "city": "Select city",
+      "ward": "Select ward"
+    }
+  },
+  "validation": {
+    "required": "Please enter {{field}}!",
+    "required_select": "Please select {{field}}!",
+    "email_invalid": "Invalid email",
+    "phone_invalid": "Invalid phone number (9–11 digits)",
+    "password_mismatch": "Passwords do not match!",
+    "password_min_length": "Password must contain at least 8 characters",
+    "password_uppercase": "Password must contain at least 1 uppercase letter"
+  },
+  "message": {
+    "added_favorite": "Added to favorites",
+    "already_favorite": "Book is already in your favorites",
+    "removed_favorite": "Removed from favorites"
+  }
+}

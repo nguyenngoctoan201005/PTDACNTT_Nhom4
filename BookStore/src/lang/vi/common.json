@@ -1,0 +1,63 @@
+{
+  "button": {
+    "create": "Tạo mới",
+    "cancel": "Đóng",
+    "delete": "Xóa",
+    "edit": "Sửa",
+    "confirm": "Xác nhận",
+    "search": "Tìm kiếm",
+    "view": "Xem",
+    "ok": "OK",
+    "add": "Thêm",
+    "update": "Cập nhật",
+    "login": "Đăng Nhập",
+    "view_all": "Xem tất cả",
+    "logout": "Đăng xuất",
+    "profile": "Hồ sơ",
+    "change-password": "Đổi mật khẩu",
+    "register": "Đăng ký"
+  },
+  "search_placeholder": "Nhập tên sách bạn muốn tìm tại đây",
+  "loading": "Đang tải...",
+  "price_label": "Đơn giá:",
+  "of_us": "của chúng tôi",
+  "empty": "Không có dữ liệu",
+  "form": {
+    "username": "Tên đăng nhập",
+    "name": "Tên",
+    "password": "Mật khẩu",
+    "confirm_password": "Xác nhận mật khẩu",
+    "email": "Địa chỉ Email",
+    "phoneNumber": "Số điện thoại",
+    "address": "Địa chỉ",
+    "city": "Thành phố",
+    "ward": "Phường/Xã",
+    "placeholder": {
+      "username": "Nhập tên đăng nhập",
+      "username_yours": "Nhập tên đăng nhập của bạn",
+      "password": "Nhập mật khẩu",
+      "password_yours": "Nhập mật khẩu của bạn",
+      "confirm_password": "Xác nhận mật khẩu của bạn",
+      "name": "John",
+      "email": "you@example.com",
+      "phone": "Ví dụ: 0987654321",
+      "address": "Nhập địa chỉ (số nhà, tên đường...)",
+      "city": "Chọn thành phố",
+      "ward": "Chọn phường xã"
+    }
+  },
+  "validation": {
+    "required": "Vui lòng nhập {{field}}!",
+    "required_select": "Vui lòng chọn {{field}}!",
+    "email_invalid": "Email của bạn không hợp lệ",
+    "phone_invalid": "Số điện thoại không hợp lệ (9–11 chữ số)",
+    "password_mismatch": "Mật khẩu không khớp!",
+    "password_min_length": "Mật khẩu phải chứa ít nhất 8 ký tự",
+    "password_uppercase": "Mật khẩu phải chứa ít nhất 1 chữ cái viết hoa"
+  },
+  "message": {
+    "added_favorite": "Đã thêm vào yêu thích",
+    "already_favorite": "Sách đã có trong danh sách yêu thích",
+    "removed_favorite": "Đã xóa khỏi danh sách yêu thích"
+  }
+}

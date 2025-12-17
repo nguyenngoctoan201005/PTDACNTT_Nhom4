@@ -1,0 +1,46 @@
+{
+  "statistics": {
+    "title": "Statistics",
+    "total_revenue": "Total Revenue",
+    "total_orders": "Total Orders",
+    "total_books_sold": "Total Books Sold",
+    "total_customers": "Total Customers",
+    "revenue_this_month": "Revenue This Month",
+    "growth_rate": "Growth Rate",
+    "charts": {
+      "monthly_revenue": "Monthly Revenue",
+      "books_sold": "Top Selling Books",
+      "order_status": "Order Status",
+      "category_sales": "Category Sales"
+    },
+    "tables": {
+      "books_sold": {
+        "title": "Top 5 Best Selling Books",
+        "columns": {
+          "rank": "Rank",
+          "code": "Book Code",
+          "name": "Book Name",
+          "quantity": "Quantity",
+          "total": "Revenue"
+        },
+        "no_data": "No data available"
+      },
+      "orders": {
+        "title": "Recent Orders",
+        "columns": {
+          "order_id": "Order ID",
+          "customer": "Customer",
+          "date": "Order Date",
+          "amount": "Total Amount",
+          "status": "Status"
+        },
+        "no_data": "No data available"
+      }
+    },
+    "currency": "VND",
+    "format_vnd": "₫",
+    "loading": "Loading...",
+    "no_data": "No data available",
+    "error": "Error loading statistics"
+  }
+}

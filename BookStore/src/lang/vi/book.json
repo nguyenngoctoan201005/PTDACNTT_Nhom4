@@ -1,0 +1,29 @@
+{
+  "detail": {
+    "title": "Chi tiết sách",
+    "description": "Mô tả",
+    "info": "Thông tin chi tiết",
+    "reviews": "Đánh giá",
+    "publisher": "Nhà Xuất Bản",
+    "author": "Tác giả",
+    "related_books": "Các sách tương tự",
+    "stock_quantity": "Số lượng hiện có ({{count}} quyển)",
+    "quantity": "Số lượng:",
+    "add_to_cart": "Thêm vào giỏ hàng",
+    "added_to_cart": "Thêm vào giỏ hàng thành công",
+    "error_fetch": "Lỗi khi lấy chi tiết sách"
+  },
+  "list": {
+    "title": "Tất cả sách",
+    "filter": "Bộ lọc",
+    "search": "Tìm kiếm",
+    "search_placeholder": "Tìm sách",
+    "genre": "Thể loại",
+    "genre_placeholder": "Chọn 1 thể loại",
+    "price_range": "Khoảng giá",
+    "price_placeholder": "Chọn 1 khoảng giá",
+    "search_button": "Tìm kiếm",
+    "error_genre": "Lỗi khi tải danh sách thể loại",
+    "error_search": "Lỗi khi lọc / tìm kiếm sách"
+  }
+}

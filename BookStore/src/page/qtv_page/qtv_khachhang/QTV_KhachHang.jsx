@@ -14,8 +14,10 @@ import {
 } from "../../../api/khachHangService";
 import { useDebounce } from "../../../hooks/useDebounce";
 import ModalKhachHang from "./components/ModalKhachHang";
+import { useTranslation } from "react-i18next";
 
 export default function QTV_KhachHang() {
+  const { t } = useTranslation();
   const [suaKhachhang, setSuaKhachhang] = useState(false);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [listKhachHang, setListKhachHang] = useState([]);
@@ -46,33 +48,33 @@ export default function QTV_KhachHang() {
 
   const columns = [
     {
-      title: "STT",
+      title: t("admin.customer.columns.stt"),
       dataIndex: "maKhachHang",
       key: "stt",
       render: (text, record, index) => index + 1,
     },
     {
-      title: "KHÁCH HÀNG",
+      title: t("admin.customer.columns.name"),
       dataIndex: "hoTen",
       key: "hoTen",
     },
     {
-      title: "EMAIL",
+      title: t("admin.customer.columns.email"),
       dataIndex: "email",
       key: "email",
     },
     {
-      title: "SĐT",
+      title: t("admin.customer.columns.phone"),
       dataIndex: "soDT",
       key: "soDT",
     },
     {
-      title: "ĐỊA CHỈ",
+      title: t("admin.customer.columns.address"),
       dataIndex: "diaChi",
       key: "diaChi",
     },
     {
-      title: "THAO TÁC",
+      title: t("admin.customer.columns.action"),
       key: "action",
       render: (_, record) => (
         <div className="flex gap-2 items-center">
@@ -116,18 +118,18 @@ export default function QTV_KhachHang() {
 
       setListKhachHang(res.result);
     } catch (error) {
-      message.error("Lỗi khi lấy danh sách khách hàng");
+      message.error(t("admin.customer.error.fetch_list"));
     }
   };
 
   const deleteKH = async (maKhachHang) => {
     try {
       await deleteKhachHang(maKhachHang);
-      message.success("Xóa khách hàng thành công");
+      message.success(t("admin.customer.delete.success"));
       fetchKhachHang();
       setShowModalDelete(false);
     } catch (error) {
-      message.error("Lỗi khi xóa khách hàng");
+      message.error(t("admin.customer.delete.error"));
     }
   };
 
@@ -147,19 +149,19 @@ export default function QTV_KhachHang() {
       <QTV_Nav />
       <main className="qtv_khachhang_main">
         <div className="qtv_khachhang_tieude mx-4 mt-4 rounded-lg flex items-center justify-between">
-          <div>Khách Hàng</div>
+          <div>{t("admin.customer.title")}</div>
           <Button
             type="primary"
             icon={<PlusOutlined />}
             onClick={openCreateModal}
           >
-            Thêm khách hàng
+            {t("admin.customer.add_button")}
           </Button>
         </div>
 
         <div className="flex flex-col md:flex-row gap-4 p-4 mx-4 bg-white rounded-lg shadow-md my-4 items-center">
           <Input
-            placeholder="Tìm kiếm theo tên..."
+            placeholder={t("admin.customer.search_placeholder")}
             allowClear
             enterButton
             className="w-full md:w-96"
@@ -211,7 +213,7 @@ export default function QTV_KhachHang() {
         />
 
         <Modal
-          title="Chi tiết khách hàng"
+          title={t("admin.customer.detail.title")}
           open={suaKhachhang}
           onCancel={() => {
             setSuaKhachhang(false);
@@ -222,43 +224,57 @@ export default function QTV_KhachHang() {
           {selectedCustomer && (
             <div className="flex flex-col gap-3">
               <div className="flex border-b border-gray-200 py-2">
-                <span className="font-semibold w-1/3">Mã Khách hàng:</span>
+                <span className="font-semibold w-1/3">
+                  {t("admin.customer.detail.code")}:
+                </span>
                 <span className="text-gray-700 font-bold">
                   {selectedCustomer.maKhachHang}
                 </span>
               </div>
               <div className="flex border-b border-gray-200 py-2">
-                <span className="font-semibold w-1/3">Tên:</span>
+                <span className="font-semibold w-1/3">
+                  {t("admin.customer.detail.name")}:
+                </span>
                 <span className="text-gray-700 font-bold">
                   {selectedCustomer.hoTen}
                 </span>
               </div>
               <div className="flex border-b border-gray-200 py-2">
-                <span className="font-semibold w-1/3">Email:</span>
+                <span className="font-semibold w-1/3">
+                  {t("admin.customer.detail.email")}:
+                </span>
                 <span className="text-gray-700 font-bold">
                   {selectedCustomer.email}
                 </span>
               </div>
               <div className="flex border-b border-gray-200 py-2">
-                <span className="font-semibold w-1/3">SĐT:</span>
+                <span className="font-semibold w-1/3">
+                  {t("admin.customer.detail.phone")}:
+                </span>
                 <span className="text-gray-700 font-bold">
                   {selectedCustomer.soDT}
                 </span>
               </div>
               <div className="flex border-b border-gray-200 py-2">
-                <span className="font-semibold w-1/3">Địa chỉ:</span>
+                <span className="font-semibold w-1/3">
+                  {t("admin.customer.detail.address")}:
+                </span>
                 <span className="text-gray-700 font-bold">
                   {selectedCustomer.diaChi}
                 </span>
               </div>
               <div className="flex border-b border-gray-200 py-2">
-                <span className="font-semibold w-1/3">Tổng đơn hàng:</span>
+                <span className="font-semibold w-1/3">
+                  {t("admin.customer.detail.total_orders")}:
+                </span>
                 <span className="text-gray-700 font-bold">
                   {selectedCustomer.orderCount || 0}
                 </span>
               </div>
               <div className="flex border-b border-gray-200 py-2">
-                <span className="font-semibold w-1/3">Tổng chi tiêu:</span>
+                <span className="font-semibold w-1/3">
+                  {t("admin.customer.detail.total_spend")}:
+                </span>
                 <span className="text-red-500 font-bold">
                   {selectedCustomer.totalSpend || 0}
                 </span>
@@ -267,12 +283,12 @@ export default function QTV_KhachHang() {
           )}
         </Modal>
         <Modal
-          title="Xóa khách hàng"
+          title={t("admin.customer.delete.title")}
           open={showModalDelete}
           onOk={() => deleteKH(selectedCustomer.maKH)}
           onCancel={() => setShowModalDelete(false)}
         >
-          <p>Bạn có chắc chắn muốn xóa khách hàng này?</p>
+          <p>{t("admin.customer.delete.confirm")}</p>
         </Modal>
       </main>
     </>

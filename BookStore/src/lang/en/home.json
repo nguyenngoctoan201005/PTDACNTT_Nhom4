@@ -1,0 +1,34 @@
+{
+  "name": "Home",
+  "genre": {
+    "title": "Explore by Genre",
+    "view_more": "View more",
+    "book_count": "{{count}} books"
+  },
+  "collection": {
+    "bestseller": {
+      "tag": "Special Collection",
+      "title": "Best Sellers",
+      "subtitle": "Most Loved",
+      "description": "Discover the books most trusted and chosen by readers"
+    },
+    "new_release": {
+      "tag": "New Arrivals",
+      "title": "Released This Week",
+      "subtitle": "Constantly Updated",
+      "description": "The latest books just released, don't miss out"
+    },
+    "deals": {
+      "tag": "Hot Deals",
+      "title": "Special Discounts",
+      "subtitle": "Save up to 50%",
+      "description": "Opportunity to own favorite books at the best prices"
+    },
+    "exclusive": {
+      "tag": "Exclusive",
+      "title": "Premium Collection",
+      "subtitle": "Limited Edition",
+      "description": "Premium books with author signatures and special covers"
+    }
+  }
+}

@@ -18,9 +18,11 @@ import {
   getDetailDonHang,
 } from "../../../api/donHangService";
 import { formatCurrency } from "../../../hooks/formatCurrentcy";
+import { useTranslation } from "react-i18next";
 
 const Order = () => {
   const { token, user } = useGlobalContext();
+  const { t } = useTranslation();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("ALL");
@@ -41,7 +43,7 @@ const Order = () => {
       setOrders(data.result || []);
     } catch (error) {
       console.error("Failed to fetch orders:", error);
-      message.error("Không thể tải danh sách đơn hàng.");
+      message.error(t("order.error.fetch_list"));
     } finally {
       setLoading(false);
     }
@@ -58,7 +60,7 @@ const Order = () => {
       setSelectedOrderDetails(details || []);
     } catch (error) {
       console.error("Failed to fetch order details:", error);
-      message.error("Không thể lấy chi tiết đơn hàng.");
+      message.error(t("order.error.fetch_detail"));
     } finally {
       setLoadingDetails(false);
     }
@@ -75,23 +77,23 @@ const Order = () => {
 
     switch (status) {
       case "Chờ xác nhận":
-        text = "Chờ xác nhận";
+        text = t("order.tabs.pending");
         color = "orange";
         break;
       case "Đã xác nhận":
-        text = "Đã xác nhận";
+        text = t("order.tabs.confirmed");
         color = "green";
         break;
       case "Đang giao":
-        text = "Đang giao";
+        text = t("order.tabs.shipping");
         color = "blue";
         break;
       case "Hoàn thành":
-        text = "Hoàn thành";
+        text = t("order.tabs.completed");
         color = "success";
         break;
       case "Đã hủy":
-        text = "Đã hủy";
+        text = t("order.tabs.cancelled");
         color = "red";
         break;
       default:
@@ -103,7 +105,7 @@ const Order = () => {
   };
 
   const handleCancel = (maDH) => {
-    message.warning("Chức năng hủy đơn hàng đang được cập nhật.");
+    message.warning(t("order.detail.cancel_warning"));
   };
 
   const filteredOrders = orders.filter((order) => {
@@ -113,21 +115,21 @@ const Order = () => {
 
   const columns = [
     {
-      title: "Mã đơn hàng",
+      title: t("order.columns.id"),
       dataIndex: "maDonHang",
       key: "maDonHang",
       align: "center",
       render: (text) => <b>#{text}</b>,
     },
     {
-      title: "Ngày đặt",
+      title: t("order.columns.date"),
       dataIndex: "ngayDat",
       key: "ngayDat",
       align: "center",
       render: (date) => new Date(date).toLocaleDateString("vi-VN"),
     },
     {
-      title: "Tổng tiền",
+      title: t("order.columns.total"),
       dataIndex: "tongTien",
       key: "tongTien",
       align: "right",
@@ -143,14 +145,14 @@ const Order = () => {
       },
     },
     {
-      title: "Trạng thái",
+      title: t("order.columns.status"),
       dataIndex: "trangThai",
       key: "trangThai",
       align: "center",
       render: (status) => renderStatus(status),
     },
     {
-      title: "Hành động",
+      title: t("order.columns.action"),
       key: "action",
       align: "center",
       render: (_, record) => (
@@ -160,7 +162,7 @@ const Order = () => {
             size="small"
             onClick={() => handleViewDetail(record.maDonHang)}
           >
-            Xem chi tiết
+            {t("order.action.view")}
           </Button>
           <Button
             type="link"
@@ -173,7 +175,7 @@ const Order = () => {
             }
             onClick={() => handleCancel(record.maDonHang)}
           >
-            Hủy đơn
+            {t("order.action.cancel")}
           </Button>
         </div>
       ),
@@ -181,22 +183,26 @@ const Order = () => {
   ];
 
   const detailColumns = [
-    { title: "Sản phẩm", dataIndex: ["sach", "tenSach"], key: "tenSach" },
     {
-      title: "Hình ảnh",
+      title: t("order.detail.product"),
+      dataIndex: ["sach", "tenSach"],
+      key: "tenSach",
+    },
+    {
+      title: t("order.detail.image"),
       dataIndex: ["sach", "hinhAnh"],
       key: "hinhAnh",
       render: (img) => <img src={img} alt="book" style={{ width: 50 }} />,
     },
-    { title: "Số lượng", dataIndex: "soLuong", key: "soLuong" },
+    { title: t("order.detail.quantity"), dataIndex: "soLuong", key: "soLuong" },
     {
-      title: "Đơn giá",
+      title: t("order.detail.price"),
       dataIndex: "donGia",
       key: "donGia",
       render: (price) => formatCurrency(price),
     },
     {
-      title: "Thành tiền",
+      title: t("order.detail.total"),
       key: "total",
       render: (_, item) => formatCurrency(item.soLuong * item.donGia),
     },
@@ -207,12 +213,12 @@ const Order = () => {
   }
 
   const tabItems = [
-    { key: "ALL", label: "Tất cả" },
-    { key: "Chờ xác nhận", label: "Chờ xác nhận" },
-    { key: "Đã xác nhận", label: "Đã xác nhận" },
-    { key: "Đang giao", label: "Đang giao" },
-    { key: "Hoàn thành", label: "Hoàn thành" },
-    { key: "Đã hủy", label: "Đã hủy" },
+    { key: "ALL", label: t("order.tabs.all") },
+    { key: "Chờ xác nhận", label: t("order.tabs.pending") },
+    { key: "Đã xác nhận", label: t("order.tabs.confirmed") },
+    { key: "Đang giao", label: t("order.tabs.shipping") },
+    { key: "Hoàn thành", label: t("order.tabs.completed") },
+    { key: "Đã hủy", label: t("order.tabs.cancelled") },
   ];
 
   return (
@@ -222,11 +228,11 @@ const Order = () => {
           items={[
             {
               key: 1,
-              title: <Link to={"/home"}>Trang chủ</Link>,
+              title: <Link to={"/home"}>{t("home.name")}</Link>,
             },
             {
               key: 2,
-              title: "Đơn hàng của tôi",
+              title: t("order.title"),
             },
           ]}
         />
@@ -234,7 +240,7 @@ const Order = () => {
 
       <Card className="min-h-[500px]">
         <h2 className="text-center text-3xl font-semibold mb-8">
-          Đơn hàng của tôi
+          {t("order.title")}
         </h2>
 
         <Tabs
@@ -262,7 +268,7 @@ const Order = () => {
       </Card>
 
       <Modal
-        title="Chi tiết đơn hàng"
+        title={t("order.detail.title")}
         open={isModalOpen}
         onCancel={handleCloseModal}
         footer={false}

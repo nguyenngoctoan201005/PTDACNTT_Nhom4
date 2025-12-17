@@ -1,0 +1,36 @@
+{
+  "review_management": {
+    "title": "Quản Lý Đánh Giá",
+    "search_placeholder": "Tìm kiếm đánh giá...",
+    "columns": {
+      "stt": "STT",
+      "customer": "Khách Hàng",
+      "book": "Tên Sách",
+      "rating": "Đánh Giá",
+      "comment": "Bình Luận",
+      "date": "Ngày Đánh Giá",
+      "action": "Hành Động"
+    },
+    "modal_detail": {
+      "title": "Chi Tiết Đánh Giá",
+      "code": "Mã Đánh Giá:",
+      "customer": "Khách Hàng:",
+      "book": "Tên Sách:",
+      "rating": "Đánh Giá:",
+      "comment": "Bình Luận:",
+      "date": "Ngày Đánh Giá:",
+      "close": "Đóng"
+    },
+    "modal_delete": {
+      "title": "Xóa Đánh Giá",
+      "message": "Bạn có chắc chắn muốn xóa đánh giá này?",
+      "cancel": "Hủy",
+      "delete": "Xóa",
+      "success": "Xóa đánh giá thành công",
+      "error": "Lỗi khi xóa đánh giá"
+    },
+    "view_btn": "Xem",
+    "delete_btn": "Xóa",
+    "no_data": "Không có dữ liệu đánh giá"
+  }
+}

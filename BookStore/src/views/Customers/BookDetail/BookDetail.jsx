@@ -31,11 +31,13 @@ import { useGlobalContext } from "../../../GlobalContext";
 import { getSachDetail, getSachByMaLoai } from "../../../api/sachService";
 import { formatCurrency } from "../../../hooks/formatCurrentcy";
 import LoadingSpinner from "../../../components/LoadingSpinner";
+import { useTranslation } from "react-i18next";
 
 const { Title, Text, Paragraph } = Typography;
 
 const BookDetail = () => {
   const [relatedBooks, setRelatedBooks] = useState([]);
+  const { t } = useTranslation();
 
   const [bookDetail, setBookDetail] = useState();
   const [value, setValue] = useState(1);
@@ -48,17 +50,19 @@ const BookDetail = () => {
   const items = [
     {
       key: "1",
-      label: "Mô tả",
+      label: t("book.detail.description"),
       children: (
         <Card>
-          <Typography.Title level={5}>Mô tả</Typography.Title>
+          <Typography.Title level={5}>
+            {t("book.detail.description")}
+          </Typography.Title>
           {bookDetail?.moTa}
         </Card>
       ),
     },
     {
       key: "2",
-      label: "Thông tin chi tiết",
+      label: t("book.detail.info"),
       children: (
         <Card>
           <Descriptions
@@ -81,7 +85,7 @@ const BookDetail = () => {
             {/* <Descriptions.Item label="Kích thước">
               13 × 20.5 cm
             </Descriptions.Item> */}
-            <Descriptions.Item label="Nhà Xuất Bản">
+            <Descriptions.Item label={t("book.detail.publisher")}>
               {bookDetail?.nhaXuatBan?.tenNXB}
             </Descriptions.Item>
 
@@ -90,14 +94,16 @@ const BookDetail = () => {
               Phương Nam Book
             </Descriptions.Item> */}
 
-            <Descriptions.Item label="Tác giả">Ihara Saikaku</Descriptions.Item>
+            <Descriptions.Item label={t("book.detail.author")}>
+              Ihara Saikaku
+            </Descriptions.Item>
           </Descriptions>
         </Card>
       ),
     },
     {
       key: "3",
-      label: "Đánh giá",
+      label: t("book.detail.reviews"),
       children: <BookReview />,
     },
   ];
@@ -125,7 +131,7 @@ const BookDetail = () => {
       }
     } catch (error) {
       console.log(error);
-      message.error("Lỗi khi lấy chi tiết sách");
+      message.error(t("book.detail.error_fetch"));
     } finally {
       setLoading(false);
     }
@@ -134,6 +140,12 @@ const BookDetail = () => {
   useEffect(() => {
     fetchSachDetail();
   }, [bookId]);
+
+  useEffect(() => {
+    if (bookDetail) {
+      document.title = `${bookDetail.tenSach} - Bookstore`;
+    }
+  }, [bookDetail]);
 
   useEffect(() => {
     if (bookDetail) {
@@ -154,7 +166,7 @@ const BookDetail = () => {
         soLuong: value,
       });
 
-      message.success("Thêm vào giỏ hàng thành công");
+      message.success(t("book.detail.added_to_cart"));
     } catch (err) {
       console.log("error >>>", err);
       message.error(err.message);
@@ -218,7 +230,8 @@ const BookDetail = () => {
                 <Rate disabled value={bookDetail?.avgSao || 5} />
                 <Text strong>{bookDetail?.avgSao || 5}</Text>
                 <Text type="secondary">
-                  ({bookDetail?.soLuotDG || 0} lượt đánh giá)
+                  ({bookDetail?.soLuotDG || 0}{" "}
+                  {t("book.detail.reviews").toLowerCase()})
                 </Text>
               </Space>
 
@@ -235,11 +248,14 @@ const BookDetail = () => {
               </Paragraph>
 
               <Text type="success">
-                ✓ Số lượng hiện có ({bookDetail?.soLuongCo} quyển)
+                ✓{" "}
+                {t("book.detail.stock_quantity", {
+                  count: bookDetail?.soLuongCo,
+                })}
               </Text>
 
               <Space align="center" style={{ marginTop: 8 }}>
-                <Text>Số lượng:</Text>
+                <Text>{t("book.detail.quantity")}</Text>
                 <Space>
                   <Button
                     icon={<MinusOutlined />}
@@ -269,7 +285,7 @@ const BookDetail = () => {
                   onClick={handleAddToCart}
                   loading={cartLoading}
                 >
-                  Thêm vào giỏ hàng
+                  {t("book.detail.add_to_cart")}
                 </Button>
                 <Button
                   icon={
@@ -291,7 +307,7 @@ const BookDetail = () => {
                         JSON.stringify(newBooks)
                       );
                       setAddFavorite(false);
-                      message.success("Đã xóa khỏi danh sách yêu thích");
+                      message.success(t("common.message.removed_favorite"));
                     } else {
                       const newBook = {
                         id: bookDetail.maSach,
@@ -306,7 +322,7 @@ const BookDetail = () => {
                         JSON.stringify([...storedBooks, newBook])
                       );
                       setAddFavorite(true);
-                      message.success("Đã thêm vào danh sách yêu thích");
+                      message.success(t("common.message.added_favorite"));
                     }
                   }}
                   size="large"
@@ -336,7 +352,7 @@ const BookDetail = () => {
                 height: "100%",
               }}
             >
-              <Title level={5}>Các sách tương tự</Title>
+              <Title level={5}>{t("book.detail.related_books")}</Title>
               <Divider />
               <div
                 style={{
